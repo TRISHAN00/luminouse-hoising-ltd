@@ -128,6 +128,7 @@ const SliderSection = styled.section`
   padding: 0;
   background-color: #f7f7f7;
   border-bottom: 1px solid #f0f0f0;
+  padding-bottom: 120px;
 
   .feature-title {
     margin-bottom: 80px;
@@ -151,7 +152,7 @@ const NavigationContainer = styled.div`
 `;
 
 const NavigationButton = styled.div`
-  border: 1px solid #0C5ADB;
+  border: 1px solid #262626;
   height: 50px;
   width: 50px;
   display: flex;
@@ -161,7 +162,7 @@ const NavigationButton = styled.div`
   cursor: pointer;
   transition: all 0.3s ease;
   background-color: transparent;
-  color: #0C5ADB;
+  color: #262626;
   
   svg {
     font-size: 24px;
@@ -169,7 +170,7 @@ const NavigationButton = styled.div`
   }
   
   &:hover {
-    background-color: #0C5ADB;
+    background-color: #262626;
     color: white;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(12, 90, 219, 0.2);
@@ -181,7 +182,7 @@ const NavigationButton = styled.div`
     
     &:hover {
       background-color: transparent;
-      color: #0C5ADB;
+      color: #262626;
       transform: translateY(0);
       box-shadow: none;
     }
@@ -236,7 +237,7 @@ const CircleButton = styled.div`
 
   &:hover {
     transform: translate(-50%, -50%) scale(1.1);
-    background-color: #0C5ADB;
+    background-color: #262626;
     
     span {
       color: white;
@@ -265,7 +266,7 @@ const ProjectInfo = styled.div`
   
   ${ProjectItem}:hover & {
     h3 {
-      color: #0C5ADB;
+      color: #262626;
     }
   }
 `;

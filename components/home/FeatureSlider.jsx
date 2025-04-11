@@ -12,6 +12,7 @@ import project2 from "../../public/images/dynamic/projects/project-02.jpg";
 import project3 from "../../public/images/dynamic/projects/project-03.jpg";
 
 // Import Swiper styles
+import Link from "next/link";
 import "swiper/css";
 import "swiper/css/navigation";
 import Title from "../Title";
@@ -96,25 +97,27 @@ export default function FeatureSlider() {
         >
           {projects.map((project) => (
             <SwiperSlide key={project.id}>
-              <ProjectItem>
-                <ImageContainer>
-                  <Image
-                    src={project.image}
-                    alt={project.title}
-                    fill
-                    style={{ objectFit: "cover" }}
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
-                  <CircleButton>
-                    <span>+</span>
-                  </CircleButton>
-                </ImageContainer>
+              <Link href={'/'} >
+                <ProjectItem>
+                  <ImageContainer>
+                    <Image
+                      src={project.image}
+                      alt={project.title}
+                      fill
+                      style={{ objectFit: "cover" }}
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                    <CircleButton>
+                      <span>+</span>
+                    </CircleButton>
+                  </ImageContainer>
 
-                <ProjectInfo>
-                  <h3>{project.title}</h3>
-                  <p>{project.location}</p>
-                </ProjectInfo>
-              </ProjectItem>
+                  <ProjectInfo>
+                    <h3>{project.title}</h3>
+                    <p>{project.location}</p>
+                  </ProjectInfo>
+                </ProjectItem>
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -163,23 +166,23 @@ const NavigationButton = styled.div`
   transition: all 0.3s ease;
   background-color: transparent;
   color: #262626;
-  
+
   svg {
     font-size: 24px;
     transition: all 0.3s ease;
   }
-  
+
   &:hover {
     background-color: #262626;
     color: white;
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(12, 90, 219, 0.2);
   }
-  
+
   &.swiper-button-disabled {
     opacity: 0.5;
     cursor: not-allowed;
-    
+
     &:hover {
       background-color: transparent;
       color: #262626;
@@ -196,7 +199,7 @@ const ProjectItem = styled.div`
   height: 100%;
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
@@ -238,7 +241,7 @@ const CircleButton = styled.div`
   &:hover {
     transform: translate(-50%, -50%) scale(1.1);
     background-color: #262626;
-    
+
     span {
       color: white;
     }
@@ -263,7 +266,7 @@ const ProjectInfo = styled.div`
     color: #777;
     margin: 0;
   }
-  
+
   ${ProjectItem}:hover & {
     h3 {
       color: #262626;

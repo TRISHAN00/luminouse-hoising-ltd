@@ -69,8 +69,8 @@ const StyledTitle = styled.div`
     padding: 0;
     margin: ${p => p.marginSm};
     h2 {
-      font-size: 48px !important;
-      line-height: 48px !important;
+      font-size: 32px !important;
+      line-height: 35px !important;
     }
   }
 `;

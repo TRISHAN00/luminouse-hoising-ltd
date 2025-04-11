@@ -39,7 +39,7 @@ const StyledComponent = styled.section`
   background-color: #171717;
   position: relative;
   height: 100vh;
-  min-height: 700px;
+  min-height: 900px;
   overflow: hidden;
 
   .section-wrapper {

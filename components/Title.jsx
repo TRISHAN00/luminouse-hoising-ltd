@@ -58,6 +58,7 @@ const StyledTitle = styled.div`
   h2 {
     font-size: ${props => props.fontSize || 80}px;
     line-height: ${props => props.lineHeight || 80}px;
+    text-align: ${props => props?.center ? 'center' : ''};
     //text-transform: uppercase;
     font-weight: ${props => props.fontWeight || '400'};
     color: ${props => props.color || "#FFF"};

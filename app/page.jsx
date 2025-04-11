@@ -1,5 +1,6 @@
 import { getHomeApi } from "@/api/home";
 import Banner from "@/components/home/Banner";
+import FeatureSlider from "@/components/home/FeatureSlider";
 import ImageCollageSection from "@/components/ImageCollageSection";
 import Overview from "@/components/Overview";
 
@@ -19,6 +20,7 @@ export default async function Home() {
       <Banner/>
       <Overview/>
       <ImageCollageSection/>
+      <FeatureSlider/>
     </>
   );
 }

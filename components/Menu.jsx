@@ -8,7 +8,7 @@ import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { MdClose, MdMenu, MdOutlineLocalPhone } from "react-icons/md";
 import styled from "styled-components";
-import logo from "../public/images/static/logos/main-logo.svg";
+import logo from "../public/images/static/logos/white-logo.svg";
 
 export default function Menu() {
   const [isScrolled, setIsScrolled] = useState(false);

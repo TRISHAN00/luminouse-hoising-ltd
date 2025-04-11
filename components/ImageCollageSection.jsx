@@ -147,7 +147,7 @@ const ImageCollageSection = () => {
   return (
     <div>
       <Wrapper ref={sectionRef}>
-        <Line />
+        <Line background={"#1717171a"} />
         <Container className="collage-container">
           <div className="image-layer image-1">
             <div className="image-wrapper" ref={img1Ref}>
@@ -195,7 +195,7 @@ const Wrapper = styled.section`
   position: relative;
   overflow: hidden;
   margin-top: -190px;
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
 
   &:before {
     position: absolute;

@@ -1,5 +1,7 @@
+
 import { getHomeApi } from "@/api/home";
 import Banner from "@/components/home/Banner";
+import Dream from "@/components/home/Dream";
 import FeatureSlider from "@/components/home/FeatureSlider";
 import ImageCollageSection from "@/components/ImageCollageSection";
 import Overview from "@/components/Overview";
@@ -15,12 +17,14 @@ export const metadata = {
 export default async function Home() {
   const getHomeData = await getHomeApi();
 
+
   return (
     <>
       <Banner/>
       <Overview/>
       <ImageCollageSection/>
       <FeatureSlider/>
+      <Dream />
     </>
   );
 }

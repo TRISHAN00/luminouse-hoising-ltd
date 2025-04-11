@@ -15,6 +15,7 @@ import project3 from "../../public/images/dynamic/projects/project-03.jpg";
 import Link from "next/link";
 import "swiper/css";
 import "swiper/css/navigation";
+import Line from "../Lines";
 import Title from "../Title";
 
 // Projects data matching the example image
@@ -53,6 +54,7 @@ const projects = [
 export default function FeatureSlider() {
   return (
     <SliderSection>
+      <Line background={'#1717171a'} />
       <Container>
         <Row>
           <Col className="feature-title" lg={{ offset: 2, span: 8 }}>
@@ -61,10 +63,11 @@ export default function FeatureSlider() {
               color={"#5B5B5B"}
               fontSize={"60"}
               text={"DISCOVER OUR EXCLUSIVE CREATION OF FEATURED PROJECTS"}
-            />
+              />
           </Col>
         </Row>
         <Row>
+              <Line/>
           <Col>
             <NavigationContainer className="d-flex">
               <NavigationButton className="prev-arrow">
@@ -130,7 +133,6 @@ const SliderSection = styled.section`
   position: relative;
   padding: 0;
   background-color: #f7f7f7;
-  border-bottom: 1px solid #f0f0f0;
   padding-bottom: 120px;
 
   .feature-title {

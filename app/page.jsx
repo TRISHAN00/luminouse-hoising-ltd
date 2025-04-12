@@ -6,6 +6,7 @@ import Client from "@/components/home/Client";
 import Dream from "@/components/home/Dream";
 import FeatureSlider from "@/components/home/FeatureSlider";
 import ImageCollageSection from "@/components/ImageCollageSection";
+import NewsEventsSlider from "@/components/NewsEventsSlider";
 import Overview from "@/components/Overview";
 
 export const metadata = {
@@ -29,6 +30,7 @@ export default async function Home() {
       <Dream />
       <Client/>
       <CallbackRequestForm/>
+      <NewsEventsSlider/>
     </>
   );
 }

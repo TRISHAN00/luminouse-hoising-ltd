@@ -13,6 +13,7 @@
     "bootstrap": "^4.6.0",
     "framer-motion": "^12.6.5",
     "gsap": "./gsap-bonus.tgz",
+    "lucide-react": "^0.487.0",
     "moment": "^2.29.4",
     "next": "14.2.2",
     "react": "^18",

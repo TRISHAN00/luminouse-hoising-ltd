@@ -1,4 +1,5 @@
 "use client";
+import Footer from "@/components/Footer";
 import Header from "@/components/Menu";
 import StyledComponentsRegistry from "@/lib/registry";
 import GlobalStyle from "@/styles/globalStyle";
@@ -20,6 +21,7 @@ export default function RootLayout({ children }) {
             <ToastContainer />
             <Header />
             {children}
+            <Footer/>
           </div>
         </StyledComponentsRegistry>
       </body>

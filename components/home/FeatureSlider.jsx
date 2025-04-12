@@ -133,7 +133,7 @@ const SliderSection = styled.section`
   position: relative;
   padding: 0;
   background-color: #f7f7f7;
-  padding-bottom: 120px;
+  padding: 120px 0px;
 
   .feature-title {
     margin-bottom: 80px;

@@ -1,5 +1,6 @@
 
 import { getHomeApi } from "@/api/home";
+import CallbackRequestForm from "@/components/Contact";
 import Banner from "@/components/home/Banner";
 import Client from "@/components/home/Client";
 import Dream from "@/components/home/Dream";
@@ -27,6 +28,7 @@ export default async function Home() {
       <FeatureSlider/>
       <Dream />
       <Client/>
+      <CallbackRequestForm/>
     </>
   );
 }

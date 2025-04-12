@@ -14,7 +14,7 @@ const Line = ({background}) => {
     );
 };
 
-const StyledComponent = styled.section`
+const StyledComponent = styled.div`
   span {
     width: 1px;
     background-color: ${p => p.background || '#e9e9e921'};

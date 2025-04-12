@@ -68,7 +68,7 @@ export default function Dream() {
             <Img src={dream1} alt="Dream building interior" />
           </RightImageContainer>
           <LearnMoreBtn>
-            <Button border={'1px solid black'} text={"Learn More"} />
+            <Button border={'1px solid #171717'} hoverBackground={'#171717'} text={"Learn More"} />
           </LearnMoreBtn>
         </RightContentContainer>
       </ImageGalleryWrapper>
@@ -77,9 +77,10 @@ export default function Dream() {
 }
 
 const DreamStyled = styled.section`
-  padding: 120px 0 0;
+  padding: 120px 0;
   position: relative;
   overflow: hidden;
+  height: 100vh;
   background-color: #ffffff;
 
   .content-container {
@@ -120,8 +121,11 @@ const DreamStyled = styled.section`
 
 const LearnMoreBtn = styled.div`
   margin-top: 40px;
-  display: flex;
-  justify-content: start;
+  margin-right: auto;
+
+  @media (max-width: 767px) {
+    margin-left: 15px;
+  }
 `
 
 const ImageGalleryWrapper = styled.div`
@@ -138,7 +142,7 @@ const ImageGalleryWrapper = styled.div`
 const LeftImageContainer = styled.div`
   position: relative;
   width: 70%;
-  height: 600px;
+  height: 800px;
   overflow: hidden;
 
   img {

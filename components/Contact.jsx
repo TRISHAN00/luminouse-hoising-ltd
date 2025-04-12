@@ -2,10 +2,13 @@
 
 import { useState } from "react";
 import { Col, Container } from "react-bootstrap";
+import { FiArrowRight, FiSend } from "react-icons/fi";
 import styled from "styled-components";
+import Button from "./Button";
 import Title from "./Title";
 
 export default function CallbackRequestForm() {
+  const arrow = <FiArrowRight color="#fff" />;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -91,8 +94,18 @@ export default function CallbackRequestForm() {
               <TextareaLabel htmlFor="message">Message</TextareaLabel>
               <InputLine className={formData.message ? "active" : ""} />
             </FormGroup>
-
-            <SubmitButton type="submit">Submit</SubmitButton>
+            <div className="contact-btn">
+              <Button
+                text="Send Message"
+                background="#0288D1"
+                hoverBackground="#0288D1"
+                border="1px solid #0288D1"
+                hoverBorderColor="#0288D1"
+                color="#fff"
+                hoverColor="#fff"
+                icon={<FiSend size={16} />}
+              />
+            </div>
           </Form>
         </Col>
       </Container>
@@ -106,6 +119,11 @@ const FormContainer = styled.div`
   padding: 120px 0;
   height: 100vh;
   width: 100%;
+
+  .contact-btn {
+    padding-top: 60px;
+    margin: 0 auto;
+  }
 
   .contact-title {
     display: flex;
@@ -208,7 +226,6 @@ const StyledTextarea = styled.textarea`
   width: 100%;
   background-color: transparent;
   border: none;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
   color: #ffffff;
   font-size: 1rem;
   padding: 10px 0;

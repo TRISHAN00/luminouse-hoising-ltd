@@ -232,7 +232,7 @@ const Wrapper = styled.section`
   }
 
   .image-2 {
-    top: 35%;
+    top: 50%;
     left: 37%;
     height: 300px;
     width: 350px;

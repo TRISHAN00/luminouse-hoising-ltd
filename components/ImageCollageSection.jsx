@@ -6,9 +6,9 @@ import { useEffect, useRef } from "react";
 import { Container } from "react-bootstrap";
 import styled from "styled-components";
 
-import img2 from "@/public/images/dynamic/home/zigzag-01.jpg";
-import img1 from "@/public/images/dynamic/home/zigzag-02.jpg";
-import img3 from "@/public/images/dynamic/home/zigzag-03.jpg";
+import img1 from "@/public/images/dynamic/home/high.jpg";
+import img3 from "@/public/images/dynamic/home/medium.jpg";
+import img2 from "@/public/images/dynamic/home/small.jpg";
 import Line from "./Lines";
 
 // Register ScrollTrigger plugin

@@ -1,3 +1,5 @@
+// "use client" ❌ REMOVE THIS LINE
+
 import { getHomeApi } from "@/api/home";
 import InnerBanner from "@/components/InnerBanner";
 import MissionVision from "@/components/MissionVision";
@@ -18,8 +20,8 @@ export default async function About() {
   return (
     <>
       <InnerBanner img={aboutImg} title={'About Us'} />
-      <Overview/>
-      <MissionVision/>
+      <Overview />
+      <MissionVision />
     </>
   );
 }

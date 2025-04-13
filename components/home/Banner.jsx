@@ -8,8 +8,10 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // You'll need to import your actual images here
-import { default as homeImage1, default as homeImage3 } from "../../public/images/dynamic/home/banner-01.jpg";
+
+import homeImage1 from "../../public/images/dynamic/home/banner-01.jpg";
 import homeImage2 from "../../public/images/dynamic/home/banner-02.jpg";
+import homeImage3 from "../../public/images/dynamic/home/banner-03.jpg";
 
 // Slide data
 const slides = [
@@ -112,14 +114,14 @@ const NavigationArrows = styled.div`
 const Arrow = styled.button`
   background: transparent;
   border: none;
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  opacity: ${props => props.disabled ? '0.5' : '1'};
+  opacity: ${(props) => (props.disabled ? "0.5" : "1")};
 
   svg {
     width: 24px;
@@ -129,7 +131,7 @@ const Arrow = styled.button`
   }
 
   &:hover {
-    transform: ${props => props.disabled ? 'none' : 'scale(1.1)'};
+    transform: ${(props) => (props.disabled ? "none" : "scale(1.1)")};
   }
 `;
 
@@ -157,7 +159,7 @@ const Tab = styled.button`
   position: relative;
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -198,26 +200,26 @@ export default function HomeBanner() {
 
     const title = textRef.current;
     const titleText = slides[activeSlide].title;
-    const lines = titleText.split('\n');
-    
+    const lines = titleText.split("\n");
+
     // Clear previous content
-    title.innerHTML = '';
-    
+    title.innerHTML = "";
+
     // Create lines
-    lines.forEach(line => {
-      const lineDiv = document.createElement('div');
-      lineDiv.className = 'title-line';
-      
-      const revealSpan = document.createElement('span');
-      revealSpan.className = 'reveal-line';
+    lines.forEach((line) => {
+      const lineDiv = document.createElement("div");
+      lineDiv.className = "title-line";
+
+      const revealSpan = document.createElement("span");
+      revealSpan.className = "reveal-line";
       revealSpan.textContent = line;
-      
+
       lineDiv.appendChild(revealSpan);
       title.appendChild(lineDiv);
     });
-    
+
     // Animate each line
-    gsap.to('.reveal-line', {
+    gsap.to(".reveal-line", {
       y: 0,
       duration: 1.2,
       ease: "power4.out",
@@ -225,35 +227,43 @@ export default function HomeBanner() {
       onComplete: () => {
         // Enable navigation buttons after animation completes
         setIsTransitioning(false);
-      }
+      },
     });
   };
 
   // Animate image and overlay
   const animateSlide = () => {
     if (!imageRef.current || !overlayRef.current) return;
-    
+
     // Reset animations
     gsap.set(imageRef.current, { scale: 1.2, opacity: 0 });
     gsap.set(overlayRef.current, { opacity: 0 });
-    
+
     // Create timeline
     const tl = gsap.timeline();
-    
+
     // Animate image zoom and fade in
-    tl.to(imageRef.current, { 
-      scale: 1, 
-      opacity: 1, 
-      duration: 1.5, 
-      ease: "power3.out" 
-    }, 0);
-    
+    tl.to(
+      imageRef.current,
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: "power3.out",
+      },
+      0
+    );
+
     // Animate overlay fade in
-    tl.to(overlayRef.current, { 
-      opacity: 1, 
-      duration: 1, 
-      ease: "power2.out" 
-    }, 0.3);
+    tl.to(
+      overlayRef.current,
+      {
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+      },
+      0.3
+    );
   };
 
   useEffect(() => {
@@ -261,16 +271,16 @@ export default function HomeBanner() {
     if (animationTimeoutRef.current) {
       clearTimeout(animationTimeoutRef.current);
     }
-    
+
     // Set transitioning state to disable buttons
     setIsTransitioning(true);
-    
+
     // Start animations with slight delay
     animationTimeoutRef.current = setTimeout(() => {
       animateText();
       animateSlide();
     }, 100);
-    
+
     return () => {
       if (animationTimeoutRef.current) {
         clearTimeout(animationTimeoutRef.current);
@@ -298,21 +308,30 @@ export default function HomeBanner() {
         ref={swiperRef}
         spaceBetween={0}
         slidesPerView={1}
-        speed={1000}
+        speed={1000} // slower transition = smoother
         loop={true}
+        autoplay={{
+          delay: 5000,
+          disableOnInteraction: false,
+        }}        
         allowTouchMove={!isTransitioning}
-        onSlideChange={(swiper) => setActiveSlide(swiper.activeIndex % slides.length)}
-        onTouchStart={() => {
-          if (isTransitioning) {
-            // Prevent touch navigation during transitions
-            return false;
-          }
+        onSlideChange={
+          (swiper) => setActiveSlide(swiper.realIndex) // use realIndex for looped slides
+        }
+        onTouchStart={(e) => {
+          if (isTransitioning) e.preventDefault();
         }}
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={slide.id}>
             <SlideWrapper>
-              <ImageWrapper ref={index % slides.length === activeSlide ? imageRef : null}>
+              <ImageWrapper
+                ref={index === activeSlide ? imageRef : null}
+                style={{
+                  transition:
+                    "transform 1s ease-in-out, opacity 1s ease-in-out",
+                }}
+              >
                 <Image
                   src={slide.image}
                   alt={`Luxury home design ${index + 1}`}
@@ -322,38 +341,66 @@ export default function HomeBanner() {
                 />
               </ImageWrapper>
               <TitleContainer>
-                <h1 ref={index % slides.length === activeSlide ? textRef : null}></h1>
+                <h1
+                  ref={index === activeSlide ? textRef : null}
+                  style={{
+                    transition: "all 0.8s ease",
+                    transform:
+                      index === activeSlide
+                        ? "translateY(0)"
+                        : "translateY(20px)",
+                    opacity: index === activeSlide ? 1 : 0,
+                  }}
+                >
+                  {slide.title}
+                </h1>
               </TitleContainer>
-              <Overlay ref={index % slides.length === activeSlide ? overlayRef : null} />
+              <Overlay
+                ref={index === activeSlide ? overlayRef : null}
+                style={{
+                  transition: "opacity 1s ease",
+                  opacity: index === activeSlide ? 1 : 0.5,
+                }}
+              />
             </SlideWrapper>
           </SwiperSlide>
         ))}
       </Swiper>
-      
+
       <NavigationArrows>
-        <Arrow 
-          onClick={handlePrev} 
-          aria-label="Previous slide"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" strokeLinecap="round" strokeLinejoin="round" />
+        <Arrow onClick={handlePrev} aria-label="Previous slide">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M19 12H5M5 12L12 19M5 12L12 5"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </Arrow>
-        <Arrow 
-          onClick={handleNext} 
-          aria-label="Next slide"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-            <path d="M5 12H19M19 12L12 5M19 12L12 19" strokeLinecap="round" strokeLinejoin="round" />
+        <Arrow onClick={handleNext} aria-label="Next slide">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+          >
+            <path
+              d="M5 12H19M19 12L12 5M19 12L12 19"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            />
           </svg>
         </Arrow>
       </NavigationArrows>
-      
+
       <TabsContainer>
         {["Ongoing", "Upcoming", "Completed"].map((tab) => (
-          <Tab 
-            key={tab} 
-            className={activeTab === tab ? 'active' : ''}
+          <Tab
+            key={tab}
+            className={activeTab === tab ? "active" : ""}
             onClick={() => setActiveTab(tab)}
             disabled={isTransitioning}
           >

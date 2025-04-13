@@ -299,10 +299,10 @@ const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
   height: 580px !important;
-  overflow: hidden;
+  overflow: hidden; 
 
   @media (min-width: 767px) {
-    height: 480px !important;
+    height: 480px ;
   }
 `;
 

@@ -4,6 +4,7 @@ import { white } from "@/styles/globalStyleVars";
 import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import { MdClose, MdMenu, MdOutlineLocalPhone } from "react-icons/md";
@@ -17,6 +18,7 @@ export default function Menu() {
   const [headerVisible, setHeaderVisible] = useState(true);
   const headerRef = useRef(null);
   const navItemsRef = useRef([]);
+  const router = usePathname();
 
   // Handle scroll effects
   useEffect(() => {
@@ -65,6 +67,11 @@ export default function Menu() {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  // Check if menu item is active
+  const isActive = (path) => {
+    return router.pathname === path;
+  };
+
   // Menu items
   const menuItems = [
     { label: "Home", href: "/" },
@@ -100,7 +107,11 @@ export default function Menu() {
                       key={index}
                       ref={el => navItemsRef.current[index] = el}
                     >
-                      <Link prefetch={true} href={item.href}>
+                      <Link 
+                        prefetch={true} 
+                        href={item.href}
+                        className={isActive(item.href) ? "active" : ""}
+                      >
                         {item.label}
                       </Link>
                     </li>
@@ -132,6 +143,7 @@ export default function Menu() {
                 <Link 
                   href={item.href} 
                   onClick={() => setMobileMenuOpen(false)}
+                  className={isActive(item.href) ? "active" : ""}
                 >
                   {item.label}
                 </Link>
@@ -167,8 +179,8 @@ const StyledHeader = styled.header`
     bottom: 0;
     left: 0;
     width: 100%;
-    height: ${props => props.isScrolled ? '2px' : '0'};
-    background: linear-gradient(to right, transparent, #0288D1, transparent);
+    height: ${props => props.isScrolled ? '5px' : '0'};
+    background: linear-gradient(to right, transparent, #fff, transparent);
     opacity: 0.7;
   }
 
@@ -237,12 +249,20 @@ const NavMenu = styled.nav`
           left: 0;
           width: 0%;
           height: 2px;
-          background: #0288D1;
+          background: #fff;
           transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
         }
         
-        &:hover::after {
+        &:hover::after, &.active::after {
           width: 100%;
+        }
+        
+        &.active {
+          &::after {
+            background: #0288D1;
+            height: 3px;
+            bottom: 0;
+          }
         }
       }
     }
@@ -364,13 +384,19 @@ const MobileNavMenu = styled.nav`
           transition: all 0.3s ease;
         }
         
-        &:hover {
+        &:hover, &.active {
           color: #0288D1;
-          
-          &:after {
-            width: 100%;
-            left: 0;
-          }
+        }
+        
+        &:hover:after {
+          width: 100%;
+          left: 0;
+        }
+        
+        &.active:after {
+          width: 100%;
+          left: 0;
+          height: 3px;
         }
       }
     }

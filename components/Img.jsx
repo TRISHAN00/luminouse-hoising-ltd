@@ -1,9 +1,9 @@
 "use client";
 
-import styled from "styled-components";
+import blur from '@/public/images/static/blur.jpg';
 import Image from "next/image";
-import {useEffect, useState} from "react";
-import blur from '@/public/images/static/blur.jpg'
+import { useEffect, useState } from "react";
+import styled from "styled-components";
 
 export const Img = ({
                         src,

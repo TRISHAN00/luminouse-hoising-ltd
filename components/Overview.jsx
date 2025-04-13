@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Line from "./Lines";
 import Title from "./Title";
 
-const MyComponent = () => {
+const Overview = () => {
   return (
     <StyledComponent className="section-wrapper">
       <Line />
@@ -114,4 +114,4 @@ const StyledComponent = styled.section`
   }
 `;
 
-export default MyComponent;
+export default Overview;

@@ -88,6 +88,7 @@ export default function FeatureSlider() {
             nextEl: ".next-arrow",
             prevEl: ".prev-arrow",
           }}
+          speed={600} // smoother transition (adjust as needed)
           breakpoints={{
             768: {
               slidesPerView: 2,

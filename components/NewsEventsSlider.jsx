@@ -16,6 +16,7 @@ import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import "swiper/css";
 import "swiper/css/navigation";
 import Line from "./Lines";
+import Title from "./Title";
 
 export default function NewsEventsSlider() {
   const [mounted, setMounted] = useState(false);
@@ -73,7 +74,12 @@ export default function NewsEventsSlider() {
         <Row>
           <Col lg={12}>
             <SliderHeader>
-              <Heading>NEWS & EVENTS</Heading>
+              <Title
+                textAlign={"left"}
+                color={"#5B5B5B"}
+                fontSize={"60"}
+                text={"NEWS & EVENTS"}
+              />
               <NavigationContainer className="d-flex">
                 <NavigationButton ref={prevRef} className="prev-arrow-news">
                   <MdKeyboardArrowLeft />
@@ -94,6 +100,7 @@ export default function NewsEventsSlider() {
                 prevEl: prevRef.current,
                 nextEl: nextRef.current,
               }}
+              speed={600} // smoother transition (adjust as needed)
               onBeforeInit={(swiper) => {
                 swiper.params.navigation.prevEl = prevRef.current;
                 swiper.params.navigation.nextEl = nextRef.current;
@@ -122,8 +129,12 @@ export default function NewsEventsSlider() {
                               src={item.imagePath}
                               alt={item.title}
                               fill
-                              style={{ objectFit: "cover" }}
+                              style={{
+                                objectFit: "cover",
+                                transition: "all 0.4s ease-in-out",
+                              }}
                             />
+
                             <DarkOverlay />
                           </ImageContainer>
                           <WhiteOverlay />
@@ -157,7 +168,7 @@ export default function NewsEventsSlider() {
 
 const NavigationContainer = styled.div`
   display: flex;
-  margin-bottom: 40px;
+  /* margin-bottom: 40px; */
   gap: 20px;
 `;
 
@@ -287,8 +298,12 @@ const CardTitle = styled.h3`
 const ImageWrapper = styled.div`
   position: relative;
   width: 100%;
-  height: 620px;
+  height: 580px !important;
   overflow: hidden;
+
+  @media (min-width: 767px) {
+    height: 480px !important;
+  }
 `;
 
 const ImageContainer = styled.div`

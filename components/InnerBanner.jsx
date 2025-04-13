@@ -1,23 +1,22 @@
 'use client'
-import React from 'react';
-import styled from "styled-components";
-import {Container} from "react-bootstrap";
+import { Img } from "@/components/Img";
+import { Container } from "react-bootstrap";
 import reactHtmlParser from "react-html-parser";
-import {Img} from "@/components/Img";
+import styled from "styled-components";
 
 const InnerBanner = ({img, text, title}) => {
     return (
         <StyledInnerBanner className='InnerBanner'>
             <Img banner={true} src={img}/>
             <Container>
-                <h2 className={`anim-active fade-up`}>{reactHtmlParser('Inner Banner title')}</h2>
+                <h2 className={`anim-active fade-up`}>{reactHtmlParser(title)}</h2>
             </Container>
         </StyledInnerBanner>
     );
 };
 
 const StyledInnerBanner = styled.section`
-    padding-top: calc(620 / 1366 * 100%);
+    padding-top: calc(420 / 1366 * 100%);
     position: relative;
     background-color: #DDD;
 
@@ -50,6 +49,7 @@ const StyledInnerBanner = styled.section`
         font-size: 60px;
         font-weight: 300;
         line-height: 70px;
+        text-align: center;
         //text-transform: capitalize;
         z-index: 2;
 

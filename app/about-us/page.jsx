@@ -1,6 +1,7 @@
 // "use client" ❌ REMOVE THIS LINE
 
 import { getHomeApi } from "@/api/home";
+import Team from "@/components/about/Team";
 import InnerBanner from "@/components/InnerBanner";
 import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
@@ -24,6 +25,7 @@ export default async function About() {
       <Overview />
       <MissionVision />
       <BOD/>
+      <Team/>
     </>
   );
 }

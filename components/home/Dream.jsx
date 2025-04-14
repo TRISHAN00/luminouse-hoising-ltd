@@ -92,7 +92,7 @@ const DreamStyled = styled.section`
       font-size: 48px;
       font-weight: 600;
       margin-bottom: 40px;
-      color: #222;
+      color: #171717;
     }
   }
 

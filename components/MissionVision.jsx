@@ -32,7 +32,10 @@ export default function MissionVision() {
       <Container className="p-0" fluid>
         <Row>
           <Col lg={8}>
-            <div style={{ marginLeft: offset + "px" }} className="left-content">
+            <div
+              style={{ marginLeft: offset + 15 + "px" }}
+              className="left-content"
+            >
               <div className="left-content-img">
                 <Img src={mission} />
               </div>
@@ -46,6 +49,34 @@ export default function MissionVision() {
           </Col>
         </Row>
       </Container>
+      <div className="mission-vision-area">
+        <Container>
+          <Row>
+            <Col lg={3}>
+              <div className="mission-vision">
+                <h4>Mission</h4>
+                <p>
+                  At Luminouse Ltd, we turn your vision into reality by creating
+                  homes that blend comform, elegance, and modern design. With a
+                  commitment to quality craftsmanship and innovatio, we build
+                  spaces wheres families thrive and dreams take shape.
+                </p>
+              </div>
+            </Col>
+            <Col lg={3}>
+              <div className="mission-vision">
+                <h4>Vision</h4>
+                <p>
+                  Driven by integrity and customer satisfaction, we focus on
+                  delivering projects that exceed expectation. From
+                  throughtfully planned commjunities to we build spaces where
+                  familites thrive and dream s take shape.
+                </p>
+              </div>
+            </Col>
+          </Row>
+        </Container>
+      </div>
     </MissionVisionStyled>
   );
 }
@@ -54,9 +85,24 @@ const MissionVisionStyled = styled.section`
   padding-bottom: 120px;
   position: relative;
 
+  .mission-vision-area {
+    padding-top: 120px;
+    .mission-vision {
+      h4 {
+        color: #5e5e5e;
+        font-size: 40px;
+        margin-bottom: 25px;
+      }
+
+      p {
+        color: #5e5e5e;
+      }
+    }
+  }
+
   &::before {
     position: absolute;
-    content: '';
+    content: "";
     inset: 0;
     height: 200px;
     background-color: #171717;

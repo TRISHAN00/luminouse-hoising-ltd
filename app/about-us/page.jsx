@@ -5,6 +5,7 @@ import InnerBanner from "@/components/InnerBanner";
 import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
 import aboutImg from '../../public/images/dynamic/about/about.jpg';
+import BOD from "./BOD";
 
 export const metadata = {
   title: {
@@ -22,6 +23,7 @@ export default async function About() {
       <InnerBanner img={aboutImg} title={'About Us'} />
       <Overview />
       <MissionVision />
+      <BOD/>
     </>
   );
 }

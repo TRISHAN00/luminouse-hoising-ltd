@@ -30,8 +30,8 @@ export default function MissionVision() {
   return (
     <MissionVisionStyled>
       <Container className="p-0" fluid>
-        <Row>
-          <Col lg={8}>
+        <Row className="image-row">
+          <Col lg={8} md={7} sm={12}>
             <div
               style={{ marginLeft: offset + 15 + "px" }}
               className="left-content"
@@ -42,7 +42,7 @@ export default function MissionVision() {
             </div>
           </Col>
 
-          <Col lg={4}>
+          <Col lg={4} md={5} sm={12}>
             <div className="right-content-img">
               <Img src={vision} />
             </div>
@@ -52,25 +52,25 @@ export default function MissionVision() {
       <div className="mission-vision-area">
         <Container>
           <Row>
-            <Col lg={3}>
+            <Col lg={3} md={6} sm={12} className="mb-md-4 mb-sm-4">
               <div className="mission-vision">
                 <h4>Mission</h4>
                 <p>
                   At Luminouse Ltd, we turn your vision into reality by creating
-                  homes that blend comform, elegance, and modern design. With a
-                  commitment to quality craftsmanship and innovatio, we build
-                  spaces wheres families thrive and dreams take shape.
+                  homes that blend comfort, elegance, and modern design. With a
+                  commitment to quality craftsmanship and innovation, we build
+                  spaces where families thrive and dreams take shape.
                 </p>
               </div>
             </Col>
-            <Col lg={3}>
+            <Col lg={3} md={6} sm={12}>
               <div className="mission-vision">
                 <h4>Vision</h4>
                 <p>
                   Driven by integrity and customer satisfaction, we focus on
-                  delivering projects that exceed expectation. From
-                  throughtfully planned commjunities to we build spaces where
-                  familites thrive and dream s take shape.
+                  delivering projects that exceed expectations. From
+                  thoughtfully planned communities to custom homes, we build spaces where
+                  families thrive and dreams take shape.
                 </p>
               </div>
             </Col>
@@ -84,6 +84,7 @@ export default function MissionVision() {
 const MissionVisionStyled = styled.section`
   padding-bottom: 120px;
   position: relative;
+  overflow: hidden;
 
   .mission-vision-area {
     padding-top: 120px;
@@ -116,5 +117,83 @@ const MissionVisionStyled = styled.section`
   .right-content-img {
     position: relative;
     padding-top: calc(370 / 370 * 100%);
+  }
+  
+  /* Responsive styles */
+  @media (max-width: 1200px) {
+    .mission-vision-area {
+      padding-top: 100px;
+    }
+    
+    .mission-vision h4 {
+      font-size: 34px;
+    }
+  }
+  
+  @media (max-width: 992px) {
+    padding-bottom: 80px;
+    
+    .mission-vision-area {
+      padding-top: 80px;
+    }
+    
+    .mission-vision h4 {
+      font-size: 30px;
+      margin-bottom: 20px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    padding-bottom: 60px;
+    
+    &::before {
+      height: 150px;
+    }
+    
+    .mission-vision-area {
+      padding-top: 60px;
+    }
+    
+    .mission-vision {
+      margin-bottom: 30px;
+    }
+    
+    .mission-vision h4 {
+      font-size: 28px;
+      margin-bottom: 15px;
+    }
+    
+    .left-content {
+      margin-left: 0 !important;
+    }
+    
+    .image-row {
+      margin: 0;
+    }
+  }
+  
+  @media (max-width: 576px) {
+    padding-bottom: 40px;
+    
+    &::before {
+      height: 100px;
+    }
+    
+    .mission-vision-area {
+      padding-top: 40px;
+    }
+    
+    .mission-vision h4 {
+      font-size: 24px;
+    }
+    
+    .left-content-img,
+    .right-content-img {
+      padding-top: calc(400 / 600 * 100%);
+    }
+    
+    .right-content-img {
+      margin-top: 15px;
+    }
   }
 `;

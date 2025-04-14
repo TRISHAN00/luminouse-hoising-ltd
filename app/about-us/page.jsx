@@ -4,8 +4,8 @@ import { getHomeApi } from "@/api/home";
 import InnerBanner from "@/components/InnerBanner";
 import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
+import BOD from "../../components/about/BOD";
 import aboutImg from '../../public/images/dynamic/about/about.jpg';
-import BOD from "./BOD";
 
 export const metadata = {
   title: {

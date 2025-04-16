@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { FaMapMarkerAlt } from "react-icons/fa";
 import styled from "styled-components";
@@ -12,8 +12,27 @@ const ContactSection = () => {
     phone: "",
     message: "",
   });
-  
+
   const [validated, setValidated] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0);
+
+  // Handle window resize for responsive behavior
+  useEffect(() => {
+    // Set initial width
+    setWindowWidth(window.innerWidth);
+
+    // Add resize listener
+    const handleResize = () => {
+      setWindowWidth(window.innerWidth);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    // Clean up
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, []);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -25,18 +44,18 @@ const ContactSection = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
       e.stopPropagation();
       setValidated(true);
       return;
     }
-    
+
     // Here you would typically send the form data to your backend
     console.log("Form submitted:", formData);
     alert("Message sent successfully!");
-    
+
     // Reset form
     setFormData({
       name: "",
@@ -48,10 +67,10 @@ const ContactSection = () => {
   };
 
   return (
-    <ContactSectionStyled>
-      <Container>
-        <Row className="g-0">
-          <Col md={6} className="contact-form-col">
+    <ContactSectionStyled windowWidth={windowWidth}>
+      <Container className="p-0">
+        <Row className="g-0 contact-row">
+          <Col md={5} className="contact-form-col">
             <div className="contact-form-wrapper">
               <h1>Get in Touch!</h1>
               <Form noValidate validated={validated} onSubmit={handleSubmit}>
@@ -118,7 +137,7 @@ const ContactSection = () => {
               </Form>
             </div>
           </Col>
-          <Col md={6} className="map-col">
+          <Col md={7} className="map-col">
             <div className="map-wrapper">
               <div className="map-container">
                 <iframe
@@ -142,31 +161,59 @@ const ContactSection = () => {
 };
 
 const ContactSectionStyled = styled.section`
+  padding: 150px 0;
   width: 100%;
-  
+
+  .contact-row {
+    display: flex;
+    flex-direction: column;
+
+    @media (min-width: 768px) {
+      flex-direction: row;
+      min-height: 600px;
+    }
+  }
+
   .contact-form-col {
     background-color: #121212;
     color: white;
     padding: 0;
-  }
-  
-  .contact-form-wrapper {
-    padding: 60px 40px;
-    max-width: 500px;
-    margin: 0 auto;
-    
-    @media (min-width: 768px) {
-      padding: 80px 60px;
+    min-height: 600px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    @media (max-width: 767px) {
+      order: 1;
     }
   }
-  
+
+  .contact-form-wrapper {
+    padding: 50px 30px;
+    max-width: 500px;
+    margin: 0 auto;
+    width: 100%;
+
+    @media (min-width: 576px) {
+      padding: 50px 40px;
+    }
+
+    @media (min-width: 768px) {
+      padding: 60px;
+    }
+  }
+
   h1 {
-    font-size: 42px;
+    font-size: 36px;
     font-weight: 600;
     margin-bottom: 40px;
     color: white;
+
+    @media (min-width: 768px) {
+      font-size: 42px;
+    }
   }
-  
+
   .form-input {
     background-color: transparent;
     border: none;
@@ -175,23 +222,23 @@ const ContactSectionStyled = styled.section`
     padding: 12px 0;
     color: white;
     font-size: 16px;
-    
+
     &:focus {
       box-shadow: none;
       background-color: transparent;
       border-color: rgba(255, 255, 255, 0.7);
       color: white;
     }
-    
+
     &::placeholder {
       color: rgba(255, 255, 255, 0.5);
     }
   }
-  
+
   textarea.form-input {
     min-height: 100px;
   }
-  
+
   .submit-btn {
     background-color: #007bff;
     border: none;
@@ -201,24 +248,28 @@ const ContactSectionStyled = styled.section`
     font-weight: 500;
     margin-top: 20px;
     transition: all 0.3s ease;
-    
+
     &:hover {
       background-color: #0069d9;
       transform: translateY(-2px);
       box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     }
   }
-  
+
   .map-col {
+    height: 400px; /* Fixed height for mobile */
     position: relative;
-    height: 100%;
-    /* min-height: 400px; */
-    
+
     @media (min-width: 768px) {
+      height: auto;
       min-height: 600px;
     }
+
+    @media (max-width: 767px) {
+      order: 0;
+    }
   }
-  
+
   .map-wrapper {
     position: absolute;
     top: 0;
@@ -226,12 +277,12 @@ const ContactSectionStyled = styled.section`
     width: 100%;
     height: 100%;
   }
-  
+
   .map-container {
     position: relative;
     width: 100%;
     height: 100%;
-    
+
     iframe {
       width: 100%;
       height: 100%;
@@ -239,14 +290,14 @@ const ContactSectionStyled = styled.section`
       top: 0;
       left: 0;
     }
-    
+
     .map-marker {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
       z-index: 10;
-      
+
       .marker-icon {
         color: #ff3131;
         font-size: 40px;

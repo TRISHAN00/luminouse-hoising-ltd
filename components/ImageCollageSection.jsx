@@ -196,6 +196,7 @@ const Wrapper = styled.section`
   overflow: hidden;
   margin-top: -190px;
   background-color: #f7f7f7;
+  height: 800px;
 
   &:before {
     position: absolute;

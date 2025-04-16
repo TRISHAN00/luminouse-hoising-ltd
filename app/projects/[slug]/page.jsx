@@ -1,8 +1,10 @@
 import { getProjectDetailApi } from "@/api/project";
 import AtaGlance from "@/components/AtaGlance";
+import ContactSection from "@/components/ContactSection";
 import ImageCollageSection from "@/components/ImageCollageSection";
 import FeaturedAmenities from "@/components/project/FeaturedAmenities";
 import InnerBannerDetail from "@/components/project/InnerBannerDetail";
+import ProjectGalllery from "@/components/project/ProjectGalllery";
 import banner from "../../../public/images/dynamic/home/banner-01.jpg";
 
 export async function generateMetadata({ params, searchParams }, parent) {
@@ -24,6 +26,8 @@ export default async function PortfolioDetail({ params }) {
       <AtaGlance />
       <ImageCollageSection/>
       <FeaturedAmenities/>
+      <ProjectGalllery/>
+      <ContactSection/>
     </div>
   );
 }

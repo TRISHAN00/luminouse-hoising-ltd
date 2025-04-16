@@ -7,6 +7,71 @@ import styled from "styled-components";
 import Title from "../Title";
 
 export default function FeaturedAmenities() {
+  // Define the amenities data
+  const amenities = [
+    {
+      icon: <BsCameraVideoFill color="#171717" fontSize={60} />,
+      title: "CCTV",
+      description: "Monitoring"
+    },
+    {
+      icon: <MdOutlinePower color="#171717" fontSize={60} />,
+      title: "24 Hours",
+      description: "Power Backup"
+    },
+    {
+      icon: <MdOutlineElevator color="#171717" fontSize={60} />,
+      title: "High Quality",
+      description: "Lift"
+    },
+    {
+      icon: <BsShieldCheck color="#171717" fontSize={60} />,
+      title: "High",
+      description: "Security"
+    },
+    {
+      icon: <FaCarSide color="#171717" fontSize={60} />,
+      title: "Wide Parking",
+      description: "Area"
+    },
+    {
+      icon: <MdOutlineDesignServices color="#171717" fontSize={60} />,
+      title: "Modern Exterior",
+      description: "Design"
+    },
+    {
+      icon: <BsWifi color="#171717" fontSize={60} />,
+      title: "In House Wi-Fi",
+      description: "Connection"
+    },
+    {
+      icon: <FaDoorClosed color="#171717" fontSize={60} />,
+      title: "Digital Security",
+      description: "System"
+    },
+    {
+      icon: <MdOutlineAir color="#171717" fontSize={60} />,
+      title: "Space for Open Party",
+      description: "on Roof"
+    },
+    {
+      icon: <FaSwimmingPool color="#171717" fontSize={60} />,
+      title: "Roof Top",
+      description: "Swimming Pool"
+    }
+  ];
+
+  // Group amenities into rows of 4
+  const chunkArray = (arr, size) => {
+    const result = [];
+    for (let i = 0; i < arr.length; i += size) {
+      result.push(arr.slice(i, i + size));
+    }
+    return result;
+  };
+
+  const amenitiesRows = chunkArray(amenities, 4);
+
   return (
     <FeaturedAmenitiesStyled>
       <Container>
@@ -14,124 +79,107 @@ export default function FeaturedAmenities() {
           <Col lg={12}>
             <Title center color={"#5B5B5B"} fontSize={"60"} text={"FEATURED AMENITIES"} />
           </Col>
-          <Col className="box-wrapper" lg={12}>
-            {/* First Row */}
-            <div className="box-wrapper__card">
-              <BsCameraVideoFill color="#5B5B5B" fontSize={60} />
-              <h4>CCTV</h4>
-              <p>Monitoring</p>
-            </div>
-            <div className="box-wrapper__card">
-              <MdOutlinePower color="#5B5B5B" fontSize={60} />
-              <h4>24 Hours</h4>
-              <p>Power Backup</p>
-            </div>
-            <div className="box-wrapper__card">
-              <MdOutlineElevator color="#5B5B5B" fontSize={60} />
-              <h4>High Quality</h4>
-              <p>Lift</p>
-            </div>
-            <div className="box-wrapper__card">
-              <BsShieldCheck color="#5B5B5B" fontSize={60} />
-              <h4>High</h4>
-              <p>Security</p>
-            </div>
-            <div className="box-wrapper__card">
-              <FaCarSide color="#5B5B5B" fontSize={60} />
-              <h4>Wide Parking</h4>
-              <p>Area</p>
-            </div>
-
-            {/* Second Row */}
-            <div className="box-wrapper__card">
-              <MdOutlineDesignServices color="#5B5B5B" fontSize={60} />
-              <h4>Modern Exterior</h4>
-              <p>Design</p>
-            </div>
-            <div className="box-wrapper__card">
-              <BsWifi color="#5B5B5B" fontSize={60} />
-              <h4>In House Wi-Fi</h4>
-              <p>Connection</p>
-            </div>
-            <div className="box-wrapper__card">
-              <FaDoorClosed color="#5B5B5B" fontSize={60} />
-              <h4>Digital Security</h4>
-              <p>System</p>
-            </div>
-            <div className="box-wrapper__card">
-              <MdOutlineAir color="#5B5B5B" fontSize={60} />
-              <h4>Space for Open Party</h4>
-              <p>on Roof</p>
-            </div>
-            <div className="box-wrapper__card">
-              <FaSwimmingPool color="#5B5B5B" fontSize={60} />
-              <h4>Roof Top</h4>
-              <p>Swimming Pool</p>
-            </div>
-          </Col>
         </Row>
+
+        <div className="amenities-container">
+          {amenitiesRows.map((row, rowIndex) => (
+            <Row key={`row-${rowIndex}`} className="amenity-row">
+              {row.map((amenity, index) => (
+                <Col className="p-0" key={`amenity-${rowIndex}-${index}`} xs={6} sm={6} md={3} lg={3}>
+                  <div className="amenity-card">
+                    {amenity.icon}
+                    <h4>{amenity.title}</h4>
+                    <p>{amenity.description}</p>
+                  </div>
+                </Col>
+              ))}
+            </Row>
+          ))}
+        </div>
       </Container>
     </FeaturedAmenitiesStyled>
   );
 }
 
 const FeaturedAmenitiesStyled = styled.section`
-  padding: 100px 0;
+  padding: 150px 0px;
   color: #5b5b5b;
 
-  .box-wrapper {
-    display: flex;
-    flex-wrap: wrap;
+  .amenities-container {
     margin-top: 50px;
+  }
 
-    &__card {
-      height: 300px;
-      width: 300px;
-      border: 1px solid #e0e0e0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      flex-direction: column;
-      margin-right: -1px;
-      margin-bottom: -1px;
-      padding: 20px;
-      transition: all 0.3s ease;
+  .amenity-row {
+    margin-bottom: 0;
+  }
 
-      &:hover {
-        background-color: #f9f9f9;
-        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-        border: none;
-        transform: translateY(-5px);
-      }
+  .amenity-card {
+    height: 300px;
+    border: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin-right: -1px;
+    margin-bottom: -1px;
+    padding: 20px;
+    transition: 0.3s ease-in-out;
 
-      h4 {
-        margin-top: 15px;
-        margin-bottom: 5px;
-        font-size: 22px;
-        font-weight: 400;
-        text-align: center;
-      }
+    &:hover {
+      background-color: #f9f9f9;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      transform: translateY(-5px);
+    }
 
-      p {
-        margin: 0;
-        font-size: 16px;
-        text-align: center;
-        color: #777;
-      }
+    h4 {
+      margin-top: 15px;
+      margin-bottom: 5px;
+      font-size: 22px;
+      font-weight: 400;
+      text-align: center;
+    }
+
+    p {
+      margin: 0;
+      font-size: 16px;
+      text-align: center;
+      color: #777;
     }
   }
 
   @media (max-width: 768px) {
-    .box-wrapper__card {
-      height: 180px;
-      width: 180px;
+    .amenity-card {
+      height: 220px;
+      
+      svg {
+        font-size: 40px !important;
+      }
+      
+      h4 {
+        font-size: 18px;
+      }
+      
+      p {
+        font-size: 14px;
+      }
     }
   }
 
   @media (max-width: 576px) {
-    .box-wrapper__card {
-      height: 150px;
-      width: 150px;
+    .amenity-card {
+      height: 180px;
+      
+      svg {
+        font-size: 30px !important;
+      }
+      
+      h4 {
+        font-size: 16px;
+      }
+      
+      p {
+        font-size: 12px;
+      }
     }
   }
 `;

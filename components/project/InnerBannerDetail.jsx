@@ -4,7 +4,7 @@ import { Container } from "react-bootstrap";
 import reactHtmlParser from "react-html-parser";
 import styled from "styled-components";
 
-const InnerBanner = ({ img, text, title }) => {
+const InnerBannerDetail = ({ img, text, title }) => {
   return (
     <StyledInnerBanner className="InnerBanner">
       <Img banner={true} src={img} />
@@ -16,7 +16,7 @@ const InnerBanner = ({ img, text, title }) => {
 };
 
 const StyledInnerBanner = styled.section`
-  padding-top: calc(420 / 1366 * 100%);
+  padding-top: calc(620 / 1366 * 100%);
   position: relative;
   background-color: #ddd;
 
@@ -83,4 +83,4 @@ const StyledInnerBanner = styled.section`
   }
 `;
 
-export default InnerBanner;
+export default InnerBannerDetail;

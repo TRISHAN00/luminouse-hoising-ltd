@@ -5,7 +5,7 @@ const nextConfig = {
     },
     reactStrictMode: false,
     images: {
-        domains: ['bestinbd.com'],
+        domains: ['bestinbd.com', 'cms.tropicalhomesltd.com'],
     },
 };
 

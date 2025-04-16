@@ -1,12 +1,13 @@
 import { getProjectDetailApi } from "@/api/project";
-import reactHtmlParser from "react-html-parser";
+import InnerBannerDetail from "@/components/project/InnerBannerDetail";
+import banner from '../../../public/images/dynamic/home/banner-01.jpg';
 
 
 export async function generateMetadata({params, searchParams}, parent) {
     const PortfolioData = await getProjectDetailApi(params.slug)
     return {
         title: {
-            default: `${PortfolioData?.title} | Dcastalia`,
+            default: `${PortfolioData?.title} | Luminouse Housing Limited`,
         },
         description: "We are a full-service digital marketing agency in Dhaka, Bangladesh that converts ideas into simple, trendy, and optimal solutions.",
     }
@@ -15,9 +16,9 @@ export async function generateMetadata({params, searchParams}, parent) {
 export default async function PortfolioDetail({params}) {
     const PortfolioData = await getProjectDetailApi(params.slug)
     return (
-        <div className={"project-detail"} style={{width: '80%', margin: '100px auto'}}>
-            <h3>{PortfolioData?.title}</h3>
-            <p>{reactHtmlParser(PortfolioData?.body)}</p>
+        <div className={"project-detail"} text="Luminous Jesmin Tower" >
+            <InnerBannerDetail img={banner} />
+           
         </div>
     );
 };

@@ -16,7 +16,7 @@ const InnerBannerDetail = ({ img, text, title }) => {
 };
 
 const StyledInnerBanner = styled.section`
-  padding-top: calc(620 / 1366 * 100%);
+  padding-top: calc(520 / 1366 * 100%);
   position: relative;
   background-color: #ddd;
 
@@ -37,7 +37,7 @@ const StyledInnerBanner = styled.section`
     margin: auto;
     left: 0;
     right: 0;
-    bottom: 94px;
+    bottom: 150px;
     z-index: 2;
   }
 
@@ -47,7 +47,7 @@ const StyledInnerBanner = styled.section`
     //bottom: 94px;
     color: #ffffff;
     font-size: 60px;
-    font-weight: 400;
+    font-weight: 300;
     line-height: 70px;
     text-align: center;
     text-transform: uppercase;

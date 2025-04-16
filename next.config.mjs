@@ -7,6 +7,7 @@ const nextConfig = {
     images: {
         domains: ['bestinbd.com', 'cms.tropicalhomesltd.com'],
     },
+    transpilePackages: ['swiper', 'lucide-react']
 };
 
 export default nextConfig;

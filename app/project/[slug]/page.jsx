@@ -1,6 +1,7 @@
 import { getProjectDetailApi } from "@/api/project";
 import AtaGlance from "@/components/AtaGlance";
 import ImageCollageSection from "@/components/ImageCollageSection";
+import FeaturedAmenities from "@/components/project/FeaturedAmenities";
 import InnerBannerDetail from "@/components/project/InnerBannerDetail";
 import banner from "../../../public/images/dynamic/home/banner-01.jpg";
 
@@ -22,6 +23,7 @@ export default async function PortfolioDetail({ params }) {
       <InnerBannerDetail img={banner} title={"Luminous Jesmin Tower"} />
       <AtaGlance />
       <ImageCollageSection/>
+      <FeaturedAmenities/>
     </div>
   );
 }

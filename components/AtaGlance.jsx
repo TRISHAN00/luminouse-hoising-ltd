@@ -74,6 +74,18 @@ const StyledComponent = styled.section`
     height: 450px;
     width: 450px;
     transition: all 0.3s ease-in-out;
+
+    /* Normal desktop :1200px. */
+    @media (min-width: 1200px) and (max-width: 1500px) {
+      height: 300px;
+      width: 300px;
+    }
+
+    /* Normal desktop :992px. */
+    @media (min-width: 992px) and (max-width: 1200px) {
+      height: 300px;
+      width: 300px;
+    }
   }
 
   p {

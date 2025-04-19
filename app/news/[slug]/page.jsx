@@ -63,13 +63,13 @@ export default function NewsDetails() {
               <h3>Share This Post</h3>
               <div className="share-icons">
                 <a href="#" className="share-icon facebook">
-                  <Facebook/>
+                  <Facebook />
                 </a>
                 <a href="#" className="share-icon twitter">
-                  <Twitter/>
+                  <Twitter />
                 </a>
                 <a href="#" className="share-icon linkedin">
-                  <Linkedin/>
+                  <Linkedin />
                 </a>
               </div>
             </SocialShareStyled>

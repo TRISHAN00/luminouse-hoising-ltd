@@ -1,22 +1,19 @@
 "use client";
 
-import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-import project1 from "@/public/images/dynamic/projects/project-02.jpg";
+import newImage from '../public/images/dynamic/about/team-01.jpg';
 
 // Import Swiper styles
-import { title } from "@/styles/globalStyleVars";
 import { Col, Container, Row } from "react-bootstrap";
 import { MdKeyboardArrowLeft, MdKeyboardArrowRight } from "react-icons/md";
 import "swiper/css";
 import "swiper/css/navigation";
 import Line from "./Lines";
 import Title from "./Title";
+import NewsCard from "./news/NewsCard";
 
 export default function NewsEventsSlider() {
   const [mounted, setMounted] = useState(false);
@@ -27,8 +24,8 @@ export default function NewsEventsSlider() {
   const newsItems = [
     {
       id: 1,
-      title: "Luminous Housings Unveils New Luxury Residential Project",
-      imagePath: project1, // Replace with your image path
+      title: "Luxury Residential Project",
+      image: newImage, 
       date: "22 January 2025",
       category: "News",
       slug: "luxury-residential-project",
@@ -36,7 +33,7 @@ export default function NewsEventsSlider() {
     {
       id: 2,
       title: "Grand Handover Ceremony for Premium Apartment Complex",
-      imagePath: project1, // Replace with your image path
+      image: newImage, 
       date: "31 January 2025",
       category: "News",
       slug: "premium-apartment-complex",
@@ -44,7 +41,7 @@ export default function NewsEventsSlider() {
     {
       id: 3,
       title: "Luminous Housings Expands into Commercial Real Estate",
-      imagePath: project1, // Replace with your image path
+      image: newImage, 
       date: "05 March 2025",
       category: "News",
       slug: "commercial-real-estate",
@@ -52,7 +49,7 @@ export default function NewsEventsSlider() {
     {
       id: 4,
       title: "New Sustainable Building Practices Implemented",
-      imagePath: project1, // Replace with your image path
+      image: newImage, 
       date: "12 April 2025",
       category: "News",
       slug: "sustainable-building-practices",
@@ -118,46 +115,13 @@ export default function NewsEventsSlider() {
                 },
               }}
             >
-              {newsItems.map((item) => (
-                <SwiperSlide key={item.id}>
-                  <NewsCard>
-                    <Link href={`/news/${item.slug}`} passHref>
-                      <CardContent>
-                        <ImageWrapper>
-                          <ImageContainer>
-                            <Image
-                              src={item.imagePath}
-                              alt={item.title}
-                              fill
-                              style={{
-                                objectFit: "cover",
-                                transition: "all 0.4s ease-in-out",
-                              }}
-                            />
-
-                            <DarkOverlay />
-                          </ImageContainer>
-                          <WhiteOverlay />
-                        </ImageWrapper>
-
-                        <CardInfo>
-                          <CardTitle>{item.title}</CardTitle>
-                          <CardFooter>
-                            <DateNumber>{item.date.split(" ")[0]}</DateNumber>
-                            <DateInfo>
-                              <DateMonth>
-                                {item.date.split(" ")[1]}{" "}
-                                {item.date.split(" ")[2]}
-                              </DateMonth>
-                              <CardCategory>{item.category}</CardCategory>
-                            </DateInfo>
-                          </CardFooter>
-                        </CardInfo>
-                      </CardContent>
-                    </Link>
-                  </NewsCard>
-                </SwiperSlide>
-              ))}
+              {newsItems?.map((item) => {
+                return (
+                  <SwiperSlide key={item.id}>
+                    <NewsCard item={item} />
+                  </SwiperSlide>
+                );
+              })}
             </SwiperContainer>
           </Col>
         </Row>
@@ -168,7 +132,6 @@ export default function NewsEventsSlider() {
 
 const NavigationContainer = styled.div`
   display: flex;
-  /* margin-bottom: 40px; */
   gap: 20px;
 `;
 
@@ -225,19 +188,6 @@ const SliderHeader = styled.div`
   margin-bottom: 3rem;
 `;
 
-const Heading = styled.h2`
-  font-family: ${title};
-  font-size: 3.5rem;
-  font-weight: 400;
-  color: #333;
-  letter-spacing: 0.03em;
-`;
-
-const NavigationControls = styled.div`
-  display: flex;
-  gap: 1rem;
-`;
-
 const SwiperContainer = styled(Swiper)`
   width: 100%;
   height: 100%;
@@ -245,145 +195,5 @@ const SwiperContainer = styled(Swiper)`
   .swiper-button-disabled {
     opacity: 0.3;
     cursor: not-allowed;
-  }
-`;
-
-const NewsCard = styled.article`
-  border: 1px solid #eee;
-  border-radius: 8px;
-  overflow: hidden;
-  background-color: white;
-  height: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
-
-  &:hover {
-    transform: translateY(-4px);
-  }
-`;
-
-const CardContent = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 0;
-  position: relative;
-`;
-
-const CardInfo = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 3;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 24px;
-`;
-
-const CardTitle = styled.h3`
-  font-size: 1.2rem;
-  font-weight: 500;
-  line-height: 1.4;
-  margin: 0;
-  color: #333;
-  transition: color 0.3s ease;
-
-  ${NewsCard}:hover & {
-    color: white;
-  }
-`;
-
-const ImageWrapper = styled.div`
-  position: relative;
-  width: 100%;
-  height: 580px !important;
-  overflow: hidden; 
-
-  @media (min-width: 767px) {
-    height: 480px ;
-  }
-`;
-
-const ImageContainer = styled.div`
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transform: scale(1);
-  transition: transform 0.7s ease;
-
-  ${NewsCard}:hover & {
-    transform: scale(1.05);
-  }
-`;
-
-const WhiteOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: white;
-  transition: transform 0.5s ease;
-  z-index: 2;
-
-  ${NewsCard}:hover & {
-    transform: translateY(100%);
-  }
-`;
-
-const DarkOverlay = styled.div`
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  z-index: 1;
-`;
-
-const CardFooter = styled.div`
-  display: flex;
-  align-items: flex-start;
-  gap: 1rem;
-`;
-
-const DateNumber = styled.span`
-  font-size: 3rem;
-  font-weight: 600;
-  line-height: 1;
-  color: #000;
-  transition: color 0.3s ease;
-
-  ${NewsCard}:hover & {
-    color: white;
-  }
-`;
-
-const DateInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-`;
-
-const DateMonth = styled.span`
-  font-size: 0.9rem;
-  color: #666;
-  transition: color 0.3s ease;
-
-  ${NewsCard}:hover & {
-    color: white;
-  }
-`;
-
-const CardCategory = styled.span`
-  font-size: 0.9rem;
-  color: #666;
-  margin-top: 0.25rem;
-  transition: color 0.3s ease;
-
-  ${NewsCard}:hover & {
-    color: white;
   }
 `;

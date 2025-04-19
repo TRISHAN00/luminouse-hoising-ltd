@@ -1,3 +1,4 @@
+import { title } from "@/styles/globalStyleVars";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
@@ -85,6 +86,7 @@ const CardTitle = styled.h3`
   margin: 0;
   color: #333;
   transition: color 0.3s ease;
+  font-family: ${title};
 
   ${NewsCardWrap}:hover & {
     color: white;

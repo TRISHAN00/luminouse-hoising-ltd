@@ -1,13 +1,14 @@
 "use client";
 
 import Image from "next/image";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 // You'll need to import your actual images here
 
+import gsap from "gsap";
 import homeImage1 from "../../public/images/dynamic/home/banner-01.jpg";
 import homeImage2 from "../../public/images/dynamic/home/banner-02.jpg";
 import homeImage3 from "../../public/images/dynamic/home/banner-03.jpg";
@@ -194,98 +195,98 @@ export default function HomeBanner() {
   const animationTimeoutRef = useRef(null);
 
   // Split title text into lines and animate each line separately
-  // const animateText = () => {
-  //   if (!textRef.current) return;
+  const animateText = () => {
+    if (!textRef.current) return;
 
-  //   const title = textRef.current;
-  //   const titleText = slides[activeSlide].title;
-  //   const lines = titleText.split("\n");
+    const title = textRef.current;
+    const titleText = slides[activeSlide].title;
+    const lines = titleText.split("\n");
 
-  //   // Clear previous content
-  //   title.innerHTML = "";
+    // Clear previous content
+    title.innerHTML = "";
 
-  //   // Create lines
-  //   lines.forEach((line) => {
-  //     const lineDiv = document.createElement("div");
-  //     lineDiv.className = "title-line";
+    // Create lines
+    lines.forEach((line) => {
+      const lineDiv = document.createElement("div");
+      lineDiv.className = "title-line";
 
-  //     const revealSpan = document.createElement("span");
-  //     revealSpan.className = "reveal-line";
-  //     revealSpan.textContent = line;
+      const revealSpan = document.createElement("span");
+      revealSpan.className = "reveal-line";
+      revealSpan.textContent = line;
 
-  //     lineDiv.appendChild(revealSpan);
-  //     title.appendChild(lineDiv);
-  //   });
+      lineDiv.appendChild(revealSpan);
+      title.appendChild(lineDiv);
+    });
 
-  //   // Animate each line
-  //   gsap.to(".reveal-line", {
-  //     y: 0,
-  //     duration: 1.2,
-  //     ease: "power4.out",
-  //     stagger: 0.15,
-  //     onComplete: () => {
-  //       // Enable navigation buttons after animation completes
-  //       setIsTransitioning(false);
-  //     },
-  //   });
-  // };
+    // Animate each line
+    gsap.to(".reveal-line", {
+      y: 0,
+      duration: 1.2,
+      ease: "power4.out",
+      stagger: 0.15,
+      onComplete: () => {
+        // Enable navigation buttons after animation completes
+        setIsTransitioning(false);
+      },
+    });
+  };
 
   // Animate image and overlay
-  // const animateSlide = () => {
-  //   if (!imageRef.current || !overlayRef.current) return;
+  const animateSlide = () => {
+    if (!imageRef.current || !overlayRef.current) return;
 
-  //   // Reset animations
-  //   gsap.set(imageRef.current, { scale: 1.2, opacity: 0 });
-  //   gsap.set(overlayRef.current, { opacity: 0 });
+    // Reset animations
+    gsap.set(imageRef.current, { scale: 1.2, opacity: 0 });
+    gsap.set(overlayRef.current, { opacity: 0 });
 
-  //   // Create timeline
-  //   const tl = gsap.timeline();
+    // Create timeline
+    const tl = gsap.timeline();
 
-  //   // Animate image zoom and fade in
-  //   tl.to(
-  //     imageRef.current,
-  //     {
-  //       scale: 1,
-  //       opacity: 1,
-  //       duration: 1.5,
-  //       ease: "power3.out",
-  //     },
-  //     0
-  //   );
+    // Animate image zoom and fade in
+    tl.to(
+      imageRef.current,
+      {
+        scale: 1,
+        opacity: 1,
+        duration: 1.5,
+        ease: "power3.out",
+      },
+      0
+    );
 
-  //   // Animate overlay fade in
-  //   tl.to(
-  //     overlayRef.current,
-  //     {
-  //       opacity: 1,
-  //       duration: 1,
-  //       ease: "power2.out",
-  //     },
-  //     0.3
-  //   );
-  // };
+    // Animate overlay fade in
+    tl.to(
+      overlayRef.current,
+      {
+        opacity: 1,
+        duration: 1,
+        ease: "power2.out",
+      },
+      0.3
+    );
+  };
 
-  // useEffect(() => {
-  //   // Clear any existing animation timeout
-  //   if (animationTimeoutRef.current) {
-  //     clearTimeout(animationTimeoutRef.current);
-  //   }
+  useEffect(() => {
+    // Clear any existing animation timeout
+    if (animationTimeoutRef.current) {
+      clearTimeout(animationTimeoutRef.current);
+    }
 
-  //   // Set transitioning state to disable buttons
-  //   setIsTransitioning(true);
+    // Set transitioning state to disable buttons
+    setIsTransitioning(true);
 
-  //   // Start animations with slight delay
-  //   animationTimeoutRef.current = setTimeout(() => {
-  //     animateText();
-  //     animateSlide();
-  //   }, 100);
+    // Start animations with slight delay
+    animationTimeoutRef.current = setTimeout(() => {
+      animateText();
+      animateSlide();
+    }, 100);
 
-  //   return () => {
-  //     if (animationTimeoutRef.current) {
-  //       clearTimeout(animationTimeoutRef.current);
-  //     }
-  //   };
-  // }, [activeSlide]);
+    return () => {
+      if (animationTimeoutRef.current) {
+        clearTimeout(animationTimeoutRef.current);
+      }
+    };
+  }, [activeSlide]);
 
   const handlePrev = () => {
     if (swiperRef.current && swiperRef.current.swiper && !isTransitioning) {

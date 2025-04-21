@@ -6,7 +6,7 @@ import mission from "../public/images/dynamic/home/mission.jpg";
 import vision from "../public/images/dynamic/home/vision.jpg";
 import { Img } from "./Img";
 
-export default function MissionVision() {
+export default function MissionVision({isMissionVision}) {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -49,7 +49,7 @@ export default function MissionVision() {
           </Col>
         </Row>
       </Container>
-      <div className="mission-vision-area">
+      {!isMissionVision &&  <div className="mission-vision-area">
         <Container>
           <Row>
             <Col lg={3} md={6} sm={12} className="mb-md-4 mb-sm-4">
@@ -76,7 +76,8 @@ export default function MissionVision() {
             </Col>
           </Row>
         </Container>
-      </div>
+      </div>}
+     
     </MissionVisionStyled>
   );
 }

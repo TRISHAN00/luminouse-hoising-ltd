@@ -77,7 +77,8 @@ export default function Menu() {
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
     { label: "Projects", href: "/projects" },
-    { label: "Clients", href: "/clients" },
+    { label: "Landowner", href: "/landowner" },
+    { label: "Buyer", href: "/buyer" },
     { label: "News & Events", href: "/news" },
     { label: "Contact Us", href: "/contact-us" },
   ];

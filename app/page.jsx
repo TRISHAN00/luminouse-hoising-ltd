@@ -24,7 +24,7 @@ export default async function Home() {
   return (
     <>
       <Banner/>
-      <Overview/>
+      <Overview title={'BUILDING BRIGHTER FUTURES WITH EXCELLENCE IN REAL ESTATE DEVELOPMENT'} />
       <ImageCollageSection/>
       <FeatureSlider/>
       <Dream />

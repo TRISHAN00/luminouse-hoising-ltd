@@ -25,6 +25,7 @@ export default function ClientSection() {
             <Row>
               <Col lg={6} className="mb-4 mb-lg-0">
                 <ClientCard
+                  url={"/landowner"}
                   title="Landowner"
                   imagePath="/images/dynamic/home/landowner.jpg"
                   description="Driven by integrity and customer satisfaction, we focus on delivering projects that exceed expectations. From thoughtfully planned communities to we build spaces where families thrive and dreams take shape."
@@ -32,6 +33,7 @@ export default function ClientSection() {
               </Col>
               <Col lg={6}>
                 <ClientCard
+                  url={"/buyer"}
                   title="Buyer"
                   imagePath="/images/dynamic/home/buyer.jpg"
                   description="Discover thoughtfully designed homes built with quality and community in mind. Our developments provide the perfect foundation for families to grow and create lasting memories in spaces crafted for modern living."

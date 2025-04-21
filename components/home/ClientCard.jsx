@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useState } from "react";
 import styled from "styled-components";
 
-export default function ClientCard({ title, imagePath, description }) {
+export default function ClientCard({ title, imagePath, description, url }) {
   const [isHovered, setIsHovered] = useState(false);
 
   return (
@@ -14,7 +14,7 @@ export default function ClientCard({ title, imagePath, description }) {
       onMouseLeave={() => setIsHovered(false)}
       $isHovered={isHovered}
     >
-      <Link href={"/"}>
+      <Link href={`${url}`}>
         <ImageContainer>
           <StyledImage
             src={imagePath}

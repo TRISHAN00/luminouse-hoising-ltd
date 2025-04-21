@@ -1,14 +1,21 @@
 "use client";
+import { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
 import styled from "styled-components";
+import Button from "../Button";
 
 export default function LandownerForm() {
+  const [category, setCategory] = useState("");
+  const [type, setType] = useState("");
+
   return (
     <StyledLandownerForm>
       <Container>
         <Form>
           <Row>
             <Col lg={6}>
+              <StyledLandFormTitle>Land Information</StyledLandFormTitle>
+
               <Form.Control type="text" placeholder="Location *" required />
               <Form.Control type="text" placeholder="Address *" required />
               <Form.Control
@@ -17,21 +24,64 @@ export default function LandownerForm() {
                 required
               />
               <Form.Control type="text" placeholder="Plot Facing *" required />
-              <Form.Select aria-label="Select Category">
-                <option>Select Category</option>
+
+              <Form.Select
+                aria-label="Select Category"
+                value={category}
+                onChange={(e) => setCategory(e.target.value)}
+                className={category === "" ? "placeholder" : ""}
+              >
+                <option value="">Select Category</option>
                 <option value="ready">Ready</option>
                 <option value="ongoing">Ongoing</option>
                 <option value="upcoming">Upcoming</option>
               </Form.Select>
-              <Form.Select aria-label="Select Type">
-                <option>Select Type</option>
+
+              <Form.Select
+                aria-label="Select Type"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                className={type === "" ? "placeholder" : ""}
+              >
+                <option value="">Select Type</option>
                 <option value="residential">Residential</option>
                 <option value="commercial">Commercial</option>
-                <option value="industrial">Idustrial</option>
+                <option value="industrial">Industrial</option>
               </Form.Select>
             </Col>
             <Col lg={6}>
-              <h2>Right</h2>
+              <StyledLandFormTitle>Landowner Profile</StyledLandFormTitle>
+
+              <Form.Control
+                type="text"
+                placeholder="Name of the Landowner *"
+                required
+              />
+
+              <Form.Control
+                type="text"
+                placeholder="Contact Person *"
+                required
+              />
+
+              <Form.Control
+                type="text"
+                placeholder="Contact Number *"
+                required
+              />
+
+              <Form.Control type="email" placeholder="Email *" required />
+
+              <StyledLandFormBtn className="landForm-btn">
+                <Button
+                  text="Learn More"
+                  background="#0288D1"
+                  color="#fff"
+                  iconColor="#fff"
+                  hoverIconColor="#fff"
+                  hoverBackground="#171717"
+                />
+              </StyledLandFormBtn>
             </Col>
           </Row>
         </Form>
@@ -51,9 +101,9 @@ const StyledLandownerForm = styled.section`
     border-radius: 0;
     box-shadow: none;
     background-color: transparent;
-    color: #80808094;
     padding: 10px 0;
-    margin-bottom: 20px;
+    margin-bottom: 30px;
+    color: #333;
 
     &:focus {
       border-color: #8080805c;
@@ -65,6 +115,18 @@ const StyledLandownerForm = styled.section`
       color: #8080805c;
     }
   }
+
+  /* Apply gray color when it's the default (placeholder) option */
+  form .form-select.placeholder {
+    color: #8080805c;
+  }
 `;
 
+const StyledLandFormBtn = styled.div`
+    margin-top: 40px;
+`
 
+const StyledLandFormTitle = styled.h2`
+  color: #121212;
+  margin-bottom: 40px;
+`;

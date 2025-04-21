@@ -1,15 +1,15 @@
-'use client'
-import { Black, hover, Transition } from "@/styles/globalStyleVars";
-import Image from "next/image";
-import Link from "next/link";
-import { FiArrowRight } from "react-icons/fi";
+'use client';
+import { Black, hover, Transition } from '@/styles/globalStyleVars';
+import Image from 'next/image';
+import Link from 'next/link';
+import { FiArrowRight } from 'react-icons/fi';
 import styled from 'styled-components';
 
 const Button = ({
   onClick,
   text,
   src,
-  icon, // custom icon (can be SVG, <Image>, or JSX)
+  icon, // custom icon (SVG, <Image>, or JSX)
   fontSize,
   fontWeight,
   color,
@@ -25,15 +25,15 @@ const Button = ({
   target,
   borderColor,
   hoverColor,
-  marginSm,
   iconColor,
+  hoverIconColor,
+  marginSm,
   className
 }) => {
-
   const renderIcon = () => {
-    if (!icon) return <FiArrowRight color={iconColor || '#171717'} size={16} />;
+    if (!icon) return <FiArrowRight className="btn-icon" size={16} />;
     return typeof icon === 'string' ? (
-      <Image src={icon} alt="arrow" width={16} height={11.41} />
+      <Image src={icon} alt="arrow" width={16} height={11.41} className="btn-icon" />
     ) : (
       icon
     );
@@ -48,7 +48,7 @@ const Button = ({
   return (
     <StyledBtn
       onClick={onClick}
-      className={`${className || ""} dc-btn fade-up`}
+      className={`${className || ''} dc-btn fade-up`}
       fontSize={fontSize}
       fontWeight={fontWeight}
       color={color}
@@ -62,8 +62,9 @@ const Button = ({
       height={height}
       hoverBackground={hoverBackground}
       borderColor={borderColor}
-      target={target}
       hoverColor={hoverColor}
+      hoverIconColor={hoverIconColor}
+      iconColor={iconColor}
       marginSm={marginSm}
     >
       {src ? (
@@ -72,14 +73,10 @@ const Button = ({
             {renderButtonContent()}
           </a>
         ) : (
-          <Link href={src}>
-            {renderButtonContent()}
-          </Link>
+          <Link href={src}>{renderButtonContent()}</Link>
         )
       ) : (
-        <a target={target || '_self'}>
-          {renderButtonContent()}
-        </a>
+        <a target={target || '_self'}>{renderButtonContent()}</a>
       )}
     </StyledBtn>
   );
@@ -87,9 +84,9 @@ const Button = ({
 
 const StyledBtn = styled.div`
   &.dc-btn {
-    margin: ${props => props.margin || '0'};
-    width: ${props => props.width || 'fit-content'};
-    height: ${props => props.height || '44'}px;
+    margin: ${(props) => props.margin || '0'};
+    width: ${(props) => props.width || 'fit-content'};
+    height: ${(props) => props.height || '44'}px;
     cursor: pointer;
 
     a {
@@ -98,32 +95,39 @@ const StyledBtn = styled.div`
       height: 100%;
       align-items: center;
       justify-content: center;
-      font-size: ${props => props.fontSize || '16'}px;
-      font-weight: ${props => props.fontWeight || 500};
+      font-size: ${(props) => props.fontSize || '16'}px;
+      font-weight: ${(props) => props.fontWeight || 500};
       margin: 0;
-      line-height: ${props => props.lineHeight || '20'}px;
-      background-color: ${props => props.background || `#FFF`};
+      line-height: ${(props) => props.lineHeight || '20'}px;
+      background-color: ${(props) => props.background || `#FFF`};
       position: relative;
-      border-radius: ${props => props.borderRadius || '22'}px;
+      border-radius: ${(props) => props.borderRadius || '22'}px;
       overflow: hidden;
       z-index: 0;
-      transition: border .3s ease;
+      transition: border 0.3s ease;
       padding: 12px 36px;
       box-sizing: border-box;
-      border: ${p => p.border || "0"};
-      border-color: ${props => props.hoverBorderColor || props.hoverBackground || hover};
-      color: ${props => props.color || `${Black}`};
+      border: ${(p) => p.border || '0'};
+      border-color: ${(props) => props.borderColor || props.hoverBackground || hover};
+      color: ${(props) => props.color || `${Black}`};
 
       span {
         display: flex;
         align-items: center;
         gap: 8px;
-        color: ${props => props.color || `${Black}`};
-        transition: color .3s ease;
+        color: ${(props) => props.color || `${Black}`};
+        transition: color 0.3s ease;
         z-index: 2;
 
-        svg, img {
-          transition: .6s ${Transition};
+        .btn-icon {
+          color: ${(props) => props.iconColor || props.color || `${Black}`};
+          transition: color 0.3s ease;
+        }
+
+        img.btn-icon {
+          transition: 0.3s ease;
+          filter: ${(props) =>
+            props.iconColor ? `brightness(0) saturate(100%)` : 'none'};
         }
       }
 
@@ -134,29 +138,35 @@ const StyledBtn = styled.div`
         right: 0;
         top: 100%;
         left: 0;
-        background-color: ${p => p.hoverBackground || hover};
+        background-color: ${(p) => p.hoverBackground || hover};
         height: 100%;
         width: 100%;
         margin: auto;
-        transition: all .5s ${Transition};
+        transition: all 0.5s ${Transition};
         border-radius: 22px;
       }
 
       &:hover {
         span {
-          color: ${props => props.hoverColor || `#FFF`};
-        }
+          color: ${(props) => props.hoverColor || `#FFF`};
 
-        svg, img {
-          filter: invert(92%) sepia(99%) saturate(1%) hue-rotate(235deg) brightness(105%) contrast(100%);
+          .btn-icon {
+            color: ${(props) => props.hoverIconColor || props.iconColor || `#FFF`};
+          }
+
+          img.btn-icon {
+            filter: ${(props) =>
+              props.hoverIconColor
+                ? `brightness(0) saturate(100%) invert(100%) sepia(0%) hue-rotate(0deg)`
+                : 'none'};
+          }
         }
 
         &:before {
           top: 0;
         }
 
-        border-color: ${props => props.hoverBackground || hover};
-
+        border-color: ${(props) => props.hoverBackground || hover};
       }
 
       &:focus {
@@ -165,7 +175,7 @@ const StyledBtn = styled.div`
     }
 
     @media (max-width: 600px) {
-      ${p => p.marginSm ? `margin:${p.marginSm}` : ''}
+      ${(p) => (p.marginSm ? `margin:${p.marginSm}` : '')}
     }
   }
 `;

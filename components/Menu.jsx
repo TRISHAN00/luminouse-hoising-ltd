@@ -1,13 +1,12 @@
 "use client";
 
 import { white } from "@/styles/globalStyleVars";
-import gsap from "gsap";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import { MdClose, MdMenu, MdOutlineLocalPhone } from "react-icons/md";
+import { MdClose, MdExpandLess, MdExpandMore, MdMenu, MdOutlineLocalPhone } from "react-icons/md";
 import styled from "styled-components";
 import logo from "../public/images/static/logos/white-logo.svg";
 
@@ -16,8 +15,8 @@ export default function Menu() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [headerVisible, setHeaderVisible] = useState(true);
+  const [mobileActiveDropdown, setMobileActiveDropdown] = useState(null);
   const headerRef = useRef(null);
-  const navItemsRef = useRef([]);
   const router = usePathname();
 
   // Handle scroll effects
@@ -46,39 +45,48 @@ export default function Menu() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Animate nav items on mount
-  useEffect(() => {
-    gsap.fromTo(
-      navItemsRef.current,
-      { y: -20, opacity: 0 },
-      { 
-        y: 0, 
-        opacity: 1, 
-        stagger: 0.1, 
-        duration: 0.8, 
-        ease: "power3.out",
-        delay: 0.3
-      }
-    );
-  }, []);
-
-  // Toggle mobile menu with animation
+  // Toggle mobile menu
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
-  // Check if menu item is active
-  const isActive = (path) => {
-    return router.pathname === path;
+  // Toggle mobile dropdown
+  const toggleMobileDropdown = (index) => {
+    if (mobileActiveDropdown === index) {
+      setMobileActiveDropdown(null);
+    } else {
+      setMobileActiveDropdown(index);
+    }
   };
 
-  // Menu items
+  // Check if menu item is active
+  const isActive = (path) => {
+    return router === path;
+  };
+
+  // Updated menu items with submenu
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
     { label: "Projects", href: "/projects" },
-    { label: "Landowner", href: "/landowner" },
-    { label: "Buyer", href: "/buyer" },
+    { 
+      label: "Our Concern", 
+      href: "#",
+      hasDropdown: true,
+      dropdownItems: [
+        { label: "Livous Denim Ltd", href: "/livous-denim" },
+        { label: "Luminous Design & Architecture Associates Ltd", href: "/luminous-design" }
+      ] 
+    },
+    { 
+      label: "Our Clients", 
+      href: "#",
+      hasDropdown: true,
+      dropdownItems: [
+        { label: "Landowner", href: "/landowner" },
+        { label: "Buyer", href: "/buyer" }
+      ] 
+    },
     { label: "News & Events", href: "/news" },
     { label: "Contact Us", href: "/contact-us" },
   ];
@@ -104,17 +112,34 @@ export default function Menu() {
               <NavMenu>
                 <ul>
                   {menuItems.map((item, index) => (
-                    <li 
-                      key={index}
-                      ref={el => navItemsRef.current[index] = el}
-                    >
-                      <Link 
-                        prefetch={true} 
-                        href={item.href}
-                        className={isActive(item.href) ? "active" : ""}
-                      >
-                        {item.label}
-                      </Link>
+                    <li key={index} className={item.hasDropdown ? "has-dropdown" : ""}>
+                      {item.hasDropdown ? (
+                        <>
+                          <MenuLink as="div" className="dropdown-toggle">
+                            {item.label} <MdExpandMore />
+                          </MenuLink>
+                          <HoverDropdownMenu>
+                            {item.dropdownItems.map((dropItem, dropIndex) => (
+                              <li key={dropIndex}>
+                                <Link 
+                                  href={dropItem.href}
+                                  className={isActive(dropItem.href) ? "active" : ""}
+                                >
+                                  {dropItem.label}
+                                </Link>
+                              </li>
+                            ))}
+                          </HoverDropdownMenu>
+                        </>
+                      ) : (
+                        <MenuLink 
+                          prefetch={true} 
+                          href={item.href}
+                          className={isActive(item.href) ? "active" : ""}
+                        >
+                          {item.label}
+                        </MenuLink>
+                      )}
                     </li>
                   ))}
                 </ul>
@@ -141,13 +166,41 @@ export default function Menu() {
           <ul>
             {menuItems.map((item, index) => (
               <li key={index}>
-                <Link 
-                  href={item.href} 
-                  onClick={() => setMobileMenuOpen(false)}
-                  className={isActive(item.href) ? "active" : ""}
-                >
-                  {item.label}
-                </Link>
+                {item.hasDropdown ? (
+                  <>
+                    <MobileDropdownToggle 
+                      onClick={() => toggleMobileDropdown(index)}
+                      isActive={mobileActiveDropdown === index}
+                    >
+                      {item.label}
+                      {mobileActiveDropdown === index ? <MdExpandLess /> : <MdExpandMore />}
+                    </MobileDropdownToggle>
+                    <MobileDropdownMenu isOpen={mobileActiveDropdown === index}>
+                      {item.dropdownItems.map((dropItem, dropIndex) => (
+                        <li key={dropIndex}>
+                          <Link 
+                            href={dropItem.href}
+                            className={isActive(dropItem.href) ? "active" : ""}
+                            onClick={() => {
+                              setMobileActiveDropdown(null);
+                              setMobileMenuOpen(false);
+                            }}
+                          >
+                            {dropItem.label}
+                          </Link>
+                        </li>
+                      ))}
+                    </MobileDropdownMenu>
+                  </>
+                ) : (
+                  <Link 
+                    href={item.href} 
+                    onClick={() => setMobileMenuOpen(false)}
+                    className={isActive(item.href) ? "active" : ""}
+                  >
+                    {item.label}
+                  </Link>
+                )}
               </li>
             ))}
           </ul>
@@ -226,44 +279,23 @@ const NavMenu = styled.nav`
     margin: 0;
     padding: 0;
     list-style: none;
+    align-items: center;
     
     li {
       position: relative;
-      overflow: hidden;
+      height: 100%;
+      display: flex;
+      align-items: center;
       
-      a {
-        color: ${white};
-        font-weight: 500;
-        font-size: 16px;
-        position: relative;
-        transition: color 0.3s ease;
-        padding: 5px 0;
-        
-        &:hover {
-          color: #fff !important;
-        }
-        
-        &::after {
-          content: "";
-          position: absolute;
-          bottom: 0;
-          left: 0;
-          width: 0%;
-          height: 2px;
-          background: #fff;
-          transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
-        }
-        
-        &:hover::after, &.active::after {
+      &.has-dropdown {
+        &:hover .dropdown-toggle::after {
           width: 100%;
         }
         
-        &.active {
-          &::after {
-            background: #0288D1;
-            height: 3px;
-            bottom: 0;
-          }
+        &:hover > ul {
+          opacity: 1;
+          visibility: visible;
+          transform: translateX(-50%) translateY(0);
         }
       }
     }
@@ -271,6 +303,114 @@ const NavMenu = styled.nav`
   
   @media (max-width: 991px) {
     display: none;
+  }
+`;
+
+const MenuLink = styled(Link)`
+  color: ${white};
+  font-weight: 500;
+  font-size: 16px;
+  position: relative;
+  transition: color 0.3s ease;
+  padding: 5px 0;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  
+  &:hover {
+    color: #fff !important;
+  }
+  
+  &::after {
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: #fff;
+    transition: width 0.4s cubic-bezier(0.65, 0, 0.35, 1);
+  }
+  
+  &:hover::after, &.active::after {
+    width: 100%;
+  }
+  
+  &.active {
+    &::after {
+      background: #fff;
+      height: 3px;
+      bottom: 0;
+    }
+  }
+  
+  svg {
+    font-size: 20px;
+    margin-left: 2px;
+  }
+`;
+
+const HoverDropdownMenu = styled.ul`
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%) translateY(-10px);
+  background: rgba(0, 0, 0, 0.9);
+  backdrop-filter: blur(10px);
+  min-width: 220px;
+  border-radius: 8px;
+  padding: 10px;
+  margin-top: 10px !important;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+  z-index: 5;
+  
+  &:before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%) rotate(45deg);
+    width: 12px;
+    height: 12px;
+    background: rgba(0, 0, 0, 0.9);
+    z-index: -1;
+  }
+  
+  li {
+    display: block;
+    margin: 0 !important;
+    padding: 0 !important;
+    height: auto !important;
+    
+    a {
+      display: block;
+      padding: 10px 15px !important;
+      border-radius: 5px;
+      text-align: left;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: ${white};
+      font-weight: 500;
+      font-size: 16px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      
+      &::after {
+        display: none;
+      }
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+        color: #fff;
+      }
+      
+      &.active {
+        background: rgba(255, 255, 255, 0.15);
+      }
+    }
   }
 `;
 
@@ -340,6 +480,10 @@ const MobileMenuOverlay = styled.div`
 const MobileNavMenu = styled.nav`
   text-align: center;
   padding: 20px;
+  width: 100%;
+  max-width: 90%;
+  max-height: 80vh;
+  overflow-y: auto;
   
   ul {
     list-style: none;
@@ -347,24 +491,7 @@ const MobileNavMenu = styled.nav`
     margin: 0 0 30px;
     
     li {
-      margin: 20px 0;
-      transform: translateY(20px);
-      opacity: 0;
-      animation: slideIn 0.5s forwards;
-      
-      @keyframes slideIn {
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
-      }
-      
-      &:nth-child(1) { animation-delay: 0.1s; }
-      &:nth-child(2) { animation-delay: 0.2s; }
-      &:nth-child(3) { animation-delay: 0.3s; }
-      &:nth-child(4) { animation-delay: 0.4s; }
-      &:nth-child(5) { animation-delay: 0.5s; }
-      &:nth-child(6) { animation-delay: 0.6s; }
+      margin: 15px 0;
       
       a {
         color: ${white};
@@ -381,12 +508,12 @@ const MobileNavMenu = styled.nav`
           height: 2px;
           bottom: 0;
           left: 50%;
-          background: #0288D1;
+          background: #fff;
           transition: all 0.3s ease;
         }
         
         &:hover, &.active {
-          color: #0288D1;
+          color: #fff;
         }
         
         &:hover:after {
@@ -404,17 +531,82 @@ const MobileNavMenu = styled.nav`
   }
 `;
 
-const MobilePhoneLink = styled.div`
-  margin-top: 40px;
-  animation: fadeIn 0.5s forwards;
-  animation-delay: 0.7s;
-  opacity: 0;
+const MobileDropdownToggle = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  color: ${white};
+  font-size: 24px;
+  font-weight: 500;
+  margin: 0 auto;
+  padding: 5px 10px;
+  transition: color 0.3s ease;
+  cursor: pointer;
   
-  @keyframes fadeIn {
-    to {
-      opacity: 1;
+  &:hover, &[aria-expanded="true"] {
+    color: #fff;
+  }
+  
+  &:after {
+    content: '';
+    position: absolute;
+    width: ${props => props.isActive ? '60px' : '0'};
+    height: 2px;
+    bottom: -5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #fff;
+    transition: width 0.3s ease;
+  }
+  
+  &:hover:after {
+    width: 60px;
+  }
+  
+  svg {
+    font-size: 26px;
+    transition: transform 0.3s ease;
+  }
+`;
+
+const MobileDropdownMenu = styled.ul`
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  max-height: ${props => props.isOpen ? '500px' : '0'};
+  opacity: ${props => props.isOpen ? 1 : 0};
+  visibility: ${props => props.isOpen ? 'visible' : 'hidden'};
+  transition: max-height 0.5s ease, opacity 0.3s ease, visibility 0.3s ease, padding 0.3s ease;
+  overflow: hidden;
+  padding: ${props => props.isOpen ? '10px' : '0'};
+  margin-top: 10px !important;
+  width: 100%;
+  
+  li {
+    margin: 8px 0 !important;
+    
+    a {
+      display: block;
+      font-size: 18px !important;
+      padding: 8px 15px !important;
+      border-radius: 5px;
+      transition: background-color 0.3s ease;
+      
+      &:hover {
+        background: rgba(255, 255, 255, 0.1);
+      }
+      
+      &.active {
+        background: rgba(255, 255, 255, 0.15);
+      }
     }
   }
+`;
+
+const MobilePhoneLink = styled.div`
+  margin-top: 40px;
   
   a {
     display: inline-flex;

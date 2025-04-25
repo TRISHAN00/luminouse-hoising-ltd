@@ -28,7 +28,7 @@ export default function MissionVision({isMissionVision, isBgColor}) {
   }, []);
 
   return (
-    <MissionVisionStyled isBgColor >
+    <MissionVisionStyled isBgColor={isBgColor}>
       <Container className="p-0" fluid>
         <Row className="image-row">
           <Col lg={8} md={7} sm={12}>
@@ -107,7 +107,7 @@ const MissionVisionStyled = styled.section`
     content: "";
     inset: 0;
     height: 200px;
-    background-color: ${props => props.isBgColor ? '' : '#171717'} ;
+    background-color: ${props => props.isBgColor ? '#f5f5f5' : '#171717'};
   }
 
   .left-content-img {

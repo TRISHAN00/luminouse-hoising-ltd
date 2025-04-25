@@ -1,14 +1,12 @@
 "use client";
 
+import gsap from "gsap";
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// You'll need to import your actual images here
-
-import gsap from "gsap";
 import homeImage1 from "../../public/images/dynamic/home/banner-01.jpg";
 import homeImage2 from "../../public/images/dynamic/home/banner-02.jpg";
 import homeImage3 from "../../public/images/dynamic/home/banner-03.jpg";
@@ -44,6 +42,8 @@ const SlideWrapper = styled.div`
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
 `;
 
 const ImageWrapper = styled.div`
@@ -185,108 +185,106 @@ const Tab = styled.button`
 `;
 
 export default function HomeBanner() {
-  const textRef = useRef(null);
-  const imageRef = useRef(null);
-  const overlayRef = useRef(null);
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeTab, setActiveTab] = useState("Ongoing");
   const [isTransitioning, setIsTransitioning] = useState(false);
   const swiperRef = useRef(null);
-  const animationTimeoutRef = useRef(null);
+  const titleRefs = useRef([]);
+  const imageRefs = useRef([]);
+  const overlayRefs = useRef([]);
 
-  // Split title text into lines and animate each line separately
-  const animateText = () => {
-    if (!textRef.current) return;
-
-    const title = textRef.current;
-    const titleText = slides[activeSlide].title;
-    const lines = titleText.split("\n");
-
-    // Clear previous content
-    title.innerHTML = "";
-
-    // Create lines
-    lines.forEach((line) => {
-      const lineDiv = document.createElement("div");
-      lineDiv.className = "title-line";
-
-      const revealSpan = document.createElement("span");
-      revealSpan.className = "reveal-line";
-      revealSpan.textContent = line;
-
-      lineDiv.appendChild(revealSpan);
-      title.appendChild(lineDiv);
-    });
-
-    // Animate each line
-    gsap.to(".reveal-line", {
-      y: 0,
-      duration: 1.2,
-      ease: "power4.out",
-      stagger: 0.15,
-      onComplete: () => {
-        // Enable navigation buttons after animation completes
-        setIsTransitioning(false);
-      },
-    });
-  };
-
-  // Animate image and overlay
-  const animateSlide = () => {
-    if (!imageRef.current || !overlayRef.current) return;
-
-    // Reset animations
-    gsap.set(imageRef.current, { scale: 1.2, opacity: 0 });
-    gsap.set(overlayRef.current, { opacity: 0 });
-
-    // Create timeline
-    const tl = gsap.timeline();
-
-    // Animate image zoom and fade in
-    tl.to(
-      imageRef.current,
-      {
-        scale: 1,
-        opacity: 1,
-        duration: 1.5,
-        ease: "power3.out",
-      },
-      0
-    );
-
-    // Animate overlay fade in
-    tl.to(
-      overlayRef.current,
-      {
-        opacity: 1,
-        duration: 1,
-        ease: "power2.out",
-      },
-      0.3
-    );
-  };
-
+  // Set up refs for each slide
   useEffect(() => {
-    // Clear any existing animation timeout
-    if (animationTimeoutRef.current) {
-      clearTimeout(animationTimeoutRef.current);
+    titleRefs.current = titleRefs.current.slice(0, slides.length);
+    imageRefs.current = imageRefs.current.slice(0, slides.length);
+    overlayRefs.current = overlayRefs.current.slice(0, slides.length);
+  }, []);
+
+  // Animate the active slide
+  const animateSlide = (index) => {
+    // Create a timeline for coordinated animations
+    const tl = gsap.timeline({
+      onComplete: () => setIsTransitioning(false),
+    });
+
+    // First hide previous elements if needed
+    if (titleRefs.current[activeSlide] && index !== activeSlide) {
+      gsap.set(titleRefs.current[activeSlide].querySelectorAll('.reveal-line'), {
+        y: '100%',
+      });
     }
 
-    // Set transitioning state to disable buttons
+    // Setup the new slide elements initial state
+    if (titleRefs.current[index]) {
+      // Clear previous content
+      titleRefs.current[index].innerHTML = "";
+
+      // Create lines
+      const titleText = slides[index].title;
+      const lines = titleText.split("\n");
+
+      lines.forEach((line) => {
+        const lineDiv = document.createElement("div");
+        lineDiv.className = "title-line";
+
+        const revealSpan = document.createElement("span");
+        revealSpan.className = "reveal-line";
+        revealSpan.textContent = line;
+
+        lineDiv.appendChild(revealSpan);
+        titleRefs.current[index].appendChild(lineDiv);
+      });
+
+      // Image animation
+      tl.fromTo(
+        imageRefs.current[index],
+        { scale: 1.1, opacity: 0.8 },
+        { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out" },
+        0
+      );
+
+      // Overlay animation
+      tl.fromTo(
+        overlayRefs.current[index],
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: "power2.out" },
+        0.2
+      );
+
+      // Text animation
+      tl.to(
+        titleRefs.current[index].querySelectorAll('.reveal-line'),
+        {
+          y: 0,
+          duration: 1,
+          ease: "power4.out",
+          stagger: 0.15,
+        },
+        0.4
+      );
+    }
+  };
+
+  // Handle slide change
+  const handleSlideChange = (swiper) => {
+    const newIndex = swiper.realIndex;
+    setActiveSlide(newIndex);
     setIsTransitioning(true);
+    
+    // Small delay to ensure DOM updates before animation
+    setTimeout(() => {
+      animateSlide(newIndex);
+    }, 50);
+  };
 
-    // Start animations with slight delay
-    animationTimeoutRef.current = setTimeout(() => {
-      animateText();
-      animateSlide();
-    }, 100);
-
-    return () => {
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
-      }
-    };
-  }, [activeSlide]);
+  // Pre-render all slides to avoid blinking
+  useEffect(() => {
+    // Only animate on first load
+    if (titleRefs.current[activeSlide]) {
+      setIsTransitioning(true);
+      animateSlide(activeSlide);
+    }
+  }, []);
 
   const handlePrev = () => {
     if (swiperRef.current && swiperRef.current.swiper && !isTransitioning) {
@@ -306,31 +304,34 @@ export default function HomeBanner() {
     <BannerContainer>
       <Swiper
         ref={swiperRef}
+        modules={[Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
-        speed={1000} // slower transition = smoother
+        speed={1000}
         loop={true}
         autoplay={{
           delay: 5000,
           disableOnInteraction: false,
-        }}        
-        // allowTouchMove={!isTransitioning}
-        onSlideChange={
-          (swiper) => setActiveSlide(swiper.realIndex) // use realIndex for looped slides
-        }
+          pauseOnMouseEnter: true,
+        }}
+        allowTouchMove={!isTransitioning}
+        onSlideChange={handleSlideChange}
+        onSwiper={(swiper) => {
+          // Initial animation for the first slide
+          setTimeout(() => {
+            animateSlide(swiper.realIndex);
+          }, 100);
+        }}
         onTouchStart={(e) => {
           if (isTransitioning) e.preventDefault();
         }}
+        className="banner-swiper"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={slide.id}>
             <SlideWrapper>
               <ImageWrapper
-                ref={index === activeSlide ? imageRef : null}
-                style={{
-                  transition:
-                    "transform 1s ease-in-out, opacity 1s ease-in-out",
-                }}
+                ref={(el) => (imageRefs.current[index] = el)}
               >
                 <Image
                   src={slide.image}
@@ -338,37 +339,26 @@ export default function HomeBanner() {
                   fill
                   style={{ objectFit: "cover", zIndex: 0 }}
                   priority
+                  loading="eager"
                 />
               </ImageWrapper>
               <TitleContainer>
-                <h1
-                  ref={index === activeSlide ? textRef : null}
-                  style={{
-                    transition: "all 0.8s ease",
-                    transform:
-                      index === activeSlide
-                        ? "translateY(0)"
-                        : "translateY(20px)",
-                    opacity: index === activeSlide ? 1 : 0,
-                  }}
-                >
-                  {slide.title}
+                <h1 ref={(el) => (titleRefs.current[index] = el)}>
+                  {/* Content generated dynamically in animateSlide */}
                 </h1>
               </TitleContainer>
-              <Overlay
-                ref={index === activeSlide ? overlayRef : null}
-                style={{
-                  transition: "opacity 1s ease",
-                  opacity: index === activeSlide ? 1 : 0.5,
-                }}
-              />
+              <Overlay ref={(el) => (overlayRefs.current[index] = el)} />
             </SlideWrapper>
           </SwiperSlide>
         ))}
       </Swiper>
 
       <NavigationArrows>
-        <Arrow onClick={handlePrev} aria-label="Previous slide">
+        <Arrow 
+          onClick={handlePrev} 
+          disabled={isTransitioning}
+          aria-label="Previous slide"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"
@@ -381,7 +371,11 @@ export default function HomeBanner() {
             />
           </svg>
         </Arrow>
-        <Arrow onClick={handleNext} aria-label="Next slide">
+        <Arrow 
+          onClick={handleNext} 
+          disabled={isTransitioning}
+          aria-label="Next slide"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 24 24"

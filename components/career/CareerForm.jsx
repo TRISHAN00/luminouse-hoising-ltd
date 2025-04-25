@@ -4,10 +4,12 @@ import { useEffect, useState } from 'react';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import styled from 'styled-components';
 import landownerImage from "../../public/images/dynamic/career/form-image.jpg";
+import Line from '../Lines';
 
 // Responsive Styled Components
 const SectionCareer = styled.section`
     padding: 100px 0;
+    position: relative;
     
     @media (min-width: 768px) {
         padding: 150px 0;
@@ -241,10 +243,11 @@ const CareerForm = () => {
   
   return (
     <SectionCareer>
+        <Line background={'#1717171a'} />
       <ContainerWrap>
         <StyledRow className="g-0">
           {/* Image Column - Displays first on desktop, second on mobile */}
-          <ImageCol xs={12} lg={6} className={isDesktop ? "" : "order-first"}>
+          <ImageCol xs={12} lg={7} className={isDesktop ? "" : "order-first"}>
             <Image
               src={landownerImage}
               alt="Business professional entering office building"
@@ -256,7 +259,7 @@ const CareerForm = () => {
           </ImageCol>
 
           {/* Form Column - Displays second on desktop, first on mobile */}
-          <FormCol xs={12} lg={6}>
+          <FormCol xs={12} lg={5}>
             <StyledTitle>Join Our Team!</StyledTitle>
 
             <Form onSubmit={handleSubmit}>

@@ -48,6 +48,9 @@ const Footer = () => {
               <Link href="/buyer">Buyer</Link>
             </FooterNavItem>
             <FooterNavItem>
+              <Link href="/career">Career</Link>
+            </FooterNavItem>
+            <FooterNavItem>
               <Link href="/contact-us">Contact Us</Link>
             </FooterNavItem>
           </FooterNav>

@@ -6,7 +6,7 @@ import mission from "../public/images/dynamic/home/mission.jpg";
 import vision from "../public/images/dynamic/home/vision.jpg";
 import { Img } from "./Img";
 
-export default function MissionVision({isMissionVision}) {
+export default function MissionVision({isMissionVision, isBgColor}) {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -28,7 +28,7 @@ export default function MissionVision({isMissionVision}) {
   }, []);
 
   return (
-    <MissionVisionStyled>
+    <MissionVisionStyled isBgColor >
       <Container className="p-0" fluid>
         <Row className="image-row">
           <Col lg={8} md={7} sm={12}>
@@ -107,7 +107,7 @@ const MissionVisionStyled = styled.section`
     content: "";
     inset: 0;
     height: 200px;
-    background-color: #171717;
+    background-color: ${props => props.isBgColor ? '' : '#171717'} ;
   }
 
   .left-content-img {

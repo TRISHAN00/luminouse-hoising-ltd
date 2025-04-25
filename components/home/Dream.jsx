@@ -2,11 +2,8 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
-import dream from "../../public/images/dynamic/home/build-dream-01.jpg";
-import dream1 from "../../public/images/dynamic/home/build-dream-02.jpg";
-import Button from "../Button";
-import { Img } from "../Img";
 import Line from "../Lines";
+import MissionVision from "../MissionVision";
 
 export default function Dream() {
   const [offset, setOffset] = useState(0);
@@ -56,22 +53,7 @@ export default function Dream() {
         </Row>
       </Container>
 
-      <ImageGalleryWrapper>
-        <LeftImageContainer
-          style={{ marginLeft: offset ? `${offset}px` : "0" }}
-        >
-          <Img src={dream} alt="Dream building exterior" />
-        </LeftImageContainer>
-
-        <RightContentContainer>
-          <RightImageContainer>
-            <Img src={dream1} alt="Dream building interior" />
-          </RightImageContainer>
-          <LearnMoreBtn>
-            <Button border={'1px solid #171717'} hoverBackground={'#171717'} text={"Learn More"} />
-          </LearnMoreBtn>
-        </RightContentContainer>
-      </ImageGalleryWrapper>
+      <MissionVision isMissionVision isBgColor />
     </DreamStyled>
   );
 }
@@ -80,7 +62,6 @@ const DreamStyled = styled.section`
   padding: 120px 0;
   position: relative;
   overflow: hidden;
-  height: 100vh;
   background-color: #ffffff;
 
   .content-container {
@@ -126,7 +107,7 @@ const LearnMoreBtn = styled.div`
   @media (max-width: 767px) {
     margin-left: 15px;
   }
-`
+`;
 
 const ImageGalleryWrapper = styled.div`
   display: flex;

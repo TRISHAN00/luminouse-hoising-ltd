@@ -80,7 +80,6 @@ export default function Menu() {
     { label: "Landowner", href: "/landowner" },
     { label: "Buyer", href: "/buyer" },
     { label: "News & Events", href: "/news" },
-    { label: "Career", href: "/career" },
     { label: "Contact Us", href: "/contact-us" },
   ];
 

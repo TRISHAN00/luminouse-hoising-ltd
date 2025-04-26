@@ -1,6 +1,6 @@
 'use client'
 import { title } from "@/styles/globalStyleVars";
-import ReactHtmlParser from "react-html-parser";
+import ReactHtmlParser from "html-react-parser";
 import styled from 'styled-components';
 
 const Title = ({

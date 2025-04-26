@@ -104,6 +104,7 @@ export default function FeaturedAmenities() {
 const FeaturedAmenitiesStyled = styled.section`
   padding: 150px 0px;
   color: #5b5b5b;
+  overflow: hidden;
 
   .amenities-container {
     margin-top: 50px;

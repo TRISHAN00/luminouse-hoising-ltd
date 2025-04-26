@@ -10,6 +10,7 @@ import Line from '../Lines';
 const SectionCareer = styled.section`
     padding: 100px 0;
     position: relative;
+    overflow: hidden;
     
     @media (min-width: 768px) {
         padding: 150px 0;

@@ -95,6 +95,7 @@ const NewsFilter = () => {
 const NewsFilterStyled = styled.section`
   padding: 80px 0;
   background-color: #f8f9fa;
+  overflow: hidden;
 
   .filter-buttons {
     display: flex;

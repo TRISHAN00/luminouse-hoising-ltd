@@ -99,6 +99,7 @@ export default function ProjectGallery() {
 
 const ProjectGalleryStyled = styled.section`
   padding: 150px 0;
+  overflow: hidden;
 
   .gallery-title {
     margin-bottom: 40px;

@@ -49,6 +49,7 @@ export default function ClientSection() {
 
 const SectionStyled = styled.section`
   position: relative;
+  overflow: hidden;
 `;
 
 const SideTitle = styled.div`

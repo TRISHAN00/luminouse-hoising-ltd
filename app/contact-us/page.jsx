@@ -1,6 +1,7 @@
 // "use client" ❌ REMOVE THIS LINE
 
 import { getHomeApi } from "@/api/home";
+import ContactInfo from "@/components/contact/ContactInfo";
 import ContactSection from "@/components/ContactSection";
 import InnerBanner from "@/components/InnerBanner";
 import landownerImage from "../../public/images/dynamic/contact/banner.jpg";
@@ -19,6 +20,7 @@ export default async function Landowner() {
   return (
     <>
       <InnerBanner img={landownerImage} title={"Contact"} />
+      <ContactInfo/>
       <ContactSection/>
     </>
   );

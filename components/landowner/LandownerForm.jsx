@@ -92,6 +92,7 @@ export default function LandownerForm() {
 
 const StyledLandownerForm = styled.section`
   padding: 150px 0;
+  overflow: hidden;
 
   @media (max-width: 1200px) {
     padding: 120px 0;

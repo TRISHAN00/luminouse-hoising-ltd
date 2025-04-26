@@ -1,7 +1,7 @@
 "use client";
 import { Img } from "@/components/Img";
+import reactHtmlParser from "html-react-parser";
 import { Container } from "react-bootstrap";
-import reactHtmlParser from "react-html-parser";
 import styled from "styled-components";
 
 const InnerBanner = ({ img, text, title }) => {

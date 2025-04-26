@@ -265,6 +265,7 @@ export default function ProjectList() {
 const ProjectListStyled = styled.section`
   padding: 80px 0;
   color: #5b5b5b;
+  overflow: hidden;
 
   .loadMore-btn {
     margin-top: 60px;

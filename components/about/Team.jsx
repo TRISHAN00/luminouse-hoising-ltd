@@ -145,6 +145,7 @@ export default function Team({ teamMembers, title = "OUR TEAM", titleColor = "#1
 
 const TeamStyled = styled.section`
   padding: 120px 0;
+  overflow: hidden;
 
   .team-title {
     margin-bottom: 80px;

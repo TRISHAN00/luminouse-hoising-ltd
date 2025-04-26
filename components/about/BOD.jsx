@@ -107,6 +107,7 @@ const BODStyled = styled.section`
   padding: 200px 0;
   position: relative;
   background-color: #171717;
+  overflow: hidden;
 
   .bod-img {
     padding-top: calc(480 / 400 * 100%);

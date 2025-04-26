@@ -38,6 +38,9 @@ const BannerContainer = styled.div`
 `;
 
 const SlideWrapper = styled.div`
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
   position: relative;
   width: 100%;
   height: 100vh;
@@ -99,7 +102,6 @@ const TitleContainer = styled.div`
     }
   }
 `;
-
 const NavigationArrows = styled.div`
   position: absolute;
   width: 100%;
@@ -112,8 +114,9 @@ const NavigationArrows = styled.div`
 `;
 
 const Arrow = styled.button`
-  background: transparent;
-  border: none;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
   cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   width: 50px;
   height: 50px;
@@ -131,6 +134,7 @@ const Arrow = styled.button`
   }
 
   &:hover {
+    background: rgba(0, 0, 0, 0.4);
     transform: ${(props) => (props.disabled ? "none" : "scale(1.1)")};
   }
 `;
@@ -209,9 +213,12 @@ export default function HomeBanner() {
 
     // First hide previous elements if needed
     if (titleRefs.current[activeSlide] && index !== activeSlide) {
-      gsap.set(titleRefs.current[activeSlide].querySelectorAll('.reveal-line'), {
-        y: '100%',
-      });
+      gsap.set(
+        titleRefs.current[activeSlide].querySelectorAll(".reveal-line"),
+        {
+          y: "100%",
+        }
+      );
     }
 
     // Setup the new slide elements initial state
@@ -253,7 +260,7 @@ export default function HomeBanner() {
 
       // Text animation
       tl.to(
-        titleRefs.current[index].querySelectorAll('.reveal-line'),
+        titleRefs.current[index].querySelectorAll(".reveal-line"),
         {
           y: 0,
           duration: 1,
@@ -270,7 +277,7 @@ export default function HomeBanner() {
     const newIndex = swiper.realIndex;
     setActiveSlide(newIndex);
     setIsTransitioning(true);
-    
+
     // Small delay to ensure DOM updates before animation
     setTimeout(() => {
       animateSlide(newIndex);
@@ -307,7 +314,7 @@ export default function HomeBanner() {
         modules={[Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
-        speed={1000}
+        speed={800}
         loop={true}
         autoplay={{
           delay: 5000,
@@ -330,9 +337,7 @@ export default function HomeBanner() {
         {slides.map((slide, index) => (
           <SwiperSlide key={slide.id}>
             <SlideWrapper>
-              <ImageWrapper
-                ref={(el) => (imageRefs.current[index] = el)}
-              >
+              <ImageWrapper ref={(el) => (imageRefs.current[index] = el)}>
                 <Image
                   src={slide.image}
                   alt={`Luxury home design ${index + 1}`}
@@ -354,8 +359,8 @@ export default function HomeBanner() {
       </Swiper>
 
       <NavigationArrows>
-        <Arrow 
-          onClick={handlePrev} 
+        <Arrow
+          onClick={handlePrev}
           disabled={isTransitioning}
           aria-label="Previous slide"
         >
@@ -371,8 +376,8 @@ export default function HomeBanner() {
             />
           </svg>
         </Arrow>
-        <Arrow 
-          onClick={handleNext} 
+        <Arrow
+          onClick={handleNext}
           disabled={isTransitioning}
           aria-label="Next slide"
         >

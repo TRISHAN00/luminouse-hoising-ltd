@@ -8,7 +8,7 @@ import ClientCard from "./ClientCard";
 
 export default function ClientSection() {
   return (
-    <SectionStyled className="pt-200 pb-200">
+    <SectionStyled className=" pb-200">
       <Line background={"#1717171a"} />
       <Container>
         <Row>

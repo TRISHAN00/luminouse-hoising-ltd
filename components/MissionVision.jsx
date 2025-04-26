@@ -107,7 +107,7 @@ const MissionVisionStyled = styled.section`
     content: "";
     inset: 0;
     height: 200px;
-    background-color: ${props => props.isBgColor ? '#f5f5f5' : '#171717'};
+    background-color: ${props => props.isBgColor ? '' : '#171717'};
   }
 
   .left-content-img {

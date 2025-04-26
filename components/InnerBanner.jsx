@@ -50,7 +50,7 @@ const StyledInnerBanner = styled.section`
     font-weight: 400;
     line-height: 70px;
     text-align: center;
-    text-transform: uppercase;
+    text-transform: unset;
     z-index: 2;
 
     span {

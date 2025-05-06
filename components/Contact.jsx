@@ -117,7 +117,6 @@ const FormContainer = styled.div`
   background-color: #171717;
   color: #ffffff;
   padding: 120px 0;
-  height: 100vh;
   width: 100%;
 
   .contact-btn {
@@ -220,6 +219,16 @@ const StyledInput = styled.input`
   &:focus + ${InputLine}::after {
     transform: scaleX(1);
   }
+  
+  /* Handle browser autofill styling */
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff;
+    -webkit-box-shadow: 0 0 0px 1000px #171717 inset;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: white;
+  }
 `;
 
 const StyledTextarea = styled.textarea`
@@ -241,6 +250,16 @@ const StyledTextarea = styled.textarea`
 
   &:focus + ${InputLine}::after {
     transform: scaleX(1);
+  }
+  
+  /* Handle browser autofill styling */
+  &:-webkit-autofill,
+  &:-webkit-autofill:hover,
+  &:-webkit-autofill:focus {
+    -webkit-text-fill-color: #ffffff;
+    -webkit-box-shadow: 0 0 0px 1000px #171717 inset;
+    transition: background-color 5000s ease-in-out 0s;
+    caret-color: white;
   }
 `;
 

@@ -98,7 +98,7 @@ const NewsDetailsStyled = styled.div`
 
     &:hover {
       background-color: #333;
-      color: #fff;
+      color: #fff !important;
     }
   }
 
@@ -176,6 +176,7 @@ const SocialShareStyled = styled.div`
 
       &:hover {
         transform: translateY(-5px);
+        color: #fff !important;
       }
 
       &.facebook {

@@ -98,11 +98,10 @@ const Footer = () => {
 
         <CopyrightInfo>
           <CopyrightText>© Luminous Housing Ltd</CopyrightText>
-          <PrivacyLink href="/privacy-policy">Privacy Policy</PrivacyLink>
         </CopyrightInfo>
 
         <CreditsContainer>
-          <CreditsText>Design by Finnkits</CreditsText>
+          <CreditsText>Design by <a target="_blank" href="https://trishansaha.com/">Trishan</a></CreditsText>
         </CreditsContainer>
       </FooterBottom>
 

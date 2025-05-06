@@ -177,7 +177,6 @@ const NavigationButton = styled.div`
 const SliderSection = styled.section`
   padding: 200px 0;
   position: relative;
-  height: 100dvh;
   padding: 4rem 1rem;
 `;
 

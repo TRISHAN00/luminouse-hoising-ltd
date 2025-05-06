@@ -10,7 +10,7 @@ import { MdClose, MdExpandLess, MdExpandMore, MdMenu, MdOutlineLocalPhone } from
 import styled from "styled-components";
 import logo from "../public/images/static/logos/white-logo.svg";
 
-export default function Menu() {
+export default function Menu({isNewsDetail}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -96,6 +96,7 @@ export default function Menu() {
       ref={headerRef}
       isScrolled={isScrolled} 
       isVisible={headerVisible}
+      isNewsDetail={isNewsDetail}
     >
       <Container>
         <Row className="align-items-center">
@@ -223,7 +224,7 @@ const StyledHeader = styled.header`
   z-index: 1000;
   transition: all 0.4s ease, transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
   transform: translateY(${props => props.isVisible ? '0' : '-100%'});
-  background: ${props => props.isScrolled ? 'rgba(0, 0, 0, 0.85)' : 'transparent'};
+  background: ${props => props.isScrolled || props.isNewsDetail ? 'rgba(0, 0, 0, 0.85)' : 'transparent'};
   backdrop-filter: ${props => props.isScrolled ? 'blur(10px)' : 'none'};
   box-shadow: ${props => props.isScrolled ? '0 4px 20px rgba(0, 0, 0, 0.1)' : 'none'};
   

@@ -222,6 +222,15 @@ const ContactSectionStyled = styled.section`
     padding: 12px 0;
     color: white;
     font-size: 16px;
+    /* Handle browser autofill styling */
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: #ffffff;
+      -webkit-box-shadow: 0 0 0px 1000px #171717 inset;
+      transition: background-color 5000s ease-in-out 0s;
+      caret-color: white;
+    }
 
     &:focus {
       box-shadow: none;

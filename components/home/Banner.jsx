@@ -35,6 +35,17 @@ const BannerContainer = styled.div`
   width: 100%;
   height: 100vh;
   overflow: hidden;
+
+  /* Smooth easing */
+  .swiper-wrapper {
+    transition-timing-function: ease-in-out !important;
+  }
+
+  /* GPU acceleration */
+  .swiper-slide {
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+  }
 `;
 
 const SlideWrapper = styled.div`
@@ -314,23 +325,18 @@ export default function HomeBanner() {
         modules={[Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
-        speed={800}
-        loop={true}
+        speed={1500}
         autoplay={{
-          delay: 5000,
+          delay: 3000,
           disableOnInteraction: false,
           pauseOnMouseEnter: true,
         }}
         allowTouchMove={!isTransitioning}
         onSlideChange={handleSlideChange}
         onSwiper={(swiper) => {
-          // Initial animation for the first slide
           setTimeout(() => {
             animateSlide(swiper.realIndex);
           }, 100);
-        }}
-        onTouchStart={(e) => {
-          if (isTransitioning) e.preventDefault();
         }}
         className="banner-swiper"
       >

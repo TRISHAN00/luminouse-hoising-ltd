@@ -16,7 +16,7 @@ const InnerBanner = ({ img, text, title }) => {
 };
 
 const StyledInnerBanner = styled.section`
-  padding-top: calc(420 / 1366 * 100%);
+  padding-top: calc(520 / 1366 * 100%);
   position: relative;
   background-color: #ddd;
 

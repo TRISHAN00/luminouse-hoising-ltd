@@ -16,27 +16,27 @@ import Title from "./Title";
 const garmentGalleryItems = [
   { 
     id: 1, 
-    src: 'https://images.unsplash.com/photo-1635957367617-0be304b2691a?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
+    src: 'https://images.unsplash.com/photo-1687405182302-f1b28707c854?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
     alt: "Premium T-Shirt Collection"
   },
   { 
     id: 2, 
-    src: 'https://images.unsplash.com/photo-1607409610054-a1fe0563573f?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
+    src: 'https://images.unsplash.com/photo-1687226426209-0e5d2143c0d1?q=80&w=1587&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
     alt: "Summer Dress Collection"
   },
   { 
     id: 3, 
-    src: 'https://plus.unsplash.com/premium_photo-1661337060657-cc0839d9d0c4?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
+    src: 'https://images.unsplash.com/photo-1608739872077-21ddc15dc152?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
     alt: "Denim Collection"
   },
   { 
     id: 4, 
-    src: 'https://images.unsplash.com/photo-1607328648933-a7bcc8a81e7c?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
+    src: 'https://images.unsplash.com/photo-1702935287572-06f185a9dedc?q=80&w=1492&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
     alt: "Premium Cotton Fabric"
   },
   { 
     id: 5, 
-    src: 'https://images.unsplash.com/photo-1631873114234-239bf1d3ce7b?q=80&w=1974&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
+    src: 'https://images.unsplash.com/photo-1575267168637-fa85c10f211f?q=80&w=1542&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
     alt: "Manufacturing Process"
   },
   { 
@@ -46,7 +46,7 @@ const garmentGalleryItems = [
   },
   { 
     id: 7, 
-    src: 'https://images.unsplash.com/photo-1641894252843-9794796577be?q=80&w=2069&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
+    src: 'https://images.unsplash.com/photo-1676477655436-a686054457de?q=80&w=1470&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', 
     alt: "Sustainable Fashion Line"
   },
   { 
@@ -98,7 +98,7 @@ export default function GarmentsGallery() {
                 center
                 color={"#333333"}
                 fontSize={"60"}
-                text={"PRODUCT SHOWCASE"}
+                text={"FACTORY TOUR"}
               />
               <p className="subtitle">Explore our premium garment collections</p>
             </div>

@@ -1,7 +1,7 @@
 import { getHomeApi } from "@/api/home";
-import BOD from "@/components/about/BOD";
+import Team from "@/components/about/Team";
 import GarmentsGallery from "@/components/GarmentsGallery";
-import InnerBanner from "@/components/InnerBanner";
+import InnerBannerConcern from "@/components/InnerBannerConcern";
 import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
 import landownerImage from "../../public/images/dynamic/landowner/banner.jpg";
@@ -19,11 +19,17 @@ export default async function LivousDenim() {
 
   return (
     <>
-      <InnerBanner img={landownerImage} title={"Livous Denim Ltd."} />
+      {/* <InnerBanner img={landownerImage} title={"Livous Denim Ltd."} /> */}
+   
+      <InnerBannerConcern 
+        img={landownerImage}
+        title="Livous Denim Ltd."
+        address="123 Industrial Zone, Textile District<br>Mumbai, Maharashtra 400001<br><a href='tel:+919876543210'>+91 9876543210</a>"
+      />
       <Overview />
-      <MissionVision/>
-      <GarmentsGallery/>
-      <BOD/>
+      <MissionVision />
+      <GarmentsGallery />
+      <Team />
     </>
   );
 }

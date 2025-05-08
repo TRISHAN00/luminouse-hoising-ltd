@@ -83,7 +83,7 @@ const LivousLifestylePage = () => {
         <meta name="description" content="Livous Lifestyle Limited creates premium lifestyle products that enhance everyday living with elegance and functionality." />
       </Head>
       
-      <CompanyPage {...livousData} />
+      <CompanyPage {...livousData} />5
     </>
   );
 };

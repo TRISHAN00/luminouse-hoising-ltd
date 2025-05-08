@@ -1,5 +1,8 @@
 import { getHomeApi } from "@/api/home";
+import BOD from "@/components/about/BOD";
+import GarmentsGallery from "@/components/GarmentsGallery";
 import InnerBanner from "@/components/InnerBanner";
+import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
 import landownerImage from "../../public/images/dynamic/landowner/banner.jpg";
 
@@ -18,6 +21,9 @@ export default async function LivousDenim() {
     <>
       <InnerBanner img={landownerImage} title={"Livous Denim Ltd."} />
       <Overview />
+      <MissionVision/>
+      <GarmentsGallery/>
+      <BOD/>
     </>
   );
 }

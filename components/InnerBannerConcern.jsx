@@ -37,7 +37,7 @@ const InnerBannerConcern = ({ img, color, title, address }) => {
                     </div>
                   </div>
                   <div className="card-content">
-                    <h3>Manufacturing Unit</h3>
+                    <h3>Address</h3>
                     <div className="divider">
                       <span></span>
                       <span></span>
@@ -60,7 +60,7 @@ const InnerBannerConcern = ({ img, color, title, address }) => {
 };
 
 const StyledInnerBanner = styled.section`
-  padding-top: calc(720 / 1366 * 100%);
+  padding-top: calc(620 / 1366 * 100%);
   position: relative;
   background-color: #171717;
   overflow: hidden;

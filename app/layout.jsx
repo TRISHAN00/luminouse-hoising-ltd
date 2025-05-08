@@ -13,6 +13,7 @@ import "react-toastify/dist/ReactToastify.css";
 export default function RootLayout({ children }) {
   const [isNewsDetail, setIsNewsDetail] = useState(false);
   const [isLivousDenim, setIsLivousDenim] = useState(false);
+  const [isLuminouseArch, setIsLuminouseArch] = useState(false);
   const pathname = usePathname(); 
 
   useEffect(() => {
@@ -26,6 +27,12 @@ export default function RootLayout({ children }) {
       setIsLivousDenim(true);
     } else {
       setIsLivousDenim(false);
+    }
+
+    if (pathname.startsWith("/luminouse-architecture")) {
+      setIsLuminouseArch(true);
+    } else {
+      setIsLuminouseArch(false);
     }
   }, [pathname]);
   
@@ -41,7 +48,7 @@ export default function RootLayout({ children }) {
           <div id="main-root">
             <GlobalStyle />
             <ToastContainer />
-            <Header isLivousDenim={isLivousDenim} isNewsDetail={isNewsDetail} />
+            <Header isLivousDenim={isLivousDenim} isLuminouseArch={isLuminouseArch} isNewsDetail={isNewsDetail} />
             {children}
             <Footer />
           </div>

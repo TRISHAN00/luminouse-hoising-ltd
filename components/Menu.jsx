@@ -15,12 +15,10 @@ import {
 } from "react-icons/md";
 import styled from "styled-components";
 import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
+import luminouseArchLogo from "../public/images/static/logos/luminouse-arch.svg";
 import mainLogo from "../public/images/static/logos/main-logo.svg";
 
-
-
-
-export default function Menu({ isNewsDetail, isLivousDenim }) {
+export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -29,7 +27,11 @@ export default function Menu({ isNewsDetail, isLivousDenim }) {
   const headerRef = useRef(null);
   const router = usePathname();
 
-  const getLogo = isLivousDenim ? livousDenimLogo : mainLogo;
+  const getLogo = isLivousDenim
+    ? livousDenimLogo
+    : isLuminouseArch
+    ? luminouseArchLogo
+    : mainLogo;
 
   // Handle scroll effects
   useEffect(() => {
@@ -89,7 +91,7 @@ export default function Menu({ isNewsDetail, isLivousDenim }) {
         { label: "Livous Denim Ltd", href: "/livous-denim" },
         {
           label: "Luminous Design & Architecture Associates Ltd",
-          href: "/luminous-design",
+          href: "/luminouse-architecture",
         },
       ],
     },
@@ -117,8 +119,13 @@ export default function Menu({ isNewsDetail, isLivousDenim }) {
         <Row className="align-items-center">
           <Col lg={3} xs={8}>
             <Link href="/" passHref>
-              <LogoWrapper>
-                <Image src={getLogo} alt="Main Logo" width={isLivousDenim ? 200 : 100} priority />
+              <LogoWrapper isScrolled={isScrolled}>
+                <Image
+                  src={getLogo}
+                  alt="Main Logo"
+                  width={isLivousDenim ? 200 : isLuminouseArch ? 150 : 100}
+                  priority
+                />
               </LogoWrapper>
             </Link>
           </Col>
@@ -277,10 +284,19 @@ const StyledHeader = styled.header`
 `;
 
 const LogoWrapper = styled.div`
+  width: fit-content;
   display: flex;
   align-items: center;
   position: relative;
   z-index: 2;
+  padding: 8px 15px;
+  border-radius: 8px;
+  background-color: ${(props) =>
+    props.isScrolled ? "transparent" : "rgba(0, 0, 0, 0.6)"};
+  box-shadow: ${(props) =>
+    props.isScrolled ? "none" : "0 2px 10px rgba(0, 0, 0, 0.2)"};
+  transition: all 0.3s ease;
+
   img {
     max-width: 100%;
     height: auto;
@@ -289,6 +305,15 @@ const LogoWrapper = styled.div`
     &:hover {
       transform: scale(1.05);
     }
+  }
+
+  &:hover {
+    background-color: ${(props) =>
+      props.isScrolled ? "transparent" : "rgba(0, 0, 0, 0.75)"};
+  }
+
+  @media (max-width: 767px) {
+    padding: 6px 10px;
   }
 `;
 
@@ -364,6 +389,7 @@ const MenuLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 5px;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
   /* Normal desktop :992px. */
   @media (min-width: 992px) and (max-width: 1200px) {

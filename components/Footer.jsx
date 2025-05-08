@@ -4,12 +4,20 @@ import { ArrowUp, Facebook, Linkedin, Twitter, Youtube } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
-import logo from "../public/images/static/logos/main-logo.svg";
+import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
+import luminouseArchLogo from "../public/images/static/logos/luminouse-arch.svg";
+import mainLogo from "../public/images/static/logos/main-logo.svg";
 
-const Footer = () => {
+const Footer = ({ isLivousDenim, isLuminouseArch }) => {
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
+
+  const getLogo = isLivousDenim
+      ? livousDenimLogo
+      : isLuminouseArch
+      ? luminouseArchLogo
+      : mainLogo;
 
   return (
     <FooterWrapper>
@@ -93,7 +101,8 @@ const Footer = () => {
 
       <FooterBottom>
         <LogoContainer>
-          <Logo src={logo} alt="Luminous Housing Ltd" width={60} height={40} />
+       
+          <Logo src={getLogo} alt="Luminous Housing Ltd" width={100} />
         </LogoContainer>
 
         <CopyrightInfo>

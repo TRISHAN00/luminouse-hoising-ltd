@@ -50,7 +50,7 @@ export default function RootLayout({ children }) {
             <ToastContainer />
             <Header isLivousDenim={isLivousDenim} isLuminouseArch={isLuminouseArch} isNewsDetail={isNewsDetail} />
             {children}
-            <Footer />
+            <Footer isLivousDenim={isLivousDenim} isLuminouseArch={isLuminouseArch} isNewsDetail={isNewsDetail} />
           </div>
         </StyledComponentsRegistry>
       </body>

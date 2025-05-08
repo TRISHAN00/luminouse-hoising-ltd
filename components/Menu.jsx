@@ -14,9 +14,13 @@ import {
   MdOutlineLocalPhone,
 } from "react-icons/md";
 import styled from "styled-components";
-import logo from "../public/images/static/logos/main-logo.svg";
+import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
+import mainLogo from "../public/images/static/logos/main-logo.svg";
 
-export default function Menu({ isNewsDetail }) {
+
+
+
+export default function Menu({ isNewsDetail, isLivousDenim }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -24,6 +28,8 @@ export default function Menu({ isNewsDetail }) {
   const [mobileActiveDropdown, setMobileActiveDropdown] = useState(null);
   const headerRef = useRef(null);
   const router = usePathname();
+
+  const getLogo = isLivousDenim ? livousDenimLogo : mainLogo;
 
   // Handle scroll effects
   useEffect(() => {
@@ -112,7 +118,7 @@ export default function Menu({ isNewsDetail }) {
           <Col lg={3} xs={8}>
             <Link href="/" passHref>
               <LogoWrapper>
-                <Image src={logo} alt="Main Logo" width={80} priority />
+                <Image src={getLogo} alt="Main Logo" width={isLivousDenim ? 200 : 100} priority />
               </LogoWrapper>
             </Link>
           </Col>

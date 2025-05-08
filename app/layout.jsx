@@ -12,7 +12,8 @@ import "react-toastify/dist/ReactToastify.css";
 
 export default function RootLayout({ children }) {
   const [isNewsDetail, setIsNewsDetail] = useState(false);
-  const pathname = usePathname(); // ✅ reactive hook
+  const [isLivousDenim, setIsLivousDenim] = useState(false);
+  const pathname = usePathname(); 
 
   useEffect(() => {
     if (pathname.startsWith("/news/")) {
@@ -20,7 +21,14 @@ export default function RootLayout({ children }) {
     } else {
       setIsNewsDetail(false);
     }
-  }, [pathname]); // ✅ re-run this when path changes
+  
+    if (pathname.startsWith("/livous-denim")) {
+      setIsLivousDenim(true);
+    } else {
+      setIsLivousDenim(false);
+    }
+  }, [pathname]);
+  
 
   return (
     <html lang="en">
@@ -33,7 +41,7 @@ export default function RootLayout({ children }) {
           <div id="main-root">
             <GlobalStyle />
             <ToastContainer />
-            <Header isNewsDetail={isNewsDetail} />
+            <Header isLivousDenim={isLivousDenim} isNewsDetail={isNewsDetail} />
             {children}
             <Footer />
           </div>

@@ -20,8 +20,9 @@ export default async function LivousDenim() {
   return (
     <>
       {/* <InnerBanner img={landownerImage} title={"Livous Denim Ltd."} /> */}
-   
-      <InnerBannerConcern 
+
+      <InnerBannerConcern
+        color={"#F68A32"}
         img={landownerImage}
         title="Livous Denim Ltd."
         address="123 Industrial Zone, Textile District<br>Mumbai, Maharashtra 400001<br><a href='tel:+919876543210'>+91 9876543210</a>"

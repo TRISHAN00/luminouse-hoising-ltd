@@ -4,9 +4,9 @@ import reactHtmlParser from "html-react-parser";
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
 
-const InnerBannerConcern = ({ img, text, title, address }) => {
+const InnerBannerConcern = ({ img, color, title, address }) => {
   return (
-    <StyledInnerBanner className="InnerBanner">
+    <StyledInnerBanner color={color} className="InnerBanner">
       <Img banner={true} src={img} />
       <div className="gradient-overlay"></div>
       
@@ -116,7 +116,7 @@ const StyledInnerBanner = styled.section`
     .accent-line {
       height: 2px;
       width: 80px;
-      background: linear-gradient(to right, transparent, #b99764, transparent);
+      background: linear-gradient(to right, transparent, ${props => props.color}, transparent);
       margin-bottom: 25px;
       
       &.right {
@@ -148,7 +148,7 @@ const StyledInnerBanner = styled.section`
         left: 0;
         width: 100%;
         height: 2px;
-        background: linear-gradient(to right, transparent, #b99764, transparent);
+        background: linear-gradient(to right, transparent, ${props => props.color}, transparent);
       }
     }
   }
@@ -186,7 +186,7 @@ const StyledInnerBanner = styled.section`
       .icon-circle {
         width: 60px;
         height: 60px;
-        background: linear-gradient(135deg, #b99764, #e9bf7c);
+        background: linear-gradient(135deg, ${props => props.color}, #e9bf7c);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -203,7 +203,7 @@ const StyledInnerBanner = styled.section`
         margin: 0;
         font-size: 22px;
         font-weight: 600;
-        color: #b99764;
+        color: ${props => props.color};
         letter-spacing: 1px;
         margin-bottom: 12px;
       }
@@ -218,17 +218,17 @@ const StyledInnerBanner = styled.section`
           
           &:nth-child(1) {
             width: 12px;
-            background-color: #b99764;
+            background-color: ${props => props.color};
           }
           
           &:nth-child(2) {
             width: 30px;
-            background-color: rgba(185, 151, 100, 0.7);
+            background-color: ${props => props.color};
           }
           
           &:nth-child(3) {
             width: 12px;
-            background-color: rgba(185, 151, 100, 0.4);
+            background-color: ${props => props.color};
           }
         }
       }
@@ -247,7 +247,7 @@ const StyledInnerBanner = styled.section`
         }
         
         a {
-          color: #b99764;
+          color: ${props => props.color};
           text-decoration: none;
           font-weight: 500;
           transition: all 0.3s ease;

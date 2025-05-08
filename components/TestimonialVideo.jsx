@@ -8,7 +8,7 @@ import Title from "./Title";
 // Styled Components
 const ThumbnailContainer = styled.div`
   position: relative;
-  height: 550px;
+  height: 400px;
 `;
 
 const ThumbnailWrapper = styled.div`
@@ -70,7 +70,6 @@ const PlaceholderContainer = styled.div`
   height: 100%;
   cursor: pointer;
   overflow: hidden;
-  height: 250px;
 `;
 
 const PlaceholderIcon = styled.div`
@@ -83,7 +82,7 @@ const PlaceholderIcon = styled.div`
 
 const VideoIframe = styled.iframe`
   width: 100%;
-  height: 250px;
+  height: 400px;
   border: 0;
 `;
 

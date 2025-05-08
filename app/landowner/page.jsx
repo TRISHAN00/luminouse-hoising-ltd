@@ -6,6 +6,7 @@ import LandownerForm from "@/components/landowner/LandownerForm";
 import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
 import TestimonialSection from "@/components/Testimonial";
+import TestimonialVideoSection from "../../components/TestimonialVideo";
 import landownerImage from "../../public/images/dynamic/landowner/banner.jpg";
 
 export const metadata = {
@@ -25,7 +26,8 @@ export default async function Landowner() {
       <Overview />
       <MissionVision isMissionVision />
       <LandownerForm />
-      <TestimonialSection/>
+      <TestimonialVideoSection />
+      <TestimonialSection />
     </>
   );
 }

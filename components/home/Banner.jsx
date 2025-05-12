@@ -326,6 +326,7 @@ export default function HomeBanner() {
         spaceBetween={0}
         slidesPerView={1}
         speed={1500}
+        loop={true}
         autoplay={{
           delay: 3000,
           disableOnInteraction: false,

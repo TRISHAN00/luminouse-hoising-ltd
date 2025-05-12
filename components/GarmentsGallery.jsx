@@ -76,7 +76,7 @@ const garmentGalleryItems = [
   },
 ];
 
-export default function GarmentsGallery() {
+export default function GarmentsGallery({title}) {
   // For SSR compatibility
   const [mounted, setMounted] = useState(false);
   
@@ -98,7 +98,7 @@ export default function GarmentsGallery() {
                 center
                 color={"#333333"}
                 fontSize={"60"}
-                text={"FACTORY TOUR"}
+                text={title}
               />
               <p className="subtitle">Explore our premium garment collections</p>
             </div>

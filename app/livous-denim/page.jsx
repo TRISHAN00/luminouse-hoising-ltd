@@ -29,7 +29,7 @@ export default async function LivousDenim() {
       />
       <Overview />
       <MissionVision />
-      <GarmentsGallery />
+      <GarmentsGallery title={'Factory Tour'} />
       <Team />
     </>
   );

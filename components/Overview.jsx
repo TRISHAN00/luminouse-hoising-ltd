@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Line from "./Lines";
 import Title from "./Title";
 
-const Overview = () => {
+const Overview = ({data}) => {
   return (
     <StyledComponent className="section-wrapper">
       <Line />
@@ -13,20 +13,11 @@ const Overview = () => {
           <Col lg={8}>
             <Title
               fontSize={"60"}
-              text={
-                "BUILDING BRIGHTER FUTURES WITH EXCELLENCE IN REAL ESTATE DEVELOPMENT"
-              }
+              text={data?.section_data?.subtitle}
             />
           </Col>
           <Col lg={{ offset: 4, span: 6 }}>
-            <p>
-              At Luminous Housing Ltd., we turn your vision into reality by
-              creating homes that blend comfort, elegance, and modern design.
-              With a commitment to quality craftsmanship and innovation, we
-              build spaces where families thrive and dreams take shape. Driven
-              by integrity and customer satisfaction, we focus on delivering
-              projects that exceed expectations.
-            </p>
+            <p>{data?.section_data?.description}</p>
           </Col>
         </Row>
       </Container>

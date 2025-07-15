@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 const Container = styled.div`
   color: #b0b0b0;
@@ -7,7 +7,6 @@ const Container = styled.div`
 
 const DesktopView = styled.div`
   display: none;
-  
   @media (min-width: 768px) {
     display: block;
   }
@@ -24,7 +23,6 @@ const TableRow = styled.tr`
   }
 `;
 
-
 const TableCell = styled.td`
   padding: 1rem;
 `;
@@ -35,7 +33,6 @@ const LabelCell = styled(TableCell)`
 
 const MobileView = styled.div`
   display: block;
-  
   @media (min-width: 768px) {
     display: none;
   }
@@ -50,53 +47,104 @@ const GridContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
-  margin-bottom: ${props => props.$noMargin ? '0' : '0.5rem'};
+  margin-bottom: ${(props) => (props.$noMargin ? "0" : "0.5rem")};
 `;
 
 const Label = styled.div`
   font-weight: 500;
 `;
 
-export default function PropertyInfoTable() {
-  const propertyData = [
-    { label: 'Type', value: 'Residential', label2: 'No of Floor', value2: 'G+9 Storied' },
-    { label: 'Address', value: '525/KA, Shahidbag, Dhaka', label2: 'No of Parking', value2: '10' },
-    { label: 'Land Area', value: '8 (Katha)', label2: 'Architecture', value2: 'Arch. Shajedul Islam' },
-    { label: 'Apartment Size', value: '2000 & 2500 sft', label2: 'Engineer', value2: 'Engr. A.K.M Liaqat Ali' },
-  ];
+function decodeHtml(html) {
+  const txt = document.createElement("textarea");
+  txt.innerHTML = html;
+  return txt.value;
+}
+
+export default function PropertyInfoTable({ data }) {
+  if (!data) return null;
 
   return (
     <Container>
-      {/* Desktop view (md and larger screens) */}
+      {/* Desktop View */}
       <DesktopView>
         <StyledTable>
           <tbody>
-            {propertyData.map((row, index) => (
-              <TableRow key={index}>
-                <LabelCell>{row.label}</LabelCell>
-                <TableCell>{row.value}</TableCell>
-                <LabelCell>{row.label2}</LabelCell>
-                <TableCell>{row.value2}</TableCell>
-              </TableRow>
-            ))}
+            <TableRow>
+              <LabelCell>Type</LabelCell>
+              <TableCell>{data.type?.toUpperCase()}</TableCell>
+              <LabelCell>No of Floor</LabelCell>
+              <TableCell>{data.nof}</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <LabelCell>Address</LabelCell>
+              <TableCell>{data.location}</TableCell>
+              <LabelCell>No of Parking</LabelCell>
+              <TableCell>{data.nop}</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <LabelCell>Land Area</LabelCell>
+              <TableCell>{data.land_area}</TableCell>
+              <LabelCell>Architecture</LabelCell>
+              <TableCell>{data.architecture}</TableCell>
+            </TableRow>
+
+            <TableRow>
+              <LabelCell>Apartment Size</LabelCell>
+              <TableCell>{decodeHtml(data.apartment_size)}</TableCell>
+              <LabelCell>Engineer</LabelCell>
+              <TableCell>{data.engineer}</TableCell>
+            </TableRow>
           </tbody>
         </StyledTable>
       </DesktopView>
 
-      {/* Mobile view (smaller than md screens) */}
+      {/* Mobile View */}
       <MobileView>
-        {propertyData.map((row, index) => (
-          <MobileRow key={index}>
-            <GridContainer>
-              <Label>{row.label}</Label>
-              <div>{row.value}</div>
-            </GridContainer>
-            <GridContainer $noMargin>
-              <Label>{row.label2}</Label>
-              <div>{row.value2}</div>
-            </GridContainer>
-          </MobileRow>
-        ))}
+        <MobileRow>
+          <GridContainer>
+            <Label>Type</Label>
+            <div>{data.type?.toUpperCase()}</div>
+          </GridContainer>
+          <GridContainer $noMargin>
+            <Label>No of Floor</Label>
+            <div>{data.nof}</div>
+          </GridContainer>
+        </MobileRow>
+
+        <MobileRow>
+          <GridContainer>
+            <Label>Address</Label>
+            <div>{data.location}</div>
+          </GridContainer>
+          <GridContainer $noMargin>
+            <Label>No of Parking</Label>
+            <div>{data.nop}</div>
+          </GridContainer>
+        </MobileRow>
+
+        <MobileRow>
+          <GridContainer>
+            <Label>Land Area</Label>
+            <div>{data.land_area}</div>
+          </GridContainer>
+          <GridContainer $noMargin>
+            <Label>Architecture</Label>
+            <div>{data.architecture}</div>
+          </GridContainer>
+        </MobileRow>
+
+        <MobileRow>
+          <GridContainer>
+            <Label>Apartment Size</Label>
+            <div>{decodeHtml(data.apartment_size)}</div>
+          </GridContainer>
+          <GridContainer $noMargin>
+            <Label>Engineer</Label>
+            <div>{data.engineer}</div>
+          </GridContainer>
+        </MobileRow>
       </MobileView>
     </Container>
   );

@@ -6,7 +6,15 @@ import styled from "styled-components";
 import Line from "../Lines";
 import ClientCard from "./ClientCard";
 
-export default function ClientSection() {
+export default function ClientSection({ data }) {
+  const landowner = data?.posts?.list?.find(
+    (f) => f?.data?.slug === "landowner"
+  );
+
+  const buyer = data?.posts?.list?.find(
+    (f) => f?.data?.slug === "buyer"
+  );
+
   return (
     <SectionStyled className=" pb-200">
       <Line background={"#1717171a"} />
@@ -15,8 +23,8 @@ export default function ClientSection() {
           <Col lg={3}>
             <SideTitle>
               <VerticalTextWrapper>
-                <VerticalText>STAND WITH US</VerticalText>
-                <VerticalText>GROW WITH US</VerticalText>
+                <VerticalText>{data?.section_data?.short_desc}</VerticalText>
+                <VerticalText>{data?.section_data?.subtitle}</VerticalText>
               </VerticalTextWrapper>
             </SideTitle>
           </Col>
@@ -24,20 +32,24 @@ export default function ClientSection() {
           <Col lg={9}>
             <Row>
               <Col lg={6} className="mb-4 mb-lg-0">
-                <ClientCard
-                  url={"/landowner"}
-                  title="Landowner"
-                  imagePath="/images/dynamic/home/landowner.jpg"
-                  description="Driven by integrity and customer satisfaction, we focus on delivering projects that exceed expectations. From thoughtfully planned communities to we build spaces where families thrive and dreams take shape."
-                />
+                {landowner && (
+                  <ClientCard
+                    url={`${landowner?.data?.slug}`}
+                    title={landowner?.data?.title}
+                    imagePath={landowner?.images?.[0]?.full_path}
+                    description={landowner?.data?.short_desc}
+                  />
+                )}
               </Col>
               <Col lg={6}>
-                <ClientCard
-                  url={"/buyer"}
-                  title="Buyer"
-                  imagePath="/images/dynamic/home/buyer.jpg"
-                  description="Discover thoughtfully designed homes built with quality and community in mind. Our developments provide the perfect foundation for families to grow and create lasting memories in spaces crafted for modern living."
-                />
+              {buyer && (
+                  <ClientCard
+                    url={`${buyer?.data?.slug}`}
+                    title={buyer?.data?.title}
+                    imagePath={buyer?.images?.[0]?.full_path}
+                    description={buyer?.data?.short_desc}
+                  />
+                )}
               </Col>
             </Row>
           </Col>
@@ -60,6 +72,7 @@ const SideTitle = styled.div`
 
 const VerticalTextWrapper = styled.div`
   margin-bottom: 40px;
+  text-transform: uppercase;
   @media (min-width: 992px) {
     position: sticky;
     top: 8rem;

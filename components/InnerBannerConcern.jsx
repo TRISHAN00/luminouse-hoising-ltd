@@ -15,7 +15,7 @@ const InnerBannerConcern = ({ img, color, title, address }) => {
           <Col lg={address ? 7 : 12} md={address ? 7 : 12}>
             <div className="title-container anim-active fade-up">
               <div className="accent-line"></div>
-              <h2>{reactHtmlParser(title)}</h2>
+              <h2>{reactHtmlParser(title || '')}</h2>
               <div className="accent-line right"></div>
             </div>
           </Col>

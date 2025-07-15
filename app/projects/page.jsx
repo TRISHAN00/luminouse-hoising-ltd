@@ -1,6 +1,4 @@
-import ProjectList from "@/components/project/ProjectList";
-import InnerBanner from "../../components/InnerBanner";
-import projects from "../../public/images/dynamic/projects/banner.jpg";
+import ProjectClient from "@/components/client/ProjectsClient";
 
 export const metadata = {
   title: {
@@ -10,11 +8,10 @@ export const metadata = {
     "Luminouse is a software development company in Bangladesh that started its journey with the aim to deliver innovative result-driven software solutions.",
 };
 
-export default async function Portfolio() {
+export default async function page() {
   return (
     <>
-      <InnerBanner img={projects} title={'Projects'} />
-      <ProjectList/>
+     <ProjectClient/>
     </>
   );
 }

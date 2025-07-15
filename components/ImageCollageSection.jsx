@@ -1,14 +1,11 @@
 "use client";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
-import Image from "next/image";
 import { useEffect, useRef } from "react";
-import { Container } from "react-bootstrap";
 import styled from "styled-components";
 
-import img1 from "@/public/images/dynamic/home/high.jpg";
-import img3 from "@/public/images/dynamic/home/medium.jpg";
-import img2 from "@/public/images/dynamic/home/small.jpg";
+import Image from "next/image";
+import { Container } from "react-bootstrap";
 import Line from "./Lines";
 
 // Register ScrollTrigger plugin
@@ -16,7 +13,15 @@ if (typeof window !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 }
 
-const ImageCollageSection = () => {
+const ImageCollageSection = ({ data, projectData }) => {
+  const large = data?.images?.list?.find((f) => f.large === "on");
+  const medium = data?.images?.list?.find((f) => f.medium === "on");
+  const small = data?.images?.list?.find((f) => f.small === "on");
+
+  const large2 = projectData?.images?.find((f) => f.large === "on");
+  const medium2 = projectData?.images?.find((f) => f.medium === "on");
+  const small2 = projectData?.images?.find((f) => f.small === "on");
+
   const sectionRef = useRef(null);
   const img1Ref = useRef(null);
   const img2Ref = useRef(null);
@@ -149,40 +154,48 @@ const ImageCollageSection = () => {
       <Wrapper ref={sectionRef}>
         <Line background={"#1717171a"} />
         <Container className="collage-container">
-          <div className="image-layer image-1">
-            <div className="image-wrapper" ref={img1Ref}>
-              <Image
-                src={img1}
-                alt="Room 1"
-                fill
-                sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 500px"
-                priority
-                style={{ objectFit: "cover" }}
-              />
+          {(large || large2) && (
+            <div className="image-layer image-1">
+              <div className="image-wrapper" ref={img1Ref}>
+                <Image
+                  src={(large?.full_path || large2?.full_path) ?? ""}
+                  alt="Room 1"
+                  fill
+                  sizes="(max-width: 768px) 90vw, (max-width: 1200px) 50vw, 500px"
+                  priority
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </div>
-          </div>
-          <div className="image-layer image-2">
-            <div className="image-wrapper" ref={img2Ref}>
-              <Image
-                src={img2}
-                alt="Room 2"
-                fill
-                sizes="(max-width: 768px) 90vw, (max-width: 1200px) 40vw, 350px"
-                style={{ objectFit: "cover" }}
-              />
+          )}
+
+          {(medium || medium2) && (
+            <div className="image-layer image-2">
+              <div className="image-wrapper" ref={img2Ref}>
+                <Image
+                  src={(medium?.full_path || medium2?.full_path) ?? ""}
+                  alt="Room 2"
+                  fill
+                  sizes="(max-width: 768px) 90vw, (max-width: 1200px) 40vw, 350px"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </div>
-          </div>
-          <div className="image-layer image-3">
-            <div className="image-wrapper" ref={img3Ref}>
-              <Image
-                src={img3}
-                alt="Outside View"
-                fill
-                sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 500px"
-                style={{ objectFit: "cover" }}
-              />
+          )}
+
+          {(small || small2) && (
+            <div className="image-layer image-3">
+              <div className="image-wrapper" ref={img3Ref}>
+                <Image
+                  src={(small?.full_path || small2?.full_path) ?? ""}
+                  alt="Outside View"
+                  fill
+                  sizes="(max-width: 768px) 90vw, (max-width: 1200px) 45vw, 500px"
+                  style={{ objectFit: "cover" }}
+                />
+              </div>
             </div>
-          </div>
+          )}
         </Container>
       </Wrapper>
     </div>

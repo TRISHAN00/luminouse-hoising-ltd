@@ -15,7 +15,7 @@ import Line from "./Lines";
 import Title from "./Title";
 import NewsCard from "./news/NewsCard";
 
-export default function NewsEventsSlider() {
+export default function NewsEventsSlider({data}) {
   const [mounted, setMounted] = useState(false);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
@@ -75,7 +75,7 @@ export default function NewsEventsSlider() {
                 textAlign={"left"}
                 color={"#5B5B5B"}
                 fontSize={"60"}
-                text={"NEWS & EVENTS"}
+                text={data?.section_data?.subtitle}
               />
               <NavigationContainer className="d-flex">
                 <NavigationButton ref={prevRef} className="prev-arrow-news">

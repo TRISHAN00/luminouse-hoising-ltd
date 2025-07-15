@@ -1,34 +1,13 @@
 "use client";
 
 import gsap from "gsap";
+
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
 import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import homeImage1 from "../../public/images/dynamic/home/banner-01.jpg";
-import homeImage2 from "../../public/images/dynamic/home/banner-02.jpg";
-import homeImage3 from "../../public/images/dynamic/home/banner-03.jpg";
-
-// Slide data
-const slides = [
-  {
-    id: 1,
-    image: homeImage1,
-    title: "CRAFTING HOMES,\nBUILDING DREAMS",
-  },
-  {
-    id: 2,
-    image: homeImage2,
-    title: "DESIGNING COMFORT,\nDELIVERING VALUE",
-  },
-  {
-    id: 3,
-    image: homeImage3,
-    title: "INNOVATION MEETS\nARCHITECTURE",
-  },
-];
 
 const BannerContainer = styled.div`
   position: relative;
@@ -84,6 +63,7 @@ const TitleContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin: 0 auto;
 
   h1 {
     font-size: 72px;
@@ -91,10 +71,20 @@ const TitleContainer = styled.div`
     text-align: center;
     color: white;
     white-space: pre-line;
-    font-weight: 300;
-    max-width: 90%;
+    font-weight: 800;
+    max-width: 50%;
     font-family: "Playfair Display", serif;
     letter-spacing: 1px;
+
+    /* Tablet desktop :768px. */
+    @media (min-width: 768px) and (max-width: 991px) {
+      max-width: 90%;
+    }
+
+    /* small mobile :320px. */
+    @media (max-width: 767px) {
+      max-width: 90%;
+    }
   }
 
   .title-line {
@@ -113,6 +103,7 @@ const TitleContainer = styled.div`
     }
   }
 `;
+
 const NavigationArrows = styled.div`
   position: absolute;
   width: 100%;
@@ -122,6 +113,16 @@ const NavigationArrows = styled.div`
   justify-content: space-between;
   padding: 0 32px;
   z-index: 3;
+
+  /* Tablet desktop :768px. */
+  @media (min-width: 768px) and (max-width: 991px) {
+    display: none;
+  }
+
+  /* small mobile :320px. */
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Arrow = styled.button`
@@ -199,7 +200,7 @@ const Tab = styled.button`
   }
 `;
 
-export default function HomeBanner() {
+export default function HomeBanner({ data = [] }) {
   const [activeSlide, setActiveSlide] = useState(0);
   const [activeTab, setActiveTab] = useState("Ongoing");
   const [isTransitioning, setIsTransitioning] = useState(false);
@@ -210,13 +211,32 @@ export default function HomeBanner() {
 
   // Set up refs for each slide
   useEffect(() => {
-    titleRefs.current = titleRefs.current.slice(0, slides.length);
-    imageRefs.current = imageRefs.current.slice(0, slides.length);
-    overlayRefs.current = overlayRefs.current.slice(0, slides.length);
-  }, []);
+    if (data?.length) {
+      titleRefs.current = titleRefs.current.slice(0, data.length);
+      imageRefs.current = imageRefs.current.slice(0, data.length);
+      overlayRefs.current = overlayRefs.current.slice(0, data.length);
+    }
+  }, [data?.length]);
+
+  // Helper function to safely get text content from HTML or plain text
+  const getTextContent = (content) => {
+    if (!content) return "";
+
+    // If it's already plain text, return it
+    if (typeof content === "string" && !content.includes("<")) {
+      return content;
+    }
+
+    // If it contains HTML, strip the tags to get plain text
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = content;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
 
   // Animate the active slide
   const animateSlide = (index) => {
+    if (!data?.length || !titleRefs.current[index]) return;
+
     // Create a timeline for coordinated animations
     const tl = gsap.timeline({
       onComplete: () => setIsTransitioning(false),
@@ -233,53 +253,72 @@ export default function HomeBanner() {
     }
 
     // Setup the new slide elements initial state
-    if (titleRefs.current[index]) {
+    if (
+      titleRefs.current[index] &&
+      (data[index]?.data?.title || data[index]?.data?.description)
+    ) {
       // Clear previous content
       titleRefs.current[index].innerHTML = "";
 
-      // Create lines
-      const titleText = slides[index].title;
-      const lines = titleText.split("\n");
+      // Get the text content (use title first, then description as fallback)
+      const titleText = getTextContent(
+        data[index]?.data?.title || data[index]?.data?.description || ""
+      );
 
-      lines.forEach((line) => {
-        const lineDiv = document.createElement("div");
-        lineDiv.className = "title-line";
+      if (titleText) {
+        // Create lines
+        const lines = titleText
+          .split("\n")
+          .filter((line) => line.trim() !== "");
 
-        const revealSpan = document.createElement("span");
-        revealSpan.className = "reveal-line";
-        revealSpan.textContent = line;
+        lines.forEach((line) => {
+          const lineDiv = document.createElement("div");
+          lineDiv.className = "title-line";
 
-        lineDiv.appendChild(revealSpan);
-        titleRefs.current[index].appendChild(lineDiv);
-      });
+          const revealSpan = document.createElement("span");
+          revealSpan.className = "reveal-line";
+          revealSpan.textContent = line.trim();
+
+          lineDiv.appendChild(revealSpan);
+          titleRefs.current[index].appendChild(lineDiv);
+        });
+      }
 
       // Image animation
-      tl.fromTo(
-        imageRefs.current[index],
-        { scale: 1.1, opacity: 0.8 },
-        { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out" },
-        0
-      );
+      if (imageRefs.current[index]) {
+        tl.fromTo(
+          imageRefs.current[index],
+          { scale: 1.1, opacity: 0.8 },
+          { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out" },
+          0
+        );
+      }
 
       // Overlay animation
-      tl.fromTo(
-        overlayRefs.current[index],
-        { opacity: 0 },
-        { opacity: 1, duration: 0.8, ease: "power2.out" },
-        0.2
-      );
+      if (overlayRefs.current[index]) {
+        tl.fromTo(
+          overlayRefs.current[index],
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8, ease: "power2.out" },
+          0.2
+        );
+      }
 
       // Text animation
-      tl.to(
-        titleRefs.current[index].querySelectorAll(".reveal-line"),
-        {
-          y: 0,
-          duration: 1,
-          ease: "power4.out",
-          stagger: 0.15,
-        },
-        0.4
-      );
+      const revealLines =
+        titleRefs.current[index].querySelectorAll(".reveal-line");
+      if (revealLines.length > 0) {
+        tl.to(
+          revealLines,
+          {
+            y: 0,
+            duration: 1,
+            ease: "power4.out",
+            stagger: 0.15,
+          },
+          0.4
+        );
+      }
     }
   };
 
@@ -295,14 +334,14 @@ export default function HomeBanner() {
     }, 50);
   };
 
-  // Pre-render all slides to avoid blinking
+  // Pre-render all data to avoid blinking
   useEffect(() => {
-    // Only animate on first load
-    if (titleRefs.current[activeSlide]) {
+    // Only animate on first load when data is available
+    if (data?.length && titleRefs.current[activeSlide]) {
       setIsTransitioning(true);
       animateSlide(activeSlide);
     }
-  }, []);
+  }, [data?.length]);
 
   const handlePrev = () => {
     if (swiperRef.current && swiperRef.current.swiper && !isTransitioning) {
@@ -318,6 +357,26 @@ export default function HomeBanner() {
     }
   };
 
+  // Early return if no data
+  if (!data?.length) {
+    return (
+      <BannerContainer>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            color: "white",
+            fontSize: "24px",
+          }}
+        >
+          Loading...
+        </div>
+      </BannerContainer>
+    );
+  }
+
   return (
     <BannerContainer>
       <Swiper
@@ -326,12 +385,16 @@ export default function HomeBanner() {
         spaceBetween={0}
         slidesPerView={1}
         speed={1500}
-        loop={true}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-          pauseOnMouseEnter: true,
-        }}
+        loop={data.length > 1}
+        autoplay={
+          data.length > 1
+            ? {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }
+            : false
+        }
         allowTouchMove={!isTransitioning}
         onSlideChange={handleSlideChange}
         onSwiper={(swiper) => {
@@ -341,66 +404,76 @@ export default function HomeBanner() {
         }}
         className="banner-swiper"
       >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={slide.id}>
-            <SlideWrapper>
-              <ImageWrapper ref={(el) => (imageRefs.current[index] = el)}>
-                <Image
-                  src={slide.image}
-                  alt={`Luxury home design ${index + 1}`}
-                  fill
-                  style={{ objectFit: "cover", zIndex: 0 }}
-                  priority
-                  loading="eager"
-                />
-              </ImageWrapper>
-              <TitleContainer>
-                <h1 ref={(el) => (titleRefs.current[index] = el)}>
-                  {/* Content generated dynamically in animateSlide */}
-                </h1>
-              </TitleContainer>
-              <Overlay ref={(el) => (overlayRefs.current[index] = el)} />
-            </SlideWrapper>
-          </SwiperSlide>
-        ))}
+        {data.map((item, index) => {
+          return (
+            <SwiperSlide key={item?.data?.id || index}>
+              <SlideWrapper>
+                <ImageWrapper ref={(el) => (imageRefs.current[index] = el)}>
+                  {item?.images?.[0]?.full_path && (
+                    <Image
+                      src={item.images[0].full_path}
+                      alt={
+                        item?.data?.title ||
+                        item?.data?.description ||
+                        "Banner image"
+                      }
+                      fill
+                      style={{ objectFit: "cover", zIndex: 0 }}
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  )}
+                </ImageWrapper>
+                <TitleContainer>
+                  <h1 ref={(el) => (titleRefs.current[index] = el)}>
+                    {/* This will be populated by the animateSlide function */}
+                  </h1>
+                </TitleContainer>
+                <Overlay ref={(el) => (overlayRefs.current[index] = el)} />
+              </SlideWrapper>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
 
-      <NavigationArrows>
-        <Arrow
-          onClick={handlePrev}
-          disabled={isTransitioning}
-          aria-label="Previous slide"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
+      {data.length > 1 && (
+        <NavigationArrows>
+          <Arrow
+            onClick={handlePrev}
+            disabled={isTransitioning}
+            aria-label="Previous slide"
           >
-            <path
-              d="M19 12H5M5 12L12 19M5 12L12 5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Arrow>
-        <Arrow
-          onClick={handleNext}
-          disabled={isTransitioning}
-          aria-label="Next slide"
-        >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            fill="none"
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M19 12H5M5 12L12 19M5 12L12 5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Arrow>
+          <Arrow
+            onClick={handleNext}
+            disabled={isTransitioning}
+            aria-label="Next slide"
           >
-            <path
-              d="M5 12H19M19 12L12 5M19 12L12 19"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </Arrow>
-      </NavigationArrows>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M5 12H19M19 12L12 5M19 12L12 19"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Arrow>
+        </NavigationArrows>
+      )}
 
       <TabsContainer>
         {["Ongoing", "Upcoming", "Completed"].map((tab) => (

@@ -2,64 +2,48 @@
 import { Col, Container, Row } from "react-bootstrap";
 import { BsCameraVideoFill, BsShieldCheck, BsWifi } from "react-icons/bs";
 import { FaCarSide, FaDoorClosed, FaSwimmingPool } from "react-icons/fa";
-import { MdOutlineAir, MdOutlineDesignServices, MdOutlineElevator, MdOutlinePower } from "react-icons/md";
+import {
+  MdOutlineAir,
+  MdOutlineDesignServices,
+  MdOutlineElevator,
+  MdOutlinePower,
+} from "react-icons/md";
 import styled from "styled-components";
 import Title from "../Title";
 
-export default function FeaturedAmenities() {
-  // Define the amenities data
-  const amenities = [
-    {
-      icon: <BsCameraVideoFill color="#171717" fontSize={60} />,
-      title: "CCTV",
-      description: "Monitoring"
-    },
-    {
-      icon: <MdOutlinePower color="#171717" fontSize={60} />,
-      title: "24 Hours",
-      description: "Power Backup"
-    },
-    {
-      icon: <MdOutlineElevator color="#171717" fontSize={60} />,
-      title: "High Quality",
-      description: "Lift"
-    },
-    {
-      icon: <BsShieldCheck color="#171717" fontSize={60} />,
-      title: "High",
-      description: "Security"
-    },
-    {
-      icon: <FaCarSide color="#171717" fontSize={60} />,
-      title: "Wide Parking",
-      description: "Area"
-    },
-    {
-      icon: <MdOutlineDesignServices color="#171717" fontSize={60} />,
-      title: "Modern Exterior",
-      description: "Design"
-    },
-    {
-      icon: <BsWifi color="#171717" fontSize={60} />,
-      title: "In House Wi-Fi",
-      description: "Connection"
-    },
-    {
-      icon: <FaDoorClosed color="#171717" fontSize={60} />,
-      title: "Digital Security",
-      description: "System"
-    },
-    {
-      icon: <MdOutlineAir color="#171717" fontSize={60} />,
-      title: "Space for Open Party",
-      description: "on Roof"
-    },
-    {
-      icon: <FaSwimmingPool color="#171717" fontSize={60} />,
-      title: "Roof Top",
-      description: "Swimming Pool"
-    }
-  ];
+export default function FeaturedAmenities({ amenitiesData }) {
+  // Icon mapping based on the titles from your data
+  const getIconForTitle = (title) => {
+    const iconMap = {
+      CCTV: <BsCameraVideoFill color="#171717" fontSize={60} />,
+      "24 Hours": <MdOutlinePower color="#171717" fontSize={60} />,
+      "High Quality": <MdOutlineElevator color="#171717" fontSize={60} />,
+      High: <BsShieldCheck color="#171717" fontSize={60} />,
+      "Wide Parking": <FaCarSide color="#171717" fontSize={60} />,
+      "Modern Exterior": (
+        <MdOutlineDesignServices color="#171717" fontSize={60} />
+      ),
+      "In House Wi-Fi": <BsWifi color="#171717" fontSize={60} />,
+      "Digital Security": <FaDoorClosed color="#171717" fontSize={60} />,
+      "Space for Open Party": <MdOutlineAir color="#171717" fontSize={60} />,
+      "Roof Top": <FaSwimmingPool color="#171717" fontSize={60} />,
+    };
+
+    return (
+      iconMap[title] || (
+        <MdOutlineDesignServices color="#171717" fontSize={60} />
+      )
+    );
+  };
+
+  // Transform the API data into the format needed for rendering
+  const amenities =
+    amenitiesData?.map((item) => ({
+      icon: getIconForTitle(item.short_title),
+      title: item.short_title,
+      description: item.short_desc,
+      imageUrl: item.full_path, // In case you want to use the SVG images from the API instead of icons
+    })) || [];
 
   // Group amenities into rows of 4
   const chunkArray = (arr, size) => {
@@ -77,7 +61,12 @@ export default function FeaturedAmenities() {
       <Container>
         <Row>
           <Col lg={12}>
-            <Title center color={"#5B5B5B"} fontSize={"60"} text={"FEATURED AMENITIES"} />
+            <Title
+              center
+              color={"#5B5B5B"}
+              fontSize={"60"}
+              text={"FEATURED AMENITIES"}
+            />
           </Col>
         </Row>
 
@@ -85,7 +74,14 @@ export default function FeaturedAmenities() {
           {amenitiesRows.map((row, rowIndex) => (
             <Row key={`row-${rowIndex}`} className="amenity-row">
               {row.map((amenity, index) => (
-                <Col className="p-0" key={`amenity-${rowIndex}-${index}`} xs={6} sm={6} md={3} lg={3}>
+                <Col
+                  className="p-0"
+                  key={`amenity-${rowIndex}-${index}`}
+                  xs={6}
+                  sm={6}
+                  md={3}
+                  lg={3}
+                >
                   <div className="amenity-card">
                     {amenity.icon}
                     <h4>{amenity.title}</h4>
@@ -151,15 +147,15 @@ const FeaturedAmenitiesStyled = styled.section`
   @media (max-width: 768px) {
     .amenity-card {
       height: 220px;
-      
+
       svg {
         font-size: 40px !important;
       }
-      
+
       h4 {
         font-size: 18px;
       }
-      
+
       p {
         font-size: 14px;
       }
@@ -169,15 +165,15 @@ const FeaturedAmenitiesStyled = styled.section`
   @media (max-width: 576px) {
     .amenity-card {
       height: 180px;
-      
+
       svg {
         font-size: 30px !important;
       }
-      
+
       h4 {
         font-size: 16px;
       }
-      
+
       p {
         font-size: 12px;
       }

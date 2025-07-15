@@ -1,11 +1,11 @@
 // CompanyPage.jsx
 import Image from 'next/image';
 import {
-    Card,
-    Col,
-    Container,
-    ListGroup,
-    Row
+  Card,
+  Col,
+  Container,
+  ListGroup,
+  Row
 } from 'react-bootstrap';
 import styled from 'styled-components';
 

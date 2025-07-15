@@ -1,31 +1,77 @@
-// "use client" ❌ REMOVE THIS LINE
+// app/page.jsx
+import LoadingSpinner from "@/components/LoadingSpinner";
 
-import { getHomeApi } from "@/api/home";
+import { getApi } from "@/api/home.js";
 import Team from "@/components/about/Team";
 import InnerBanner from "@/components/InnerBanner";
 import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
 import BOD from "../../components/about/BOD";
-import aboutImg from '../../public/images/dynamic/about/about.jpg';
 
-export const metadata = {
-  title: {
-    default: "About Us | Luminouse Housing Limited",
-  },
-  description:
-    "Dcastalia is a software development company in Bangladesh that started its journey with the aim to deliver innovative result-driven software solutions.",
-};
+export async function metadata() {
+  const getData = await getApi("about-us");
+  const banner = getData?.data?.sections?.find(
+    (f) => f.section_data?.slug == "about-banner"
+  );
 
-export default async function About() {
-  const getHomeData = await getHomeApi();
+  return {
+    title: {
+      default: `${getData?.data?.page_data?.meta_title}`,
+    },
+    description: `${getData?.data?.page_data?.meta_description}`,
+    openGraph: {
+      title: `${getData?.data?.page_data?.og_title}`,
+      description: `${getData?.data?.page_data?.og_description}`,
+      images: [
+        {
+          url: `${banner?.images?.list?.[0]?.full_path}`,
+          alt: `${getData?.data?.page_data?.meta_title}`,
+        },
+      ],
+    },
+  };
+}
 
+export default async function AboutPage() {
+  const apiValue = "about-us";
+  const aboutData = await getApi(apiValue);
+
+  if (!aboutData) return <LoadingSpinner />;
+
+  const banner = aboutData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "about-banner"
+  );
+
+  const overview = aboutData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "about-overview"
+  );
+
+  const missionVision = aboutData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "mission-vision"
+  );
+
+  const large = missionVision?.images?.list?.find((f) => f.large === "on");
+  const medium = missionVision?.images?.list?.find((f) => f.medium === "on");
+
+  const directors = aboutData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "directors"
+  );
+
+  const ourTeam = aboutData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "our-team"
+  );
+
+  if (!aboutData) return <LoadingSpinner />;
   return (
     <>
-      <InnerBanner img={aboutImg} title={'About Us'} />
-      <Overview />
-      <MissionVision />
-      <BOD/>
-      <Team/>
+      <InnerBanner
+        img={banner?.images?.list?.[0]?.full_path}
+        title={banner?.section_data?.subtitle}
+      />
+      <Overview data={overview} />
+      <MissionVision data={missionVision} large={large} medium={medium} />
+      <BOD data={directors} />
+      <Team data={ourTeam} />
     </>
   );
 }

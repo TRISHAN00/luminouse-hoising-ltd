@@ -1,79 +1,69 @@
 "use client";
+
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
+import Button from "../Button";
+import LoadingSpinner from "../LoadingSpinner";
 import ProjectCard from "../ProjectCard";
 
-import project1 from "../../public/images/dynamic/projects/project-01.jpg";
-import project2 from "../../public/images/dynamic/projects/project-02.jpg";
-import project3 from "../../public/images/dynamic/projects/project-03.jpg";
-import Button from "../Button";
-
-export default function ProjectList() {
-  // Sample options for each filter
-  const projectTypeOptions = [
-    { value: "residential", label: "Residential" },
-    { value: "commercial", label: "Commercial" },
-    { value: "industrial", label: "Industrial" },
-  ];
-
-  const statusOptions = [
-    { value: "planning", label: "Planning" },
-    { value: "in_progress", label: "In Progress" },
-    { value: "completed", label: "Completed" },
-  ];
-
-  const locationOptions = [
-    { value: "north", label: "North Region" },
-    { value: "south", label: "South Region" },
-    { value: "east", label: "East Region" },
-    { value: "west", label: "West Region" },
-  ];
-
-  // State for each dropdown
+export default function ProjectList({ data }) {
   const [isProjectTypeOpen, setIsProjectTypeOpen] = useState(false);
   const [isStatusOpen, setIsStatusOpen] = useState(false);
   const [isLocationOpen, setIsLocationOpen] = useState(false);
 
-  // State for selected values
   const [selectedProjectType, setSelectedProjectType] = useState(null);
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
-  // Projects data matching the example image
-  const projects = [
-    {
-      id: 1,
-      title: "Luminous Jesmin Tower",
-      location: "Dhanmondi, Dhaka",
-      image: project1,
-      detailImage: project1,
-    },
-    {
-      id: 2,
-      title: "Luminous Hamid Heights",
-      location: "Oxygen More, Chittagong",
-      image: project2,
-      detailImage: project2,
-    },
-    {
-      id: 3,
-      title: "Luminous Harmony",
-      location: "Banani, Dhaka",
-      image: project3,
-      detailImage: project3,
-    },
-    {
-      id: 4,
-      title: "Luminous Jesmin Tower",
-      location: "Dhanmondi, Dhaka",
-      image: project1,
-      detailImage: project1,
-    },
-    // Add more projects as needed
+  const projectsRaw = data?.data || [];
+
+  // Extract dynamic filter options with "All" option
+  const projectTypeOptions = [
+    { value: null, label: "All" },
+    ...Array.from(
+      new Set(projectsRaw.map(p => p.product_data?.type).filter(Boolean))
+    ).map(type => ({ value: type, label: capitalize(type) }))
   ];
 
-  // Close dropdowns when clicking outside
+  const statusOptions = [
+    { value: null, label: "All" },
+    ...Array.from(
+      new Set(projectsRaw.map(p => p.product_data?.status).filter(Boolean))
+    ).map(status => ({ value: status, label: capitalize(status) }))
+  ];
+
+  const locationOptions = [
+    { value: null, label: "All" },
+    ...Array.from(
+      new Set(projectsRaw.map(p => p.product_data?.location).filter(Boolean))
+    ).map(location => ({ value: location, label: location }))
+  ];
+
+  // Transform and filter projects
+  const projects = projectsRaw
+    .map(item => {
+      const pd = item.product_data;
+      const img = item.images?.list?.[0]?.full_path || "/placeholder.jpg";
+      return {
+        id: pd.id,
+        title: pd.title,
+        slug: pd.slug,
+        location: pd.location,
+        type: pd.type,
+        status: pd.status,
+        image: img,
+        detailImage: img,
+      };
+    })
+    .filter(project => {
+      return (
+        (!selectedProjectType || selectedProjectType.value === null || project.type === selectedProjectType.value) &&
+        (!selectedStatus || selectedStatus.value === null || project.status === selectedStatus.value) &&
+        (!selectedLocation || selectedLocation.value === null || project.location === selectedLocation.value)
+      );
+    });
+
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (!event.target.closest(".dropdown-container")) {
@@ -89,11 +79,13 @@ export default function ProjectList() {
     };
   }, []);
 
+  if (!data) return <LoadingSpinner />;
+
   return (
     <ProjectListStyled>
       <Container>
         <Row className="filters-row">
-          {/* Project Type Dropdown */}
+          {/* Project Type */}
           <Col lg={4} md={4} sm={12}>
             <DropdownContainer className="dropdown-container">
               <DropdownHeader
@@ -104,19 +96,8 @@ export default function ProjectList() {
                   Project Type
                 </HeaderText>
                 <ArrowIcon isOpen={isProjectTypeOpen}>
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </ArrowIcon>
               </DropdownHeader>
@@ -127,7 +108,7 @@ export default function ProjectList() {
                 <DropdownMenu>
                   {projectTypeOptions.map((option) => (
                     <MenuItem
-                      key={option.value}
+                      key={option.value || 'all'}
                       isSelected={selectedProjectType?.value === option.value}
                       onClick={() => {
                         setSelectedProjectType(option);
@@ -142,7 +123,7 @@ export default function ProjectList() {
             </DropdownContainer>
           </Col>
 
-          {/* Status Dropdown */}
+          {/* Status */}
           <Col lg={4} md={4} sm={12}>
             <DropdownContainer className="dropdown-container">
               <DropdownHeader
@@ -151,19 +132,8 @@ export default function ProjectList() {
               >
                 <HeaderText isSelected={selectedStatus}>Status</HeaderText>
                 <ArrowIcon isOpen={isStatusOpen}>
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </ArrowIcon>
               </DropdownHeader>
@@ -174,7 +144,7 @@ export default function ProjectList() {
                 <DropdownMenu>
                   {statusOptions.map((option) => (
                     <MenuItem
-                      key={option.value}
+                      key={option.value || 'all'}
                       isSelected={selectedStatus?.value === option.value}
                       onClick={() => {
                         setSelectedStatus(option);
@@ -189,7 +159,7 @@ export default function ProjectList() {
             </DropdownContainer>
           </Col>
 
-          {/* Location Dropdown */}
+          {/* Location */}
           <Col lg={4} md={4} sm={12}>
             <DropdownContainer className="dropdown-container">
               <DropdownHeader
@@ -198,19 +168,8 @@ export default function ProjectList() {
               >
                 <HeaderText isSelected={selectedLocation}>Location</HeaderText>
                 <ArrowIcon isOpen={isLocationOpen}>
-                  <svg
-                    width="16"
-                    height="16"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M19 9l-7 7-7-7"
-                    ></path>
+                  <svg width="16" height="16" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 9l-7 7-7-7" />
                   </svg>
                 </ArrowIcon>
               </DropdownHeader>
@@ -221,7 +180,7 @@ export default function ProjectList() {
                 <DropdownMenu>
                   {locationOptions.map((option) => (
                     <MenuItem
-                      key={option.value}
+                      key={option.value || 'all'}
                       isSelected={selectedLocation?.value === option.value}
                       onClick={() => {
                         setSelectedLocation(option);
@@ -236,24 +195,24 @@ export default function ProjectList() {
             </DropdownContainer>
           </Col>
         </Row>
+
         <Row className="projects-wrap">
-          {projects.map((project) => (
-            <Col
-              className="single-project"
-              key={project.id}
-              lg={4}
-              md={6}
-              sm={12}
-            >
-              <ProjectCard project={project} />
-            </Col>
-          ))}
+          {projects.length > 0 ? (
+            projects.map((project) => (
+              <Col key={project.id} lg={4} md={6} sm={12} className="single-project">
+                <ProjectCard project={project} />
+              </Col>
+            ))
+          ) : (
+            <Col><p>No projects found matching your filters.</p></Col>
+          )}
         </Row>
+
         <div className="loadMore-btn">
           <Button
-            border={"1px solid #0288D1"}
-            hoverBackground={"#0288D1"}
-            text={"Learn More"}
+            border="1px solid #0288D1"
+            hoverBackground="#0288D1"
+            text="Learn More"
           />
         </div>
       </Container>
@@ -261,7 +220,12 @@ export default function ProjectList() {
   );
 }
 
-// Styled Components
+// Helper
+function capitalize(str) {
+  return str.charAt(0).toUpperCase() + str.slice(1);
+}
+
+// Styled Components (same as before)
 const ProjectListStyled = styled.section`
   padding: 80px 0;
   color: #5b5b5b;
@@ -383,3 +347,4 @@ const MenuItem = styled.div`
     color: #171717;
   }
 `;
+

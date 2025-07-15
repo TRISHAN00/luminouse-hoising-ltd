@@ -7,7 +7,7 @@ import styled from "styled-components";
 import Button from "./Button";
 import Title from "./Title";
 
-export default function CallbackRequestForm() {
+export default function CallbackRequestForm({ data }) {
   const arrow = <FiArrowRight color="#fff" />;
   const [formData, setFormData] = useState({
     name: "",
@@ -35,7 +35,11 @@ export default function CallbackRequestForm() {
       <Container>
         <Col lg={12}>
           <div className="contact-title">
-            <Title color={"#FFF"} fontSize={"60"} text={"CONTACT WITH US"} />
+            <Title
+              color={"#FFF"}
+              fontSize={"60"}
+              text={data?.section_data?.subtitle}
+            />
           </div>
         </Col>
         <Col lg={{ offset: 2, span: 8 }}>
@@ -219,7 +223,7 @@ const StyledInput = styled.input`
   &:focus + ${InputLine}::after {
     transform: scaleX(1);
   }
-  
+
   /* Handle browser autofill styling */
   &:-webkit-autofill,
   &:-webkit-autofill:hover,
@@ -251,7 +255,7 @@ const StyledTextarea = styled.textarea`
   &:focus + ${InputLine}::after {
     transform: scaleX(1);
   }
-  
+
   /* Handle browser autofill styling */
   &:-webkit-autofill,
   &:-webkit-autofill:hover,

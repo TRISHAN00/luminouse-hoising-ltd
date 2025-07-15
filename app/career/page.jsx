@@ -1,6 +1,4 @@
-// "use client" ❌ REMOVE THIS LINE
 
-import { getHomeApi } from "@/api/home";
 import CareerForm from "@/components/career/CareerForm";
 import InnerBanner from "@/components/InnerBanner";
 import Overview from "@/components/Overview";
@@ -15,8 +13,6 @@ export const metadata = {
 };
 
 export default async function Career() {
-  const getHomeData = await getHomeApi();
-
   return (
     <>
       <InnerBanner img={landownerImage} title={"Career"} />

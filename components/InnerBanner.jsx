@@ -9,7 +9,9 @@ const InnerBanner = ({ img, text, title }) => {
     <StyledInnerBanner className="InnerBanner">
       <Img banner={true} src={img} />
       <Container>
-        <h2 className={`anim-active fade-up`}>{reactHtmlParser(title)}</h2>
+        <h2 className={`anim-active fade-up`}>
+          {reactHtmlParser(title || "")}
+        </h2>
       </Container>
     </StyledInnerBanner>
   );

@@ -5,7 +5,7 @@ const nextConfig = {
     },
     reactStrictMode: false,
     images: {
-        domains: ['bestinbd.com', 'cms.tropicalhomesltd.com'],
+        domains: ['luminoushousingltd.com'],
     },
     transpilePackages: ['swiper', 'lucide-react']
 };

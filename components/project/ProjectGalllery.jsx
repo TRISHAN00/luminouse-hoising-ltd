@@ -2,9 +2,6 @@
 import { useEffect, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
-import gallery1 from '../../public/images/dynamic/home/banner-01.jpg';
-import gallery2 from '../../public/images/dynamic/home/banner-02.jpg';
-import gallery3 from '../../public/images/dynamic/home/build-dream-01.jpg';
 import Title from "../Title";
 
 // Import the core lightgallery styles
@@ -17,35 +14,48 @@ import lgThumbnail from "lightgallery/plugins/thumbnail";
 import lgZoom from "lightgallery/plugins/zoom";
 import LightGallery from "lightgallery/react";
 
-// Sample gallery items - replace with your actual images
-const galleryItems = [
-  { id: 1, src: gallery1, alt: "Gallery Image 1", ratio: "4/3" },
-  { id: 2, src: gallery2, alt: "Gallery Image 2", ratio: "1/1" },
-  { id: 3, src: gallery3, alt: "Gallery Image 3", ratio: "3/4" },
-  { id: 4, src: gallery2, alt: "Gallery Image 4", ratio: "16/9" },
-  { id: 5, src: gallery3, alt: "Gallery Image 5", ratio: "1/1" },
-  { id: 6, src: gallery2, alt: "Gallery Image 6", ratio: "3/2" },
-  { id: 7, src: gallery3, alt: "Gallery Image 1", ratio: "4/3" },
-  { id: 8, src: gallery2, alt: "Gallery Image 2", ratio: "1/1" },
-  { id: 9, src: gallery1, alt: "Gallery Image 3", ratio: "3/4" },
-  { id: 10, src: gallery2, alt: "Gallery Image 4", ratio: "16/9" },
-  { id: 11, src: gallery3, alt: "Gallery Image 5", ratio: "1/1" },
-  { id: 12, src: gallery2, alt: "Gallery Image 6", ratio: "3/2" },
-];
-
-export default function ProjectGallery() {
+export default function ProjectGallery({ data }) {
+  console.log(data);
+  
   const onInit = () => {
     console.log("lightGallery has been initialized");
   };
 
   // For SSR compatibility
   const [mounted, setMounted] = useState(false);
-  
+
   useEffect(() => {
     setMounted(true);
   }, []);
 
-  // Helper function to handle image paths in Next.js
+  // Function to determine aspect ratio based on image dimensions
+  const getAspectRatio = (dimension) => {
+    if (!dimension || dimension === 'x') return '1/1';
+    
+    const [width, height] = dimension.split('x').map(Number);
+    if (!width || !height) return '1/1';
+    
+    const ratio = width / height;
+    
+    // Define ratio categories
+    if (ratio > 1.7) return '16/9';  // Wide landscape
+    if (ratio > 1.4) return '3/2';   // Medium landscape
+    if (ratio > 1.1) return '4/3';   // Standard landscape
+    if (ratio > 0.9) return '1/1';   // Square-ish
+    if (ratio > 0.7) return '3/4';   // Portrait
+    return '3/4'; // Tall portrait
+  };
+
+  // Transform API data into gallery items
+  const galleryItems = data?.images?.map((image, index) => ({
+    id: image.id,
+    src: image.full_path,
+    alt: image.img_alt || `Gallery Image ${index + 1}`,
+    ratio: getAspectRatio(image.dimension),
+    dimension: image.dimension
+  })) || [];
+
+  // Helper function to handle image paths
   const getImagePath = (img) => {
     if (!img) return "";
     return img.src || img;
@@ -61,12 +71,12 @@ export default function ProjectGallery() {
                 center
                 color={"#5B5B5B"}
                 fontSize={"60"}
-                text={"GALLERY"}
+                text={data?.data?.title || "GALLERY"}
               />
             </div>
           </Col>
           <Col lg={12}>
-            {mounted && (
+            {mounted && galleryItems.length > 0 && (
               <LightGallery
                 elementClassNames="masonry-gallery"
                 onInit={onInit}
@@ -74,21 +84,29 @@ export default function ProjectGallery() {
                 plugins={[lgThumbnail, lgZoom]}
                 mode="lg-fade"
               >
-                {galleryItems.map((item) => (
-                  <a 
-                    href={getImagePath(item.src)} 
-                    key={item.id}
-                    className="gallery-item"
-                    data-ratio={item.ratio}
-                  >
-                    <img 
-                      src={getImagePath(item.src)} 
-                      alt={item.alt} 
-                      className="img-responsive"
-                    />
-                  </a>
-                ))}
+                {galleryItems.map((item) => {
+                  return (
+                    <a
+                      href={getImagePath(item.src)}
+                      key={item.id}
+                      className="gallery-item"
+                      data-ratio={item.ratio}
+                    >
+                      <img
+                        src={getImagePath(item.src)}
+                        alt={item.alt}
+                        className="img-responsive"
+                        loading="lazy"
+                      />
+                    </a>
+                  );
+                })}
               </LightGallery>
+            )}
+            {(!galleryItems || galleryItems.length === 0) && (
+              <div className="no-images">
+                <p>No gallery images available.</p>
+              </div>
             )}
           </Col>
         </Row>
@@ -105,12 +123,19 @@ const ProjectGalleryStyled = styled.section`
     margin-bottom: 40px;
   }
 
+  .no-images {
+    text-align: center;
+    padding: 40px;
+    color: #999;
+    font-size: 18px;
+  }
+
   .masonry-gallery {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     grid-auto-rows: 10px;
     grid-gap: 15px;
-    
+
     .gallery-item {
       display: block;
       overflow: hidden;
@@ -119,38 +144,57 @@ const ProjectGalleryStyled = styled.section`
       transition: transform 0.3s ease;
       cursor: pointer;
       position: relative;
-      
+
       &[data-ratio="1/1"] {
         grid-row-end: span 25;
       }
-      
+
       &[data-ratio="4/3"] {
         grid-row-end: span 20;
       }
-      
+
       &[data-ratio="3/4"] {
         grid-row-end: span 30;
       }
-      
+
       &[data-ratio="16/9"] {
         grid-row-end: span 15;
       }
-      
+
       &[data-ratio="3/2"] {
         grid-row-end: span 18;
       }
-      
+
       img {
         width: 100%;
         height: 100%;
         object-fit: cover;
         display: block;
+        transition: transform 0.3s ease;
       }
-      
+
       &:hover {
         transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+        
+        img {
+          transform: scale(1.05);
+        }
       }
+    }
+  }
+
+  @media (max-width: 768px) {
+    .masonry-gallery {
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-gap: 10px;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .masonry-gallery {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 8px;
     }
   }
 `;

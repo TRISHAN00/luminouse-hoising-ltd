@@ -1,6 +1,3 @@
-// "use client" ❌ REMOVE THIS LINE
-
-import { getHomeApi } from "@/api/home";
 import ContactInfo from "@/components/contact/ContactInfo";
 import ContactSection from "@/components/ContactSection";
 import InnerBanner from "@/components/InnerBanner";
@@ -15,13 +12,11 @@ export const metadata = {
 };
 
 export default async function Landowner() {
-  const getHomeData = await getHomeApi();
-
   return (
     <>
       <InnerBanner img={landownerImage} title={"Contact"} />
-      <ContactInfo/>
-      <ContactSection/>
+      <ContactInfo />
+      <ContactSection />
     </>
   );
 }

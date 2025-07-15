@@ -1,14 +1,6 @@
-import { getProjectDetailApi } from "@/api/project";
-import AtaGlance from "@/components/AtaGlance";
-import ContactSection from "@/components/ContactSection";
-import ImageCollageSection from "@/components/ImageCollageSection";
-import FeaturedAmenities from "@/components/project/FeaturedAmenities";
-import InnerBannerDetail from "@/components/project/InnerBannerDetail";
-import ProjectGalllery from "@/components/project/ProjectGalllery";
-import banner from "../../../public/images/dynamic/home/banner-01.jpg";
+import ProjectDetailClient from "@/components/client/ProjectDetailClient";
 
-export async function generateMetadata({ params, searchParams }, parent) {
-  const PortfolioData = await getProjectDetailApi(params.slug);
+export async function generateMetadata() {
   return {
     title: {
       default: `Luminouse Jesmin Tower | Luminouse Housing Limited`,
@@ -18,16 +10,6 @@ export async function generateMetadata({ params, searchParams }, parent) {
   };
 }
 
-export default async function PortfolioDetail({ params }) {
-  const PortfolioData = await getProjectDetailApi(params.slug);
-  return (
-    <div className={"project-detail"}>
-      <InnerBannerDetail img={banner} title={"Luminous Jesmin Tower"} />
-      <AtaGlance />
-      <ImageCollageSection/>
-      <FeaturedAmenities/>
-      <ProjectGalllery/>
-      <ContactSection/>
-    </div>
-  );
+export default async function PortfolioDetail() {
+  return <ProjectDetailClient />;
 }

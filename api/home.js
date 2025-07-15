@@ -1,21 +1,13 @@
-import axios from "axios";
-
-// home page data
-export async function getHomeApi() {
-    try {
-        const response = await axios.get('https://jsonplaceholder.typicode.com/posts');
-        return response.data
-    } catch (error) {
-        console.error(error);
+// /api/home.js
+export async function getApi(param) {
+  const response = await fetch(
+    `https://luminoushousingltd.com/cms/api/get-req-data/sections?type=slug&value=${param}&get_section=yes&image=yes&post=yes&file=no&gallery=no`,
+    {
+      cache: "no-store",
     }
-}
-
-// features blog data
-export async function GetBlogApi() {
-    try {
-        const response = await axios.get('https://bestinbd.com/projects/web/dmblog/wp-json/getFeaturedBlogList/all');
-        return response.data
-    } catch (error) {
-        console.error(error);
-    }
+  );
+  if (!response.ok) {
+    throw new Error(`HTTP error! status: ${response.status}`);
+  }
+  return response.json();
 }

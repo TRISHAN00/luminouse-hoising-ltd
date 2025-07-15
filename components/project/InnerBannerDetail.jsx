@@ -5,7 +5,7 @@ import { Container } from "react-bootstrap";
 import styled from "styled-components";
 import BreakCrumb from "../BreakCrumb";
 
-const InnerBannerDetail = ({ img, text, title }) => {
+const InnerBannerDetail = ({ img, text, title, data }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   // Split the title into words or by HTML tags if present
@@ -84,7 +84,7 @@ const InnerBannerDetail = ({ img, text, title }) => {
             </SplitWord>
           ))}
         </h2>
-        <BreakCrumb />
+        <BreakCrumb data={data} />
       </Container>
     </StyledInnerBanner>
   );

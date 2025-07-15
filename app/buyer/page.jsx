@@ -1,13 +1,6 @@
 // "use client" ❌ REMOVE THIS LINE
 
-import { getHomeApi } from "@/api/home";
-import InnerBanner from "@/components/InnerBanner";
-import LandownerForm from "@/components/landowner/LandownerForm";
-import MissionVision from "@/components/MissionVision";
-import Overview from "@/components/Overview";
-import Testimonial from "@/components/Testimonial";
-import TestimonialVideoSection from "../../components/TestimonialVideo";
-import landownerImage from "../../public/images/dynamic/landowner/banner.jpg";
+import BuyerClient from "@/components/client/BuyerClient";
 
 export const metadata = {
   title: {
@@ -18,16 +11,9 @@ export const metadata = {
 };
 
 export default async function Buyer() {
-  const getHomeData = await getHomeApi();
-
   return (
     <>
-      <InnerBanner img={landownerImage} title={"Buyer"} />
-      <Overview />
-      <MissionVision isMissionVision />
-      <LandownerForm />
-      <TestimonialVideoSection/>
-      <Testimonial/>
+      <BuyerClient/>
     </>
   );
 }

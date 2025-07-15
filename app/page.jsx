@@ -1,5 +1,7 @@
+// app/page.jsx
+import LoadingSpinner from "@/components/LoadingSpinner";
 
-import { getHomeApi } from "@/api/home";
+import { getApi } from "@/api/home.js";
 import CallbackRequestForm from "@/components/Contact";
 import Banner from "@/components/home/Banner";
 import Client from "@/components/home/Client";
@@ -9,28 +11,72 @@ import ImageCollageSection from "@/components/ImageCollageSection";
 import NewsEventsSlider from "@/components/NewsEventsSlider";
 import Overview from "@/components/Overview";
 
-export const metadata = {
-  title: {
-    default: "Luminouse Housing Limited",
-  },
-  description:
-    "Dcastalia is a software development company in Bangladesh that started its journey with the aim to deliver innovative result-driven software solutions.",
-};
+export async function metadata() {
+  const getData = await getApi("home");
+  const banner = getData?.data?.sections?.find(
+    (f) => f.section_data?.slug == "banner"
+  );
 
-export default async function Home() {
-  const getHomeData = await getHomeApi();
+  return {
+    title: {
+      default: `${getData?.data?.page_data?.meta_title}`,
+    },
+    description: `${getData?.data?.page_data?.meta_description}`,
+    openGraph: {
+      title: `${getData?.data?.page_data?.og_title}`,
+      description: `${getData?.data?.page_data?.og_description}`,
+      images: [
+        {
+          url: `${banner?.images?.list?.[0]?.full_path}`,
+          alt: `${getData?.data?.page_data?.meta_title}`,
+        },
+      ],
+    },
+  };
+}
 
+export default async function HomePage() {
+  const apiValue = "home";
+  const homeData = await getApi(apiValue);
 
+  if (!homeData) return <LoadingSpinner />;
+
+  const bannerData = homeData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "banner"
+  )?.posts?.list;
+
+  const overview = homeData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "about"
+  );
+
+  const featureTitle = homeData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "featured-projects"
+  );
+  const dream = homeData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "vision-statement"
+  );
+
+  const landownerBuyer = homeData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "growth-values"
+  );
+
+  const contactUs = homeData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "contact-with-us"
+  );
+
+  const newsEvent = homeData?.data?.sections?.find(
+    (f) => f?.section_data?.slug === "news-events"
+  );
   return (
     <>
-      <Banner/>
-      <Overview title={'BUILDING BRIGHTER FUTURES WITH EXCELLENCE IN REAL ESTATE DEVELOPMENT'} />
-      <ImageCollageSection/>
-      <FeatureSlider/>
-      <Dream />
-      <Client/>
-      <CallbackRequestForm/>
-      <NewsEventsSlider/>
+      <Banner data={bannerData} />
+      <Overview data={overview} />
+      <ImageCollageSection data={overview} />
+      <FeatureSlider title={featureTitle} />
+      <Dream data={dream} />
+      <Client data={landownerBuyer} />
+      <CallbackRequestForm data={contactUs} />
+      <NewsEventsSlider data={newsEvent} />
     </>
   );
 }

@@ -4,7 +4,7 @@ import styled from "styled-components";
 
 export default function ProjectCard({project}) {
   return (
-    <Link href={`/projects/${project.id}`} aria-label={`View ${project.title} project details`}>
+    <Link href={`/projects/${project.slug}`} aria-label={`View ${project.title} project details`}>
       <ProjectItem>
         <ImageContainer>
           <Image

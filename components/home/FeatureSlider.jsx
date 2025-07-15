@@ -50,19 +50,22 @@ const projects = [
   // Add more projects as needed
 ];
 
-export default function FeatureSlider() {
+export default function FeatureSlider({ title }) {
+  console.log(title?.section_data?.subtitle);
   return (
     <SliderSection>
       <Line background={"#1717171a"} />
       <Container>
         <Row>
           <Col className="feature-title" lg={{ offset: 2, span: 8 }}>
-            <Title
-              center
-              color={"#5B5B5B"}
-              fontSize={"60"}
-              text={"DISCOVER OUR EXCLUSIVE CREATION OF FEATURED PROJECTS"}
-            />
+            {title?.section_data?.subtitle && (
+              <Title
+                center
+                color={"#5B5B5B"}
+                fontSize={"60"}
+                text={title?.section_data?.subtitle}
+              />
+            )}
           </Col>
         </Row>
         <Row>

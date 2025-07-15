@@ -11,9 +11,6 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import person01 from "../public/images/dynamic/landowner/person-01.jpg";
-import person02 from "../public/images/dynamic/landowner/person-02.jpg";
-import person03 from "../public/images/dynamic/landowner/person-03.jpg";
 import bgImage from "../public/images/dynamic/landowner/testimonial-bg.jpg";
 import { Img } from "./Img";
 
@@ -50,40 +47,9 @@ const BirdIcon2 = () => (
   </svg>
 );
 
-// Sample testimonial data
-const testimonials = [
-  {
-    id: 1,
-    name: "Brig. General Julfikar (Retd)",
-    position: "Landowner",
-    image: person01,
-    content:
-      "Committed to integrity and excellence, we create modern, sustainable communities that enhance lifestyles and provide lasting value. Committed to integrity and excellence, we create modern, sustainable communities that enhance lifestyles and provide lasting value.",
-    rating: 5,
-  },
-  {
-    id: 2,
-    name: "Sarah Johnson",
-    position: "Property Investor",
-    image: person02,
-    content:
-      "The attention to detail and commitment to sustainable development made this project stand out. I've been impressed with the quality and innovation in every aspect of their work.",
-    rating: 4,
-  },
-  {
-    id: 3,
-    name: "Dr. Ahmed Hassan",
-    position: "Community Partner",
-    image: person03,
-    content:
-      "Working with this team has been transformative for our neighborhood. Their vision for creating spaces that bring people together while respecting the environment is exactly what modern communities need.",
-    rating: 5,
-  },
-];
-
-export default function TestimonialSection() {
+export default function TestimonialSection({ data }) {
   const [activeIndex, setActiveIndex] = useState(0);
-  
+
   const contentSwiperRef = useRef(null);
   const imageSwiperRef = useRef(null);
 
@@ -144,11 +110,11 @@ export default function TestimonialSection() {
               fadeEffect={{ crossFade: true }}
               spaceBetween={0}
               slidesPerView={1}
-              pagination={{ 
+              pagination={{
                 clickable: true,
-                el: '.custom-pagination',
-                bulletClass: 'custom-bullet',
-                bulletActiveClass: 'custom-bullet-active',
+                el: ".custom-pagination",
+                bulletClass: "custom-bullet",
+                bulletActiveClass: "custom-bullet-active",
               }}
               onSwiper={(swiper) => {
                 contentSwiperRef.current = swiper;
@@ -156,66 +122,77 @@ export default function TestimonialSection() {
               onSlideChange={handleSlideChange}
               className="content-swiper"
             >
-              {testimonials.map((testimonial) => (
-                <SwiperSlide key={`content-${testimonial.id}`}>
-                  <TestimonialContent>
-                    <BirdIconWrapper>
-                      <BirdIcon1 />
-                      <BirdIcon2 />
-                    </BirdIconWrapper>
+              {data?.posts?.list?.map((item) => {
+                console.log(item?.images?.[0]?.full_path);
+                return (
+                  <SwiperSlide key={`content-${item.id}`}>
+                    <TestimonialContent>
+                      <BirdIconWrapper>
+                        <BirdIcon1 />
+                        <BirdIcon2 />
+                      </BirdIconWrapper>
 
-                    <TestimonialText>{testimonial.content}</TestimonialText>
+                      <TestimonialText>
+                        {item?.data?.description}
+                      </TestimonialText>
 
-                    <StarRating rating={testimonial.rating} />
+                      <StarRating rating={item?.data?.rating} />
 
-                    <TestimonialAuthor>
-                      <AuthorName>{testimonial.name}</AuthorName>
-                      <AuthorPosition>{testimonial.position}</AuthorPosition>
-                    </TestimonialAuthor>
+                      <TestimonialAuthor>
+                        <AuthorName>{item?.data?.title}</AuthorName>
+                        <AuthorPosition>{item?.data?.title}</AuthorPosition>
+                      </TestimonialAuthor>
 
-                    <NavigationControls>
-                      <NavButtons>
-                        <NavButton onClick={handlePrev} aria-label="Previous testimonial">
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                      <NavigationControls>
+                        <NavButtons>
+                          <NavButton
+                            onClick={handlePrev}
+                            aria-label="Previous testimonial"
                           >
-                            <path
-                              d="M15 18L9 12L15 6"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </NavButton>
-                        <NavButton onClick={handleNext} aria-label="Next testimonial">
-                          <svg
-                            width="24"
-                            height="24"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M15 18L9 12L15 6"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </NavButton>
+                          <NavButton
+                            onClick={handleNext}
+                            aria-label="Next testimonial"
                           >
-                            <path
-                              d="M9 18L15 12L9 6"
-                              stroke="currentColor"
-                              strokeWidth="2"
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                            />
-                          </svg>
-                        </NavButton>
-                      </NavButtons>
-                    </NavigationControls>
-                    
-                    <div className="custom-pagination"></div>
-                  </TestimonialContent>
-                </SwiperSlide>
-              ))}
+                            <svg
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              xmlns="http://www.w3.org/2000/svg"
+                            >
+                              <path
+                                d="M9 18L15 12L9 6"
+                                stroke="currentColor"
+                                strokeWidth="2"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                              />
+                            </svg>
+                          </NavButton>
+                        </NavButtons>
+                      </NavigationControls>
+
+                      <div className="custom-pagination"></div>
+                    </TestimonialContent>
+                  </SwiperSlide>
+                );
+              })}
             </Swiper>
           </Col>
 
@@ -231,19 +208,20 @@ export default function TestimonialSection() {
               }}
               className="image-swiper"
             >
-              {testimonials.map((testimonial) => (
-                <SwiperSlide key={`image-${testimonial.id}`}>
+              {data?.posts?.list?.map((item, index) => (
+                <SwiperSlide key={`image-${item?.id || index}`}>
                   <ImageContainer>
                     <ImageWrapper>
                       <ResponsiveImage
-                        src={testimonial.image.src}
-                        alt={testimonial.name}
+                        src={item?.images?.[0]?.full_path}
+                        alt={item?.data?.title || "Testimonial"}
                         className="testimonial-image"
                       />
                       <ImageOverlay />
                     </ImageWrapper>
                     <TestimonialCounter>
-                      <strong>{activeIndex + 1}</strong> / {testimonials.length}
+                      <strong>{activeIndex + 1}</strong> /{" "}
+                      {data?.posts?.list?.length}
                     </TestimonialCounter>
                   </ImageContainer>
                 </SwiperSlide>
@@ -284,11 +262,9 @@ const TestimonialWrapper = styled.section`
     z-index: 2;
   }
 
- 
-
   @media (max-width: 992px) {
     padding: 100px 0;
-    
+
     .container {
       position: relative;
       top: 0;
@@ -309,25 +285,25 @@ const TestimonialWrapper = styled.section`
   .image-swiper {
     height: 100%;
   }
-  
+
   .bird-icon {
     transition: transform 0.3s ease;
-    
+
     &:hover {
       transform: rotate(-10deg);
     }
   }
-  
+
   .custom-pagination {
     display: flex;
     justify-content: center;
     margin-top: 30px;
-    
+
     @media (min-width: 768px) {
       display: none;
     }
   }
-  
+
   .custom-bullet {
     width: 10px;
     height: 10px;
@@ -337,7 +313,7 @@ const TestimonialWrapper = styled.section`
     cursor: pointer;
     transition: all 0.3s ease;
   }
-  
+
   .custom-bullet-active {
     background: #333;
     width: 20px;
@@ -349,11 +325,11 @@ const TestimonialContent = styled.div`
   padding: 0 20px 0 0;
   position: relative;
   z-index: 2;
-  
+
   @media (max-width: 1200px) {
     padding: 0 10px;
   }
-  
+
   @media (max-width: 992px) {
     padding: 0;
   }
@@ -367,12 +343,12 @@ const TestimonialContent = styled.div`
 const BirdIconWrapper = styled.div`
   margin-bottom: 20px;
   color: #333;
-  
+
   svg:first-child {
     margin-right: 15px;
     margin-top: -10px;
   }
-  
+
   @media (max-width: 768px) {
     display: flex;
     justify-content: center;
@@ -395,7 +371,7 @@ const TestimonialText = styled.p`
   @media (max-width: 992px) {
     font-size: 16px;
   }
-  
+
   @media (max-width: 768px) {
     text-align: center;
     font-size: 15px;
@@ -405,17 +381,17 @@ const TestimonialText = styled.p`
 const RatingContainer = styled.div`
   display: flex;
   margin-bottom: 20px;
-  
+
   @media (max-width: 768px) {
     justify-content: center;
   }
 `;
 
 const Star = styled.span`
-  color: ${props => props.filled ? '#FFD700' : '#D3D3D3'};
+  color: ${(props) => (props.filled ? "#FFD700" : "#D3D3D3")};
   margin-right: 5px;
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: scale(1.2);
   }
@@ -434,7 +410,7 @@ const AuthorName = styled.h3`
   @media (max-width: 992px) {
     font-size: 20px;
   }
-  
+
   @media (max-width: 768px) {
     text-align: center;
   }
@@ -444,7 +420,7 @@ const AuthorPosition = styled.p`
   font-size: 16px;
   color: #666;
   margin: 0;
-  
+
   @media (max-width: 768px) {
     text-align: center;
   }
@@ -453,7 +429,7 @@ const AuthorPosition = styled.p`
 const NavigationControls = styled.div`
   display: flex;
   flex-direction: column;
-  
+
   @media (max-width: 768px) {
     align-items: center;
   }
@@ -489,9 +465,9 @@ const NavButton = styled.button`
   &:focus {
     outline: none;
   }
-  
+
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     width: 100%;
     height: 100%;
@@ -501,13 +477,13 @@ const NavButton = styled.button`
     opacity: 0;
     transition: all 0.3s ease;
   }
-  
+
   &:active:after {
     transform: scale(2);
     opacity: 0;
     transition: 0s;
   }
-  
+
   @media (max-width: 768px) {
     width: 45px;
     height: 45px;
@@ -533,11 +509,11 @@ const ImageWrapper = styled.div`
   box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
   transform: translateY(0);
   transition: all 0.3s ease;
-  
+
   &:hover {
     transform: translateY(-10px);
     box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
-    
+
     .testimonial-image {
       transform: scale(1.05);
     }
@@ -552,14 +528,12 @@ const ImageWrapper = styled.div`
     max-width: 400px;
     height: 480px;
   }
-  
+
   @media (max-width: 768px) {
     max-width: 350px;
     height: 400px;
     margin-top: 20px;
   }
-  
-  
 `;
 
 const ResponsiveImage = styled.img`
@@ -575,7 +549,11 @@ const ImageOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 40%;
-  background: linear-gradient(to top, rgba(0,0,0,0.6) 0%, rgba(0,0,0,0) 100%);
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.6) 0%,
+    rgba(0, 0, 0, 0) 100%
+  );
   z-index: 2;
 `;
 
@@ -591,7 +569,7 @@ const TestimonialCounter = styled.div`
   z-index: 3;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   transition: all 0.3s ease;
-  
+
   &:hover {
     background-color: #333;
     color: white;
@@ -626,7 +604,7 @@ const BuildingsGraphic = styled.div`
     width: 20%;
     opacity: 0.2;
   }
-  
+
   &:hover {
     opacity: 0.6;
   }

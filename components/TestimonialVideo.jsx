@@ -1,5 +1,6 @@
 "use client";
 
+import HTMLReactParser from "html-react-parser";
 import { useEffect, useState } from "react";
 import { Badge, Button, Card, Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
@@ -364,7 +365,6 @@ const PropertyTestimonial = ({
             <PlayButtonWrapper>
               <PlayIcon />
             </PlayButtonWrapper>
-            <TransactionBadge bg="primary">{transactionType}</TransactionBadge>
           </ThumbnailWrapper>
         ) : !isPlaying && !hasValidThumbnail && videoId ? (
           <PlaceholderContainer onClick={handlePlayClick}>
@@ -400,7 +400,7 @@ const PropertyTestimonial = ({
       <Card.Body className="d-flex flex-column">
         <CardContent>
           <ClientInfo>
-            <Card.Title className="mb-1">{clientName}</Card.Title>
+            <Card.Title className="mb-1">{HTMLReactParser(clientName)}</Card.Title>
             <PropertyDetails>
               <HomeIcon />
               <span>{propertyType}</span>
@@ -422,90 +422,49 @@ const PropertyTestimonial = ({
   );
 };
 
-export default function RealEstateTestimonials() {
-  const testimonials = [
-    {
-      youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      thumbnailSrc:
-        "https://img.freepik.com/free-photo/medium-shot-man-working-as-real-estate-agent_23-2151064903.jpg?t=st=1746565005~exp=1746568605~hmac=60aa46c6ed588f0f53ccea67001f1f503e3f45a1a4b37111b9924982dbb03604&w=1060",
-      clientName: "James & Sarah Wilson",
-      propertyType: "Single Family Home",
-      location: "Parkview Heights, CA",
-      testimonialExcerpt:
-        "Our agent went above and beyond to help us find our dream home. The entire process was smooth from start to finish, and we couldn't be happier with our new property.",
-      rating: 5,
-      propertyImage:
-        "https://img.freepik.com/free-photo/3d-rendering-house-model_23-2150799725.jpg?t=st=1746563645~exp=1746567245~hmac=7c1f9babd12c1c6a948e9bcf16fbc4fb6f33ee42ce63ec061f8616700e87b7d3&w=740",
-      transactionType: "Buyer",
-    },
-    {
-      youtubeUrl: "https://youtu.be/jNQXAC9IVRw",
-      thumbnailSrc:
-        "https://img.freepik.com/free-photo/positive-male-florist-standing-rows-with-potted-plants-greenhouse-cutting-bush-holding-sprouts_74855-12949.jpg?t=st=1746565027~exp=1746568627~hmac=c557df4e6dfa5fa3c15315f8c6c9b1df167931d27c1944a91e7ff2f493460e46&w=996",
-      clientName: "Michael Chen",
-      propertyType: "Luxury Condo",
-      location: "Downtown District",
-      testimonialExcerpt:
-        "I was able to sell my property for 15% above asking price thanks to the expert staging and marketing strategy. The virtual tours brought in serious buyers immediately.",
-      rating: 5,
-      propertyImage:
-        "https://img.freepik.com/free-photo/urban-traffic-with-cityscape_1359-324.jpg?t=st=1746563700~exp=1746567300~hmac=eb2995b4a3af607ead488f8e7e73efa628cbef02872f44acfb26b78b0faa6228&w=996",
-      transactionType: "Seller",
-    },
-    {
-      youtubeUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-      thumbnailSrc:
-        "https://img.freepik.com/free-photo/portrait-mature-man-wearing-jacket-cap-posing-outdoor-meadow-with-chainsaw-hands_176532-14597.jpg?t=st=1746565052~exp=1746568652~hmac=3e4ac718e35d2fcd2495c89d61dde05b6334c674dcf2f5ecc99ac534bdfb1500&w=996",
-      clientName: "Emma & David Thompson",
-      propertyType: "Townhouse",
-      location: "Riverside Community",
-      testimonialExcerpt:
-        "After months of searching with another agency, we switched and found our perfect home within weeks. The team understood exactly what we were looking for and negotiated a great price.",
-      rating: 4,
-      propertyImage:
-        "https://img.freepik.com/free-photo/3d-house-model-with-modern-architecture_23-2151004030.jpg?t=st=1746563791~exp=1746567391~hmac=8aa241c15d33729d57f2ce97d3b79bdfc332ed0c56ea68dff1aac0657dcd04d4&w=1380",
-      transactionType: "Buyer",
-    },
-    {
-      youtubeUrl: "https://youtu.be/jNQXAC9IVRw",
-      thumbnailSrc:
-        "https://img.freepik.com/free-photo/futuristic-technology-concept_23-2151908083.jpg?t=st=1746565070~exp=1746568670~hmac=0343259638dd13f420f6ba284d661eaa2f476456d94e0fa78e4255c2633c45df&w=1060",
-      clientName: "Robert Garcia",
-      propertyType: "Investment Property",
-      location: "Seaview Heights",
-      testimonialExcerpt:
-        "Their property management team has been handling my rental properties for years. Vacancies are minimal, and they take care of everything so I can be a hands-off investor.",
-      rating: 5,
-      propertyImage:
-        "https://img.freepik.com/free-photo/view-city-with-buildings-trees_1127-352.jpg?t=st=1746563814~exp=1746567414~hmac=43dc0cf8ffc71b76aa07417753ff22d9d5dbbe15ec6e0786208f254dc5af2490&w=996",
-      transactionType: "Investor",
-    },
-  ];
-
+export default function RealEstateTestimonials({ data }) {
   return (
     <SectionContainer>
       <Container>
         <SectionHeader>
-          <div className="video-test-title">
-            <Title
-              textAlign={"left"}
-              color={"#5B5B5B"}
-              fontSize={"60"}
-              text={"Hear From Our Happy Clients"}
-            />
-          </div>
-          <SectionDescription>
-            Real stories from real clients about their experience working with
-            our team of dedicated real estate professionals.
-          </SectionDescription>
+          {data?.section_data?.subtitle && (
+            <div className="video-test-title">
+              <Title
+                textAlign={"left"}
+                color={"#5B5B5B"}
+                fontSize={"60"}
+                text={data?.section_data?.subtitle}
+              />
+            </div>
+          )}
+          {data?.section_data?.short_desc && (
+            <SectionDescription>
+              {data?.section_data?.short_desc}
+            </SectionDescription>
+          )}
         </SectionHeader>
 
         <Row className="g-4">
-          {testimonials.map((testimonial, index) => (
-            <Col md={6} key={index}>
-              <PropertyTestimonial {...testimonial} />
-            </Col>
-          ))}
+          {data?.posts?.list.map((testimonial, index) => {
+            // Extract the image URL from the images array
+            const propertyImage = testimonial?.images?.[0]?.full_path || null;
+
+            return (
+              <Col md={6} key={index}>
+                <PropertyTestimonial
+                  youtubeUrl={testimonial?.data?.short_desc}
+                  thumbnailSrc={testimonial?.images?.[0]?.full_path}
+                  clientName={testimonial?.data?.title}
+                  propertyType={testimonial?.data?.subtitle}
+                  location={testimonial?.data?.subtitle} // You might want to add a separate location field
+                  testimonialExcerpt={testimonial?.data?.description}
+                  rating={parseInt(testimonial?.data?.rating) || 5}
+                  propertyImage={propertyImage}
+                  transactionType="Sale" // You might want to add this field to your data
+                />
+              </Col>
+            );
+          })}
         </Row>
       </Container>
     </SectionContainer>

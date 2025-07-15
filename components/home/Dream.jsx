@@ -5,7 +5,7 @@ import styled from "styled-components";
 import Line from "../Lines";
 import MissionVision from "../MissionVision";
 
-export default function Dream() {
+export default function Dream({ data }) {
   const [offset, setOffset] = useState(0);
 
   useEffect(() => {
@@ -26,34 +26,29 @@ export default function Dream() {
     return () => window.removeEventListener("resize", updateOffset);
   }, []);
 
+
+  const large = data?.images?.list?.find(f => f.large === 'on');
+  const medium = data?.images?.list?.find(f => f.medium === 'on');
+
+
   return (
     <DreamStyled>
       <Line background={"#1717171a"} />
       <Container className="content-container">
         <Row>
           <Col className="dream-title" lg={12}>
-            <h2>Dream. Build. Live.</h2>
+            <h2>{data?.section_data?.subtitle}</h2>
           </Col>
           <Col lg={4}>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium modi cum cumque neque consequuntur praesentium veniam.
-              Odio vitae sapiente facilis in laborum vel consequatur debitis
-              non, numquam minima accusamus est!
-            </p>
+            <p>{data?.section_data?.short_desc}</p>
           </Col>
           <Col lg={4}>
-            <p>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Laudantium modi cum cumque neque consequuntur praesentium veniam.
-              Odio vitae sapiente facilis in laborum vel consequatur debitis
-              non, numquam minima accusamus est!
-            </p>
+            <p>{data?.section_data?.description}</p>
           </Col>
         </Row>
       </Container>
 
-      <MissionVision isMissionVision isBgColor />
+      <MissionVision isMissionVision isBgColor large={large} medium={medium} />
     </DreamStyled>
   );
 }

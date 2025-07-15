@@ -1,10 +1,12 @@
+import HTMLReactParser from "html-react-parser";
 import styled from "styled-components";
 
-export default function BreakCrumb() {
+export default function BreakCrumb({ data }) {
   return (
     <BreakCrumbStyled className="breakcrub-container">
-      <span>Residential</span> | <span>Shahidabag</span> |{" "}
-      <span>2000 & 2500 sft</span>
+      <span>{data?.product_data?.type?.toUpperCase()}</span> |{" "}
+      <span>{data?.product_data?.location?.toUpperCase()}</span> |
+      <span>{HTMLReactParser(data?.product_data?.sft?.toUpperCase() || '')}</span>
     </BreakCrumbStyled>
   );
 }
@@ -23,4 +25,3 @@ const BreakCrumbStyled = styled.div`
     gap: 40px;
   }
 `;
-

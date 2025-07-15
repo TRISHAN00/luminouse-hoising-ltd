@@ -6,7 +6,7 @@ import Line from "./Lines";
 import PropertyInfoTable from "./PropertyInfoTable";
 import Title from "./Title";
 
-const AtaGlance = () => {
+const AtaGlance = ({ data }) => {
   return (
     <StyledComponent className="section-wrapper">
       <Line />
@@ -17,7 +17,7 @@ const AtaGlance = () => {
           </Col>
           <Col lg={{ offset: 2, span: 10 }}>
             <div className="at-a-glance-wrap">
-              <PropertyInfoTable />
+              <PropertyInfoTable data={data} />
             </div>
           </Col>
           <Col lg={12}>

@@ -2,7 +2,9 @@
 import InnerBanner from '@/components/InnerBanner';
 import NewsEventFilter from '@/components/news/NewsEventFilter';
 import aboutImg from '../../public/images/dynamic/about/about.jpg';
-export default function NewsEvents() {
+export default async function NewsEvents() {
+
+
   return (
     <div>
         <InnerBanner img={aboutImg} title={'News & Events'} />

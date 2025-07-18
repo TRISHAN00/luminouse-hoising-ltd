@@ -6,7 +6,8 @@ import Line from "./Lines";
 import PropertyInfoTable from "./PropertyInfoTable";
 import Title from "./Title";
 
-const AtaGlance = ({ data }) => {
+const AtaGlance = ({ data, projectData }) => {
+  const brochure = projectData?.data?.files?.list?.[0]?.full_path;
   return (
     <StyledComponent className="section-wrapper">
       <Line />
@@ -21,13 +22,16 @@ const AtaGlance = ({ data }) => {
             </div>
           </Col>
           <Col lg={12}>
-            <div className="brochure-btn">
-              <Button
-                border={"1px solid #0288D1"}
-                hoverBackground={"#0288D1"}
-                text={"Download Brochure"}
-              />
-            </div>
+            {brochure && (
+              <div className="brochure-btn">
+                <Button
+                  border={"1px solid #0288D1"}
+                  hoverBackground={"#0288D1"}
+                  text={"Download Brochure"}
+                  src={brochure}
+                />
+              </div>
+            )}
           </Col>
         </Row>
       </Container>

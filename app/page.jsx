@@ -2,6 +2,7 @@
 import LoadingSpinner from "@/components/LoadingSpinner";
 
 import { getApi } from "@/api/home.js";
+import { getProjectListApi } from "@/api/project";
 import CallbackRequestForm from "@/components/Contact";
 import Banner from "@/components/home/Banner";
 import Client from "@/components/home/Client";
@@ -38,6 +39,8 @@ export async function metadata() {
 export default async function HomePage() {
   const apiValue = "home";
   const homeData = await getApi(apiValue);
+  const featuredProjects = await getProjectListApi();
+
 
   if (!homeData) return <LoadingSpinner />;
 
@@ -72,7 +75,7 @@ export default async function HomePage() {
       <Banner data={bannerData} />
       <Overview data={overview} />
       <ImageCollageSection data={overview} />
-      <FeatureSlider title={featureTitle} />
+      <FeatureSlider title={featureTitle} featuredProjects={featuredProjects} />
       <Dream data={dream} />
       <Client data={landownerBuyer} />
       <CallbackRequestForm data={contactUs} />

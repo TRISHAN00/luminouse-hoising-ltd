@@ -63,6 +63,7 @@ function decodeHtml(html) {
 export default function PropertyInfoTable({ data }) {
   if (!data) return null;
 
+
   return (
     <Container>
       {/* Desktop View */}
@@ -70,31 +71,67 @@ export default function PropertyInfoTable({ data }) {
         <StyledTable>
           <tbody>
             <TableRow>
-              <LabelCell>Type</LabelCell>
-              <TableCell>{data.type?.toUpperCase()}</TableCell>
-              <LabelCell>No of Floor</LabelCell>
-              <TableCell>{data.nof}</TableCell>
+              {data.type?.toUpperCase() && (
+                <>
+                  <LabelCell>Type</LabelCell>
+                  <TableCell>{data.type?.toUpperCase()}</TableCell>
+                </>
+              )}
+
+              {data.nof && (
+                <>
+                  <LabelCell>No of Floor</LabelCell>
+                  <TableCell>{data.nof}</TableCell>
+                </>
+              )}
             </TableRow>
 
             <TableRow>
-              <LabelCell>Address</LabelCell>
-              <TableCell>{data.location}</TableCell>
-              <LabelCell>No of Parking</LabelCell>
-              <TableCell>{data.nop}</TableCell>
+              {data.location && (
+                <>
+                  <LabelCell>Address</LabelCell>
+                  <TableCell>{data.location}</TableCell>
+                </>
+              )}
+
+              {data.nop && (
+                <>
+                  <LabelCell>No of Parking</LabelCell>
+                  <TableCell>{data.nop}</TableCell>
+                </>
+              )}
             </TableRow>
 
             <TableRow>
-              <LabelCell>Land Area</LabelCell>
-              <TableCell>{data.land_area}</TableCell>
-              <LabelCell>Architecture</LabelCell>
-              <TableCell>{data.architecture}</TableCell>
+              {data.land_area && (
+                <>
+                  <LabelCell>Land Area</LabelCell>
+                  <TableCell>{data.land_area}</TableCell>
+                </>
+              )}
+
+              {data.architecture && (
+                <>
+                  <LabelCell>Architecture</LabelCell>
+                  <TableCell>{data.architecture}</TableCell>
+                </>
+              )}
             </TableRow>
 
             <TableRow>
-              <LabelCell>Apartment Size</LabelCell>
-              <TableCell>{decodeHtml(data.apartment_size)}</TableCell>
-              <LabelCell>Engineer</LabelCell>
-              <TableCell>{data.engineer}</TableCell>
+              {data.apartment_size && (
+                <>
+                  <LabelCell>Apartment Size</LabelCell>
+                  <TableCell>{decodeHtml(data.apartment_size)}</TableCell>
+                </>
+              )}
+
+              {data.engineer && (
+                <>
+                  <LabelCell>Engineer</LabelCell>
+                  <TableCell>{data.engineer}</TableCell>
+                </>
+              )}
             </TableRow>
           </tbody>
         </StyledTable>
@@ -103,47 +140,83 @@ export default function PropertyInfoTable({ data }) {
       {/* Mobile View */}
       <MobileView>
         <MobileRow>
-          <GridContainer>
-            <Label>Type</Label>
-            <div>{data.type?.toUpperCase()}</div>
-          </GridContainer>
-          <GridContainer $noMargin>
-            <Label>No of Floor</Label>
-            <div>{data.nof}</div>
-          </GridContainer>
+          {data.type?.toUpperCase() && (
+            <>
+              <GridContainer>
+                <Label>Type</Label>
+                <div>{data.type?.toUpperCase()}</div>
+              </GridContainer>
+            </>
+          )}
+
+          {data.nof && (
+            <>
+              <GridContainer $noMargin>
+                <Label>No of Floor</Label>
+                <div>{data.nof}</div>
+              </GridContainer>
+            </>
+          )}
         </MobileRow>
 
         <MobileRow>
-          <GridContainer>
-            <Label>Address</Label>
-            <div>{data.location}</div>
-          </GridContainer>
-          <GridContainer $noMargin>
-            <Label>No of Parking</Label>
-            <div>{data.nop}</div>
-          </GridContainer>
+          {data.location && (
+            <>
+              <GridContainer>
+                <Label>Address</Label>
+                <div>{data.location}</div>
+              </GridContainer>
+            </>
+          )}
+
+          {data.nop && (
+            <>
+              <GridContainer $noMargin>
+                <Label>No of Parking</Label>
+                <div>{data.nop}</div>
+              </GridContainer>
+            </>
+          )}
         </MobileRow>
 
         <MobileRow>
-          <GridContainer>
-            <Label>Land Area</Label>
-            <div>{data.land_area}</div>
-          </GridContainer>
-          <GridContainer $noMargin>
-            <Label>Architecture</Label>
-            <div>{data.architecture}</div>
-          </GridContainer>
+          {data.land_area && (
+            <>
+              <GridContainer>
+                <Label>Land Area</Label>
+                <div>{data.land_area}</div>
+              </GridContainer>
+            </>
+          )}
+
+          {data.architecture && (
+            <>
+              <GridContainer $noMargin>
+                <Label>Architecture</Label>
+                <div>{data.architecture}</div>
+              </GridContainer>
+            </>
+          )}
         </MobileRow>
 
         <MobileRow>
-          <GridContainer>
-            <Label>Apartment Size</Label>
-            <div>{decodeHtml(data.apartment_size)}</div>
-          </GridContainer>
-          <GridContainer $noMargin>
-            <Label>Engineer</Label>
-            <div>{data.engineer}</div>
-          </GridContainer>
+          {data.apartment_size && (
+            <>
+              <GridContainer>
+                <Label>Apartment Size</Label>
+                <div>{decodeHtml(data.apartment_size)}</div>
+              </GridContainer>
+            </>
+          )}
+
+          {data.engineer && (
+            <>
+              <GridContainer $noMargin>
+                <Label>Engineer</Label>
+                <div>{data.engineer}</div>
+              </GridContainer>
+            </>
+          )}
         </MobileRow>
       </MobileView>
     </Container>

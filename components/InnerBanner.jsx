@@ -4,7 +4,7 @@ import reactHtmlParser from "html-react-parser";
 import { Container } from "react-bootstrap";
 import styled from "styled-components";
 
-const InnerBanner = ({ img, text, title }) => {
+const InnerBanner = ({ img, text, title, banner }) => {
   return (
     <StyledInnerBanner className="InnerBanner">
       <Img banner={true} src={img} />

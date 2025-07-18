@@ -6,10 +6,6 @@ import styled from "styled-components";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
 
-import project1 from "../../public/images/dynamic/projects/project-01.jpg";
-import project2 from "../../public/images/dynamic/projects/project-02.jpg";
-import project3 from "../../public/images/dynamic/projects/project-03.jpg";
-
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/navigation";
@@ -17,41 +13,10 @@ import Line from "../Lines";
 import ProjectCard from "../ProjectCard";
 import Title from "../Title";
 
-// Projects data matching the example image
-const projects = [
-  {
-    id: 1,
-    title: "Luminous Jesmin Tower",
-    location: "Dhanmondi, Dhaka",
-    image: project1,
-    detailImage: project1,
-  },
-  {
-    id: 2,
-    title: "Luminous Hamid Heights",
-    location: "Oxygen More, Chittagong",
-    image: project2,
-    detailImage: project2,
-  },
-  {
-    id: 3,
-    title: "Luminous Harmony",
-    location: "Banani, Dhaka",
-    image: project3,
-    detailImage: project3,
-  },
-  {
-    id: 4,
-    title: "Luminous Jesmin Tower",
-    location: "Dhanmondi, Dhaka",
-    image: project1,
-    detailImage: project1,
-  },
-  // Add more projects as needed
-];
-
-export default function FeatureSlider({ title }) {
-  console.log(title?.section_data?.subtitle);
+export default function FeatureSlider({ title, featuredProjects }) {
+  const findFeaturedProject = featuredProjects?.data?.filter(
+    (project) => project?.product_data?.is_featured !== null
+  );
   return (
     <SliderSection>
       <Line background={"#1717171a"} />
@@ -101,7 +66,7 @@ export default function FeatureSlider({ title }) {
           }}
           className="projects-swiper"
         >
-          {projects.map((project) => (
+          {findFeaturedProject?.map((project) => (
             <SwiperSlide key={project.id}>
               <ProjectCard project={project} />
             </SwiperSlide>

@@ -3,13 +3,17 @@ import Link from "next/link";
 import styled from "styled-components";
 
 export default function ProjectCard({project}) {
+  const thumb = project?.images?.list?.[0]?.full_path;
+  const title = project?.product_data?.title; 
+  const location = project?.product_data?.location; 
+  const slug = project?.product_data?.slug; 
   return (
-    <Link href={`/projects/${project.slug}`} aria-label={`View ${project.title} project details`}>
+    <Link href={`/projects/${slug}`} aria-label={`View ${project.title} project details`}>
       <ProjectItem>
         <ImageContainer>
           <Image
-            src={project.image}
-            alt={project.title}
+            src={thumb}
+            alt={title}
             fill
             style={{ objectFit: "cover" }}
             sizes="(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 992px) 33vw, 25vw"
@@ -22,8 +26,8 @@ export default function ProjectCard({project}) {
         </ImageContainer>
 
         <ProjectInfo>
-          <h3>{project.title}</h3>
-          <p>{project.location}</p>
+          <h3>{title}</h3>
+          <p>{location}</p>
         </ProjectInfo>
       </ProjectItem>
     </Link>

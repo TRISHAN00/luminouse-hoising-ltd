@@ -16,53 +16,53 @@ export default function ProjectList({ data }) {
   const [selectedStatus, setSelectedStatus] = useState(null);
   const [selectedLocation, setSelectedLocation] = useState(null);
 
+  const [visibleCount, setVisibleCount] = useState(10); // Show 10 initially
+
   const projectsRaw = data?.data || [];
 
   // Extract dynamic filter options with "All" option
   const projectTypeOptions = [
     { value: null, label: "All" },
     ...Array.from(
-      new Set(projectsRaw.map(p => p.product_data?.type).filter(Boolean))
-    ).map(type => ({ value: type, label: capitalize(type) }))
+      new Set(projectsRaw.map((p) => p.product_data?.type).filter(Boolean))
+    ).map((type) => ({ value: type, label: capitalize(type) })),
   ];
 
   const statusOptions = [
     { value: null, label: "All" },
     ...Array.from(
-      new Set(projectsRaw.map(p => p.product_data?.status).filter(Boolean))
-    ).map(status => ({ value: status, label: capitalize(status) }))
+      new Set(projectsRaw.map((p) => p.product_data?.status).filter(Boolean))
+    ).map((status) => ({ value: status, label: capitalize(status) })),
   ];
 
   const locationOptions = [
     { value: null, label: "All" },
     ...Array.from(
-      new Set(projectsRaw.map(p => p.product_data?.location).filter(Boolean))
-    ).map(location => ({ value: location, label: location }))
+      new Set(projectsRaw.map((p) => p.product_data?.location).filter(Boolean))
+    ).map((location) => ({ value: location, label: location })),
   ];
 
-  // Transform and filter projects
-  const projects = projectsRaw
-    .map(item => {
-      const pd = item.product_data;
-      const img = item.images?.list?.[0]?.full_path || "/placeholder.jpg";
-      return {
-        id: pd.id,
-        title: pd.title,
-        slug: pd.slug,
-        location: pd.location,
-        type: pd.type,
-        status: pd.status,
-        image: img,
-        detailImage: img,
-      };
-    })
-    .filter(project => {
-      return (
-        (!selectedProjectType || selectedProjectType.value === null || project.type === selectedProjectType.value) &&
-        (!selectedStatus || selectedStatus.value === null || project.status === selectedStatus.value) &&
-        (!selectedLocation || selectedLocation.value === null || project.location === selectedLocation.value)
-      );
-    });
+  // Filter projects
+  const projects = projectsRaw.filter((project) => {
+    const pd = project.product_data;
+    return (
+      (!selectedProjectType ||
+        selectedProjectType.value === null ||
+        pd?.type === selectedProjectType.value) &&
+      (!selectedStatus ||
+        selectedStatus.value === null ||
+        pd?.status === selectedStatus.value) &&
+      (!selectedLocation ||
+        selectedLocation.value === null ||
+        pd?.location === selectedLocation.value)
+    );
+  });
+
+  const visibleProjects = projects.slice(0, visibleCount);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 10);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -108,11 +108,12 @@ export default function ProjectList({ data }) {
                 <DropdownMenu>
                   {projectTypeOptions.map((option) => (
                     <MenuItem
-                      key={option.value || 'all'}
+                      key={option.value || "all"}
                       isSelected={selectedProjectType?.value === option.value}
                       onClick={() => {
                         setSelectedProjectType(option);
                         setIsProjectTypeOpen(false);
+                        setVisibleCount(10); // Reset load count
                       }}
                     >
                       {option.label}
@@ -144,11 +145,12 @@ export default function ProjectList({ data }) {
                 <DropdownMenu>
                   {statusOptions.map((option) => (
                     <MenuItem
-                      key={option.value || 'all'}
+                      key={option.value || "all"}
                       isSelected={selectedStatus?.value === option.value}
                       onClick={() => {
                         setSelectedStatus(option);
                         setIsStatusOpen(false);
+                        setVisibleCount(10); // Reset load count
                       }}
                     >
                       {option.label}
@@ -180,11 +182,12 @@ export default function ProjectList({ data }) {
                 <DropdownMenu>
                   {locationOptions.map((option) => (
                     <MenuItem
-                      key={option.value || 'all'}
+                      key={option.value || "all"}
                       isSelected={selectedLocation?.value === option.value}
                       onClick={() => {
                         setSelectedLocation(option);
                         setIsLocationOpen(false);
+                        setVisibleCount(10); // Reset load count
                       }}
                     >
                       {option.label}
@@ -197,24 +200,29 @@ export default function ProjectList({ data }) {
         </Row>
 
         <Row className="projects-wrap">
-          {projects.length > 0 ? (
-            projects.map((project) => (
+          {visibleProjects.length > 0 ? (
+            visibleProjects.map((project) => (
               <Col key={project.id} lg={4} md={6} sm={12} className="single-project">
                 <ProjectCard project={project} />
               </Col>
             ))
           ) : (
-            <Col><p>No projects found matching your filters.</p></Col>
+            <Col>
+              <p>No projects found matching your filters.</p>
+            </Col>
           )}
         </Row>
 
-        <div className="loadMore-btn">
-          <Button
-            border="1px solid #0288D1"
-            hoverBackground="#0288D1"
-            text="Learn More"
-          />
-        </div>
+        {visibleCount < projects.length && (
+          <div className="loadMore-btn">
+            <Button
+              onClick={handleLoadMore}
+              border="1px solid #0288D1"
+              hoverBackground="#0288D1"
+              text="Load More"
+            />
+          </div>
+        )}
       </Container>
     </ProjectListStyled>
   );
@@ -347,4 +355,3 @@ const MenuItem = styled.div`
     color: #171717;
   }
 `;
-

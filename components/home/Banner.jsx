@@ -3,6 +3,7 @@
 import gsap from "gsap";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
@@ -187,6 +188,11 @@ const Tab = styled.button`
     transform-origin: center;
   }
 
+  a {
+    color: aliceblue;
+    text-transform: uppercase;
+  }
+
   &.active {
     background: rgba(255, 255, 255, 0.1);
     &:after {
@@ -202,7 +208,7 @@ const Tab = styled.button`
 
 export default function HomeBanner({ data = [] }) {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState("Ongoing");
+  const [activeTab, setActiveTab] = useState('');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const swiperRef = useRef(null);
   const titleRefs = useRef([]);
@@ -476,16 +482,27 @@ export default function HomeBanner({ data = [] }) {
       )}
 
       <TabsContainer>
-        {["Ongoing", "Upcoming", "Completed"].map((tab) => (
-          <Tab
-            key={tab}
-            className={activeTab === tab ? "active" : ""}
-            onClick={() => setActiveTab(tab)}
+        <Tab
+            key={0}
+            
             disabled={isTransitioning}
           >
-            {tab}
+            <Link href={`/projects?status=ongoing`} >Ongoing</Link>
           </Tab>
-        ))}
+          <Tab
+            key={1}
+            
+            disabled={isTransitioning}
+          >
+            <Link href={`/projects?status=upcoming`} >Upcoming</Link>
+          </Tab>
+          <Tab
+            key={2}
+            
+            disabled={isTransitioning}
+          >
+            <Link href={`/projects?status=completed`} >Completed</Link>
+          </Tab>
       </TabsContainer>
     </BannerContainer>
   );

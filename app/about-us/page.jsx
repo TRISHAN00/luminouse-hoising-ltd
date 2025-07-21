@@ -40,7 +40,7 @@ export default async function AboutPage() {
 
   const banner = aboutData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "about-banner"
-  );
+  )?.images?.list?.[0]?.full_path;
 
   const overview = aboutData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "about-overview"
@@ -65,7 +65,7 @@ export default async function AboutPage() {
   return (
     <>
       <InnerBanner
-        img={banner?.images?.list?.[0]?.full_path}
+        img={banner}
         title={banner?.section_data?.subtitle}
       />
       <Overview data={overview} />

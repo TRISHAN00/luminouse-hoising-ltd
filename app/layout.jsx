@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   const [isNewsDetail, setIsNewsDetail] = useState(false);
   const [isLivousDenim, setIsLivousDenim] = useState(false);
   const [isLuminouseArch, setIsLuminouseArch] = useState(false);
-  const pathname = usePathname(); 
+  const pathname = usePathname();
 
   useEffect(() => {
     if (pathname.startsWith("/news/")) {
@@ -23,7 +23,7 @@ export default function RootLayout({ children }) {
     } else {
       setIsNewsDetail(false);
     }
-  
+
     if (pathname.startsWith("/livous-denim")) {
       setIsLivousDenim(true);
     } else {
@@ -36,7 +36,6 @@ export default function RootLayout({ children }) {
       setIsLuminouseArch(false);
     }
   }, [pathname]);
-  
 
   return (
     <html lang="en">
@@ -46,13 +45,21 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <StyledComponentsRegistry>
-            <SmoothScroll/>
+          <SmoothScroll />
           <div id="main-root">
             <GlobalStyle />
             <ToastContainer />
-            <Header isLivousDenim={isLivousDenim} isLuminouseArch={isLuminouseArch} isNewsDetail={isNewsDetail} />
+            <Header
+              isLivousDenim={isLivousDenim}
+              isLuminouseArch={isLuminouseArch}
+              isNewsDetail={isNewsDetail}
+            />
             {children}
-            <Footer isLivousDenim={isLivousDenim} isLuminouseArch={isLuminouseArch} isNewsDetail={isNewsDetail} />
+            <Footer
+              isLivousDenim={isLivousDenim}
+              isLuminouseArch={isLuminouseArch}
+              isNewsDetail={isNewsDetail}
+            />
           </div>
         </StyledComponentsRegistry>
       </body>

@@ -3,47 +3,9 @@
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
-import newImage from '../../public/images/dynamic/about/team-01.jpg';
 import NewsCard from "./NewsCard";
 
-
-// Sample news data - replace with your actual data
-  const newsItems = [
-    {
-      id: 1,
-      title: "Luxury Residential Project",
-      image: newImage, 
-      date: "22 January 2025",
-      category: "News",
-      slug: "luxury-residential-project",
-    },
-    {
-      id: 2,
-      title: "Grand Handover Ceremony for Premium Apartment Complex",
-      image: newImage, 
-      date: "31 January 2025",
-      category: "News",
-      slug: "premium-apartment-complex",
-    },
-    {
-      id: 3,
-      title: "Luminous Housings Expands into Commercial Real Estate",
-      image: newImage, 
-      date: "05 March 2025",
-      category: "News",
-      slug: "commercial-real-estate",
-    },
-    {
-      id: 4,
-      title: "New Sustainable Building Practices Implemented",
-      image: newImage, 
-      date: "12 April 2025",
-      category: "News",
-      slug: "sustainable-building-practices",
-    },
-  ];
-
-const NewsFilter = () => {
+const NewsFilter = ({ newsList }) => {
   const [activeFilter, setActiveFilter] = useState("all");
 
   const handleFilterClick = (filter) => {
@@ -54,12 +16,8 @@ const NewsFilter = () => {
     { id: "all", label: "All" },
     { id: "news", label: "News" },
     { id: "events", label: "Events" },
-    { id: "blogs", label: "Blogs" }
+    { id: "blogs", label: "Blogs" },
   ];
-
-  const filteredNews = activeFilter === "all" 
-    ? newsItems 
-    : newsItems.filter(item => item.category === activeFilter);
 
   return (
     <NewsFilterStyled>
@@ -67,10 +25,12 @@ const NewsFilter = () => {
         <Row>
           <Col lg={10}>
             <div className="filter-buttons">
-              {filterCategories.map(category => (
+              {filterCategories.map((category) => (
                 <button
                   key={category.id}
-                  className={`filter-btn ${activeFilter === category.id ? 'active' : ''}`}
+                  className={`filter-btn ${
+                    activeFilter === category.id ? "active" : ""
+                  }`}
                   onClick={() => handleFilterClick(category.id)}
                 >
                   {category.label}
@@ -79,13 +39,30 @@ const NewsFilter = () => {
             </div>
           </Col>
         </Row>
-        
+
         <Row className="news-grid">
-          {filteredNews.map(item => (
-            <Col lg={4} md={6} key={item.id} className="news-item-col">
-              <NewsCard item={item} />
-            </Col>
-          ))}
+          {[...(newsList?.data || [])]
+            .filter((item) =>
+              activeFilter === "all"
+                ? true
+                : item.category?.toLowerCase() === activeFilter
+            )
+            .sort((a, b) => {
+              const dateA = new Date(a.date || a.created_at || a.published_at);
+              const dateB = new Date(b.date || b.created_at || b.published_at);
+              return dateB - dateA;
+            })
+            .map((item) => {
+              console.log(
+                "Date Used:",
+                item.date || item.created_at || item.published_at
+              );
+              return (
+                <Col lg={4} md={6} key={item.id} className="news-item-col">
+                  <NewsCard item={item} />
+                </Col>
+              );
+            })}
         </Row>
       </Container>
     </NewsFilterStyled>
@@ -114,7 +91,7 @@ const NewsFilterStyled = styled.section`
     color: #333;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
 
     &:hover {
       background-color: #e6e6e6;
@@ -138,7 +115,7 @@ const NewsFilterStyled = styled.section`
     background-color: white;
     border-radius: 8px;
     overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -146,7 +123,7 @@ const NewsFilterStyled = styled.section`
 
     &:hover {
       transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
     }
   }
 

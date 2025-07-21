@@ -9,6 +9,7 @@ import ClientSection from "@/components/home/Client";
 import Dream from "@/components/home/Dream";
 import FeatureSlider from "@/components/home/FeatureSlider";
 import ImageCollageSection from "@/components/ImageCollageSection";
+import NewsEventsSlider from "@/components/NewsEventsSlider";
 import Overview from "@/components/Overview";
 
 export async function metadata() {
@@ -42,7 +43,7 @@ export default async function HomePage() {
   const homeData = await getApi(apiValue);
   const featuredProjects = await getProjectListApi();
 
-  if (!homeData) return <LoadingSpinner />;
+  if (!homeData && !featuredProjects) return <LoadingSpinner />;
 
   const bannerData = homeData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "banner"
@@ -79,7 +80,7 @@ export default async function HomePage() {
       <Dream data={dream} />
       <ClientSection data={landownerBuyer} />
       <CallbackRequestForm data={contactUs} />
-      {/* <NewsEventsSlider data={newsEvent} />  */}
+      <NewsEventsSlider data={newsEvent} /> 
     </>
   );
 }

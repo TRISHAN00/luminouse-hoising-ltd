@@ -4,16 +4,25 @@ import Link from "next/link";
 import styled from "styled-components";
 
 export default function NewsCard({ item }) {
+  const thumb = item?.images?.list?.find((f) => f.thumb === "on");
+  const title = item?.data?.title;
+  const date = item?.data?.date;
+
+  const dateObj = new Date(date);
+  const day = dateObj.getDate().toString().padStart(2, "0");
+  const month = dateObj.toLocaleString("default", { month: "long" });
+  const year = dateObj.getFullYear();
+
   return (
     <NewsCardWrap>
-      <Link href={`/news/${item.slug}`} passHref>
+      <Link href={`/news/${item?.data?.slug}`} passHref>
         <CardContent>
           <ImageWrapper>
             <ImageContainer>
-              {item?.image && (
+              {thumb?.full_path && (
                 <Image
-                  src={item?.image}
-                  alt={item?.title || "News Image"}
+                  src={thumb?.full_path}
+                  alt={title || "News Image"}
                   fill
                   style={{
                     objectFit: "cover",
@@ -21,20 +30,17 @@ export default function NewsCard({ item }) {
                   }}
                 />
               )}
-
               <DarkOverlay />
             </ImageContainer>
             <WhiteOverlay />
           </ImageWrapper>
 
           <CardInfo>
-            <CardTitle>{typeof item?.title === 'string' ? item?.title : 'Luxury Residential Project'}</CardTitle>
+            <CardTitle>{title || "Luxury Residential Project"}</CardTitle>
             <CardFooter>
-              <DateNumber>{item?.date?.split(" ")[0]}</DateNumber>
+              <DateNumber>{day}</DateNumber>
               <DateInfo>
-                <DateMonth>
-                  {item?.date?.split(" ")[1]} {item?.date?.split(" ")[2]}
-                </DateMonth>
+                <DateMonth>{month} {year}</DateMonth>
                 <CardCategory>{item?.category}</CardCategory>
               </DateInfo>
             </CardFooter>

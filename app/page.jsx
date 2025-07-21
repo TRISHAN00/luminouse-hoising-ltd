@@ -3,7 +3,10 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 
 import { getApi } from "@/api/home.js";
 import { getProjectListApi } from "@/api/project";
+import CallbackRequestForm from "@/components/Contact";
 import Banner from "@/components/home/Banner";
+import ClientSection from "@/components/home/Client";
+import Dream from "@/components/home/Dream";
 import FeatureSlider from "@/components/home/FeatureSlider";
 import ImageCollageSection from "@/components/ImageCollageSection";
 import Overview from "@/components/Overview";
@@ -53,15 +56,15 @@ export default async function HomePage() {
     (f) => f?.section_data?.slug === "featured-projects"
   );
   const dream = homeData?.data?.sections?.find(
-    (f) => f?.section_data?.slug === "vision-statement"
+    (f) => f?.section_data?.slug === "dream"
   );
 
   const landownerBuyer = homeData?.data?.sections?.find(
-    (f) => f?.section_data?.slug === "growth-values"
+    (f) => f?.section_data?.slug === "buyer-landowner"
   );
 
   const contactUs = homeData?.data?.sections?.find(
-    (f) => f?.section_data?.slug === "contact-with-us"
+    (f) => f?.section_data?.slug === "get-in-touch"
   );
 
   const newsEvent = homeData?.data?.sections?.find(
@@ -73,9 +76,9 @@ export default async function HomePage() {
       <Overview data={overview} />
       <ImageCollageSection data={overview} />
       <FeatureSlider title={featureTitle} featuredProjects={featuredProjects} />
-      {/* <Dream data={dream} /> */}
-      {/* <Client data={landownerBuyer} /> */}
-      {/* <CallbackRequestForm data={contactUs} /> */}
+      <Dream data={dream} />
+      <ClientSection data={landownerBuyer} />
+      <CallbackRequestForm data={contactUs} />
       {/* <NewsEventsSlider data={newsEvent} />  */}
     </>
   );

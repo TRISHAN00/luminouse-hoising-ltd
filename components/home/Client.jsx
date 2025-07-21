@@ -7,6 +7,8 @@ import Line from "../Lines";
 import ClientCard from "./ClientCard";
 
 export default function ClientSection({ data }) {
+  const hltf = data?.section_data?.short_desc;
+  const hlts = data?.section_data?.subtitle;
   const landowner = data?.posts?.list?.find(
     (f) => f?.data?.slug === "landowner"
   );
@@ -23,8 +25,8 @@ export default function ClientSection({ data }) {
           <Col lg={3}>
             <SideTitle>
               <VerticalTextWrapper>
-                <VerticalText>{data?.section_data?.short_desc}</VerticalText>
-                <VerticalText>{data?.section_data?.subtitle}</VerticalText>
+                <VerticalText>{hltf}</VerticalText>
+                <VerticalText>{hlts}</VerticalText>
               </VerticalTextWrapper>
             </SideTitle>
           </Col>
@@ -35,7 +37,7 @@ export default function ClientSection({ data }) {
                 {landowner && (
                   <ClientCard
                     url={`${landowner?.data?.slug}`}
-                    title={landowner?.data?.title}
+                    title={landowner?.data?.subtitle}
                     imagePath={landowner?.images?.[0]?.full_path}
                     description={landowner?.data?.short_desc}
                   />

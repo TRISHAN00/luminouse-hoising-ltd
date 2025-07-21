@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@studio-freight/lenis": "^1.0.42",
     "axios": "^1.6.8",
     "bootstrap": "^5.3.5",
     "flickr-justified-gallery": "^2.2.0",

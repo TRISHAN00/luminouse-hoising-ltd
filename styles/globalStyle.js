@@ -1,32 +1,34 @@
-import { createGlobalStyle, css } from 'styled-components';
-import { Black, hover, text, title } from './globalStyleVars';
+import { createGlobalStyle, css } from "styled-components";
+import { Black, hover, text, title } from "./globalStyleVars";
 
 function createCSS() {
-    let styles = '';
+  let styles = "";
 
-    for (let i = 2; i < 20; i += 1) {
-        styles += `
+  for (let i = 2; i < 20; i += 1) {
+    styles += `
         .anim-active.fade-up:nth-child(${i}) {
-          transition-delay: ${i * .12}s;
+          transition-delay: ${i * 0.12}s;
         }
-     `
-    }
+     `;
+  }
 
-    for (let a = 2; a < 100; a += 1) {
-        styles += `
+  for (let a = 2; a < 100; a += 1) {
+    styles += `
         .anim-active.fade-right span:nth-child(${a}) {
-          transition-delay: ${a * .03}s;
+          transition-delay: ${a * 0.03}s;
         }
-     `
-    }
+     `;
+  }
 
-    return css`${styles}`;
+  return css`
+    ${styles}
+  `;
 }
 
 export default createGlobalStyle`
 
     ${createCSS()}
-    #root {
+    #main-root {
         min-height: 100vh;
         overflow-x: hidden;
     }
@@ -59,7 +61,7 @@ export default createGlobalStyle`
     }
 
 
-    body {
+   html, body {
         font-family: 'Arial', Helvetica, freesans, sans-serif !important;
         font-style: normal;
         margin: 0;
@@ -71,11 +73,13 @@ export default createGlobalStyle`
         min-height: 100vh;
         font-size: 16px;
         line-height: 24px;
+        scroll-behavior: auto;
         @media (max-width: 767px) {
             font-size: 14px;
             line-height: 21px;
         }
     }
+
 
     a {
         transition: color .3s ease;
@@ -676,6 +680,3 @@ export default createGlobalStyle`
         padding-top: 140px;
     }
 `;
-
-
-

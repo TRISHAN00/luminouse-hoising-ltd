@@ -2,10 +2,11 @@
 
 import Footer from "@/components/Footer";
 import Header from "@/components/Menu";
+import SmoothScroll from "@/components/SmoothScroll";
 import StyledComponentsRegistry from "@/lib/registry";
 import GlobalStyle from "@/styles/globalStyle";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { usePathname } from "next/navigation"; // ✅ use this instead of useRouter
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -45,6 +46,7 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <StyledComponentsRegistry>
+            <SmoothScroll/>
           <div id="main-root">
             <GlobalStyle />
             <ToastContainer />

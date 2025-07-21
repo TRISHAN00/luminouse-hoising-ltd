@@ -15,8 +15,9 @@ import Title from "../Title";
 
 export default function FeatureSlider({ title, featuredProjects }) {
   const findFeaturedProject = featuredProjects?.data?.filter(
-    (project) => project?.product_data?.is_featured !== null
+    (project) => project?.product_data?.is_featured === 1
   );
+
   return (
     <SliderSection>
       <Line background={"#1717171a"} />
@@ -33,19 +34,21 @@ export default function FeatureSlider({ title, featuredProjects }) {
             )}
           </Col>
         </Row>
-        <Row>
-          <Line />
-          <Col>
-            <NavigationContainer className="d-flex">
-              <NavigationButton className="prev-arrow">
-                <MdKeyboardArrowLeft />
-              </NavigationButton>
-              <NavigationButton className="next-arrow">
-                <MdKeyboardArrowRight />
-              </NavigationButton>
-            </NavigationContainer>
-          </Col>
-        </Row>
+        {findFeaturedProject?.length > 3 && (
+          <Row>
+            <Line />
+            <Col>
+              <NavigationContainer className="d-flex">
+                <NavigationButton className="prev-arrow">
+                  <MdKeyboardArrowLeft />
+                </NavigationButton>
+                <NavigationButton className="next-arrow">
+                  <MdKeyboardArrowRight />
+                </NavigationButton>
+              </NavigationContainer>
+            </Col>
+          </Row>
+        )}
 
         <Swiper
           modules={[Navigation]}

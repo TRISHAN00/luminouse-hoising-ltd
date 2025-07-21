@@ -3,17 +3,15 @@ import LoadingSpinner from "@/components/LoadingSpinner";
 
 import { getApi } from "@/api/home.js";
 import { getProjectListApi } from "@/api/project";
-import CallbackRequestForm from "@/components/Contact";
 import Banner from "@/components/home/Banner";
-import Client from "@/components/home/Client";
-import Dream from "@/components/home/Dream";
 import FeatureSlider from "@/components/home/FeatureSlider";
 import ImageCollageSection from "@/components/ImageCollageSection";
-import NewsEventsSlider from "@/components/NewsEventsSlider";
 import Overview from "@/components/Overview";
 
 export async function metadata() {
   const getData = await getApi("home");
+
+
   const banner = getData?.data?.sections?.find(
     (f) => f.section_data?.slug == "banner"
   );
@@ -40,7 +38,6 @@ export default async function HomePage() {
   const apiValue = "home";
   const homeData = await getApi(apiValue);
   const featuredProjects = await getProjectListApi();
-
 
   if (!homeData) return <LoadingSpinner />;
 
@@ -76,10 +73,10 @@ export default async function HomePage() {
       <Overview data={overview} />
       <ImageCollageSection data={overview} />
       <FeatureSlider title={featureTitle} featuredProjects={featuredProjects} />
-      <Dream data={dream} />
-      <Client data={landownerBuyer} />
-      <CallbackRequestForm data={contactUs} />
-      <NewsEventsSlider data={newsEvent} />
+      {/* <Dream data={dream} /> */}
+      {/* <Client data={landownerBuyer} /> */}
+      {/* <CallbackRequestForm data={contactUs} /> */}
+      {/* <NewsEventsSlider data={newsEvent} />  */}
     </>
   );
 }

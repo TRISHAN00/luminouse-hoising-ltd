@@ -1,7 +1,7 @@
 // /api/home.js
 export async function getApi(param) {
   const response = await fetch(
-    `https://luminoushousingltd.com/cms/api/get-req-data/sections?type=slug&value=${param}&get_section=yes&image=yes&post=yes&file=no&gallery=no`,
+    `http://localhost/lum-dashboard/api/get-req-data/sections?type=slug&value=${param}&get_section=yes&image=yes&post=yes&file=no&gallery=no`,
     {
       cache: "no-store",
     }

@@ -65,13 +65,15 @@ export default async function AboutPage() {
   );
 
   if (!aboutData) return <LoadingSpinner />;
-  return (
+  return ( 
     <>
-      <InnerBanner img={bannerImage} title={bannerName} />
-      <Overview data={overview} />
-      <MissionVision data={missionVision} large={large} medium={medium} />
-      <BOD data={directors} />
-      <Team data={ourTeam} />
+      {bannerName && <InnerBanner img={bannerImage} title={bannerName} />}
+      {overview && <Overview data={overview} />}
+      {missionVision && (
+        <MissionVision data={missionVision} large={large} medium={medium} />
+      )}
+      {directors && <BOD data={directors} />}
+      {ourTeam && <Team data={ourTeam} />}
     </>
   );
 }

@@ -2,7 +2,7 @@
 import styled from "styled-components";
 import { Img } from "../Img";
 
-export default function TeamCard({ name = "Team Member", position = "Position", image = "/images/dynamic/about/team-01.jpg" }) {
+export default function TeamCard({ name = "Team Member", position = "Position", image }) {
   return (
     <TeamCardStyled>
       <div className="team-image">

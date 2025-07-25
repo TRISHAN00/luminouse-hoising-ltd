@@ -21,7 +21,6 @@ export default function Team({
   speed = 3000,
   data,
 }) {
-  console.log(data);
   // Reference to the Swiper instance
   const swiperRef = useRef(null);
 

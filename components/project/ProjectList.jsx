@@ -230,7 +230,8 @@ export default function ProjectList({ data }) {
 
 // Helper
 function capitalize(str) {
-  return str.charAt(0).toUpperCase() + str.slice(1);
+  const s = typeof str === "string" ? str : String(str || "");
+  return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
 // Styled Components (same as before)

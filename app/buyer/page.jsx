@@ -1,4 +1,4 @@
-import { getApi } from "@/api/home";
+import { getApi } from "@/api/page-api";
 import InnerBanner from "@/components/InnerBanner";
 import LandownerForm from "@/components/landowner/LandownerForm";
 import LoadingSpinner from "@/components/LoadingSpinner";

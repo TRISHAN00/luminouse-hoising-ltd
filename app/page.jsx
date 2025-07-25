@@ -1,5 +1,5 @@
 import { getBlogListApi } from "@/api/blog";
-import { getApi } from "@/api/home.js";
+import { getApi } from "@/api/page-api.js";
 import { getProjectListApi } from "@/api/project";
 import CallbackRequestForm from "@/components/Contact";
 import Banner from "@/components/home/Banner";
@@ -67,9 +67,7 @@ export default async function HomePage() {
     (f) => f?.section_data?.slug === "get-in-touch"
   );
 
-  const newsEvent = homeData?.data?.sections?.find(
-    (f) => f?.section_data?.slug === "news-events"
-  );
+
   return (
     <>
       <Banner data={bannerData} />

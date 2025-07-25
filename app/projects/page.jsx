@@ -1,4 +1,4 @@
-import { getApi } from "@/api/home";
+import { getApi } from "@/api/page-api";
 import { getProjectListApi } from "@/api/project";
 import InnerBanner from "@/components/InnerBanner";
 import ProjectList from "@/components/project/ProjectList";

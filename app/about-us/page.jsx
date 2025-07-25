@@ -1,7 +1,7 @@
 // app/page.jsx
 import LoadingSpinner from "@/components/LoadingSpinner";
 
-import { getApi } from "@/api/home.js";
+import { getApi } from "@/api/page-api.js";
 import Team from "@/components/about/Team";
 import InnerBanner from "@/components/InnerBanner";
 import MissionVision from "@/components/MissionVision";
@@ -40,7 +40,10 @@ export default async function AboutPage() {
 
   const banner = aboutData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "about-banner"
-  )?.images?.list?.[0]?.full_path;
+  );
+
+  const bannerImage = banner?.images?.list?.[0]?.full_path;
+  const bannerName = banner?.section_data?.subtitle;
 
   const overview = aboutData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "about-overview"
@@ -64,10 +67,7 @@ export default async function AboutPage() {
   if (!aboutData) return <LoadingSpinner />;
   return (
     <>
-      <InnerBanner
-        img={banner}
-        title={banner?.section_data?.subtitle}
-      />
+      <InnerBanner img={bannerImage} title={bannerName} />
       <Overview data={overview} />
       <MissionVision data={missionVision} large={large} medium={medium} />
       <BOD data={directors} />

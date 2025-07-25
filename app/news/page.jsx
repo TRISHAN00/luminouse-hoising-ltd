@@ -1,5 +1,5 @@
 import { getBlogListApi } from "@/api/blog";
-import { getApi } from "@/api/home";
+import { getApi } from "@/api/page-api";
 import InnerBanner from "@/components/InnerBanner";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import NewsEventFilter from "@/components/news/NewsEventFilter";
@@ -37,11 +37,14 @@ export default async function NewsEvents() {
 
   const banner = aboutData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "news-banner"
-  )?.images?.list?.[0]?.full_path;
+  );
+
+  const bannerImage = banner?.images?.list?.[0]?.full_path;
+  const bannerName = banner?.section_data?.subtitle;
 
   return (
     <div>
-      <InnerBanner img={banner} title={"News & Events"} />
+      <InnerBanner img={bannerImage} title={bannerName} />
       <NewsEventFilter newsList={blogData} />
     </div>
   );

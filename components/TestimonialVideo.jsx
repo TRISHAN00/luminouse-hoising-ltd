@@ -460,7 +460,7 @@ export default function RealEstateTestimonials({ data }) {
                   testimonialExcerpt={testimonial?.data?.description}
                   rating={parseInt(testimonial?.data?.rating) || 5}
                   propertyImage={propertyImage}
-                  transactionType="Sale" // You might want to add this field to your data
+                  transactionType="Sale" 
                 />
               </Col>
             );

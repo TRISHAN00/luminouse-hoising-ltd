@@ -16,6 +16,29 @@ export default function RootLayout({ children }) {
   const [isLivousDenim, setIsLivousDenim] = useState(false);
   const [isLuminouseArch, setIsLuminouseArch] = useState(false);
   const pathname = usePathname();
+  const [settingsData, setSettingsData] = useState(null);
+
+  useEffect(() => {
+    async function fetchSettings() {
+      try {
+        const res = await fetch(
+          "http://localhost/lum-dashboard/api/get-req-data/settings-data",
+          {
+            cache: "no-store", // optional: disables cache for dev freshness
+          }
+        );
+
+        if (!res.ok) throw new Error("Failed to fetch settings");
+
+        const data = await res.json();
+        setSettingsData(data);
+      } catch (err) {
+        console.error("Error fetching settings:", err);
+      }
+    }
+
+    fetchSettings();
+  }, []);
 
   useEffect(() => {
     if (pathname.startsWith("/news/")) {
@@ -59,6 +82,7 @@ export default function RootLayout({ children }) {
               isLivousDenim={isLivousDenim}
               isLuminouseArch={isLuminouseArch}
               isNewsDetail={isNewsDetail}
+              settingsData={settingsData}
             />
           </div>
         </StyledComponentsRegistry>

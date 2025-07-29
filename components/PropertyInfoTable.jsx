@@ -63,7 +63,6 @@ function decodeHtml(html) {
 export default function PropertyInfoTable({ data }) {
   if (!data) return null;
 
-
   return (
     <Container>
       {/* Desktop View */}

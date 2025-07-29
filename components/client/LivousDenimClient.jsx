@@ -3,26 +3,12 @@ import Team from "@/components/about/Team";
 import InnerBannerConcern from "@/components/InnerBannerConcern";
 import MissionVision from "@/components/MissionVision";
 import Overview from "@/components/Overview";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import GarmentsGallery from "../GarmentsGallery";
 import LoadingSpinner from "../LoadingSpinner";
 
 export default function LivousDenimClient() {
   const [livousData, setLivousData] = useState(null);
-
-  useEffect(() => {
-    async function fetchLivousData() {
-      try {
-        const res = await fetch("/api/livous");
-        const data = await res.json();
-        setLivousData(data);
-      } catch (error) {
-        console.error("Failed to fetch Livous data:", error);
-      }
-    }
-
-    fetchLivousData();
-  }, []);
 
   const banner = livousData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "livous-banner"

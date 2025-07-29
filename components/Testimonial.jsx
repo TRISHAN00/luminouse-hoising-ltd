@@ -11,7 +11,6 @@ import "swiper/css/effect-fade";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-import bgImage from "../public/images/dynamic/landowner/testimonial-bg.jpg";
 import { Img } from "./Img";
 
 // Bird SVG components
@@ -48,6 +47,8 @@ const BirdIcon2 = () => (
 );
 
 export default function TestimonialSection({ data }) {
+  const bgImage = data?.images?.list?.find(f => f?.background === 'on')
+  console.log(data)
   const [activeIndex, setActiveIndex] = useState(0);
 
   const contentSwiperRef = useRef(null);
@@ -99,7 +100,7 @@ export default function TestimonialSection({ data }) {
   return (
     <TestimonialWrapper>
       <div className="bg-banner">
-        <Img src={bgImage} />
+        <Img src={bgImage?.full_path} />
       </div>
       <Container>
         <Row className="justify-content-between">
@@ -123,7 +124,6 @@ export default function TestimonialSection({ data }) {
               className="content-swiper"
             >
               {data?.posts?.list?.map((item) => {
-                console.log(item?.images?.[0]?.full_path);
                 return (
                   <SwiperSlide key={`content-${item.id}`}>
                     <TestimonialContent>
@@ -136,11 +136,11 @@ export default function TestimonialSection({ data }) {
                         {item?.data?.description}
                       </TestimonialText>
 
-                      <StarRating rating={item?.data?.rating} />
+                      <StarRating rating={5} />
 
                       <TestimonialAuthor>
                         <AuthorName>{item?.data?.title}</AuthorName>
-                        <AuthorPosition>{item?.data?.title}</AuthorPosition>
+                        <AuthorPosition>{item?.data?.subtitle}</AuthorPosition>
                       </TestimonialAuthor>
 
                       <NavigationControls>

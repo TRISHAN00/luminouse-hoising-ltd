@@ -7,7 +7,6 @@ import Overview from "@/components/Overview";
 import TestimonialSection from "@/components/Testimonial";
 import RealEstateTestimonials from "@/components/TestimonialVideo";
 
-
 export async function metadata() {
   const getData = await getApi("landowner");
   const banner = getData?.data?.sections?.find(
@@ -36,7 +35,7 @@ export default async function Landowner() {
   const apiValue = "landowner";
   const landownerData = await getApi(apiValue);
 
-  if (!landownerData) return <LoadingSpinner/>;
+  if (!landownerData) return <LoadingSpinner />;
 
   const banner = landownerData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "landowner-banner"

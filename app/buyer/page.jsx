@@ -7,7 +7,6 @@ import Overview from "@/components/Overview";
 import TestimonialSection from "@/components/Testimonial";
 import RealEstateTestimonials from "@/components/TestimonialVideo";
 
-
 export async function metadata() {
   const getData = await getApi("buyer");
   const banner = getData?.data?.sections?.find(
@@ -36,7 +35,7 @@ export default async function buyer() {
   const apiValue = "buyer";
   const buyerData = await getApi(apiValue);
 
-  if (!buyerData) return <LoadingSpinner/>;
+  if (!buyerData) return <LoadingSpinner />;
 
   const banner = buyerData?.data?.sections?.find(
     (f) => f?.section_data?.slug === "buyer-banner"
@@ -58,7 +57,7 @@ export default async function buyer() {
   );
 
   const testimonial = buyerData?.data?.sections?.find(
-    (f) => f?.section_data?.slug === "testimonial"
+    (f) => f?.section_data?.slug === "buyer-testimonial"
   );
   return (
     <>

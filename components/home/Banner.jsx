@@ -3,7 +3,6 @@
 import gsap from "gsap";
 
 import Image from "next/image";
-import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
@@ -482,7 +481,7 @@ export default function HomeBanner({ data = [] }) {
         </NavigationArrows>
       )}
 
-      <TabsContainer>
+      {/* <TabsContainer>
         <Tab
             key={0}
             
@@ -504,7 +503,7 @@ export default function HomeBanner({ data = [] }) {
           >
             <Link href={`/projects?status=completed`} >Completed</Link>
           </Tab>
-      </TabsContainer>
+      </TabsContainer> */}
     </BannerContainer>
   );
 }

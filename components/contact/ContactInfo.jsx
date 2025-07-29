@@ -54,38 +54,40 @@ const StyledLink = styled.a`
   }
 `;
 
-const ContactInfo = () => {
+const ContactInfo = ({ data }) => {
+  const allInfo = data?.posts?.list;
+  const address = allInfo?.find((f) => f?.data?.slug === "address");
+  const email = allInfo?.find((f) => f?.data?.slug === "email");
+  const phone = allInfo?.find((f) => f?.data?.slug === "phone");
+
   return (
     <ContactWrapper>
       <Container>
         <ContactContainer>
           <Row className="m-0">
-            <ContactSection xs={12} md={4}>
-              <SectionTitle>Address:</SectionTitle>
-              <SectionContent>
-                3rd Floor, House 412, Road 7, DOHS
-                <br />
-                Baridhara, Dhaka, Bangladesh
-              </SectionContent>
-            </ContactSection>
+            {address && (
+              <ContactSection xs={12} md={4}>
+                <SectionTitle>{address?.data?.title}:</SectionTitle>
+                <SectionContent>{address?.data?.description}</SectionContent>
+              </ContactSection>
+            )}
 
-            <ContactSection xs={12} md={4} middle>
-              <SectionTitle>Email:</SectionTitle>
-              <SectionContent>
-                <StyledLink href="mailto:luminoushousingltd@gmail.com">
-                  luminoushousingltd@gmail.com
-                </StyledLink>
-              </SectionContent>
-            </ContactSection>
-
-            <ContactSection xs={12} md={4} last>
-              <SectionTitle>Phone:</SectionTitle>
-              <SectionContent>
-                <StyledLink href="tel:01700744340">01700 744340</StyledLink>
-                <span>, </span>
-                <StyledLink href="tel:01700744340">01700 744340</StyledLink>
-              </SectionContent>
-            </ContactSection>
+            {email && (
+              <ContactSection xs={12} md={4} middle>
+                <SectionTitle>{email?.data?.title}:</SectionTitle>
+                <SectionContent>
+                  <StyledLink href={`mailto:${email?.data?.description}`}>
+                    {email?.data?.description}
+                  </StyledLink>
+                </SectionContent>
+              </ContactSection>
+            )}
+            {phone && (
+              <ContactSection xs={12} md={4} last>
+                <SectionTitle>{email?.data?.title}:</SectionTitle>
+                <SectionContent>{phone?.data?.description}</SectionContent>
+              </ContactSection>
+            )}
           </Row>
         </ContactContainer>
       </Container>

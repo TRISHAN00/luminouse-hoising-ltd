@@ -1,6 +1,7 @@
 "use client";
 
-import { ArrowUp, Facebook, Linkedin, Twitter, Youtube } from "lucide-react";
+import HTMLReactParser from "html-react-parser";
+import { ArrowUp, Facebook, Instagram, X } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
@@ -8,33 +9,38 @@ import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
 import luminouseArchLogo from "../public/images/static/logos/luminouse-arch.svg";
 import mainLogo from "../public/images/static/logos/main-logo.svg";
 
-const Footer = ({ isLivousDenim, isLuminouseArch }) => {
+const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
+  const location = settingsData?.data?.office_location;
+  const email = settingsData?.data?.contact_email;
+  const phone = settingsData?.data?.phone_list;
+  const facebook = settingsData?.data?.facebook;
+  const twitter = settingsData?.data?.twitter;
+  const instagram = settingsData?.data?.instagram;
+  const youtube = settingsData?.data?.youtube;
+
   const scrollToTop = () => {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   const getLogo = isLivousDenim
-      ? livousDenimLogo
-      : isLuminouseArch
-      ? luminouseArchLogo
-      : mainLogo;
+    ? livousDenimLogo
+    : isLuminouseArch
+    ? luminouseArchLogo
+    : mainLogo;
 
   return (
     <FooterWrapper>
       <FooterContent>
         <FooterSection>
-          <FooterHeading>Address</FooterHeading>
-          <FooterText>
-            3rd Floor, House 412, Road 7, DOHS
-            <br />
-            Baridhara, Dhaka, Bangladesh
-          </FooterText>
-          <FooterText>luminoushousingltd@gmail.com</FooterText>
-          <FooterText>
-            01700 744340
-            <br />
-            01700 744340
-          </FooterText>
+          {location && (
+            <>
+              <FooterHeading>Address</FooterHeading>
+              <FooterText>{HTMLReactParser(location)}</FooterText>
+            </>
+          )}
+
+          {email && <FooterText>{email}</FooterText>}
+          {phone && <FooterText>{HTMLReactParser(phone)}</FooterText>}
         </FooterSection>
 
         <FooterSection>
@@ -52,47 +58,46 @@ const Footer = ({ isLivousDenim, isLuminouseArch }) => {
             <FooterNavItem>
               <Link href="/landowner">Landowner</Link>
             </FooterNavItem>
-            <FooterNavItem>
-              <Link href="/buyer">Buyer</Link>
-            </FooterNavItem>
-            <FooterNavItem>
-              <Link href="/career">Career</Link>
-            </FooterNavItem>
-            <FooterNavItem>
-              <Link href="/contact-us">Contact Us</Link>
-            </FooterNavItem>
           </FooterNav>
         </FooterSection>
 
         <FooterSection>
-          <FooterHeading>Projects</FooterHeading>
-          <FooterNav>
-            <FooterNavItem>
-              <Link href="/projects/ongoing">Ongoing</Link>
-            </FooterNavItem>
-            <FooterNavItem>
-              <Link href="/projects/upcoming">Upcoming</Link>
-            </FooterNavItem>
-            <FooterNavItem>
-              <Link href="/projects/completed">Completed</Link>
-            </FooterNavItem>
-          </FooterNav>
+          <FooterNavItem>
+            <Link href="/buyer">Buyer</Link>
+          </FooterNavItem>
+          <FooterNavItem>
+            <Link href="/career">Career</Link>
+          </FooterNavItem>
+          <FooterNavItem>
+            <Link href="/contact-us">Contact Us</Link>
+          </FooterNavItem>
         </FooterSection>
 
         <FooterSection>
           <SocialLinks>
-            <SocialLink href="https://facebook.com" aria-label="Facebook">
-              <Facebook size={20} />
-            </SocialLink>
-            <SocialLink href="https://twitter.com" aria-label="Twitter">
-              <Twitter size={20} />
-            </SocialLink>
-            <SocialLink href="https://linkedin.com" aria-label="LinkedIn">
-              <Linkedin size={20} />
-            </SocialLink>
-            <SocialLink href="https://youtube.com" aria-label="YouTube">
-              <Youtube size={20} />
-            </SocialLink>
+            {facebook && (
+              <SocialLink href={facebook} target="_blank" aria-label="Facebook">
+                <Facebook size={20} />
+              </SocialLink>
+            )}
+
+            {twitter && (
+              <SocialLink href={twitter} target="_blank" aria-label="twitter">
+                <X size={20} />
+              </SocialLink>
+            )}
+
+            {instagram && (
+              <SocialLink href={instagram} target="_blank" aria-label="twitter">
+                <Instagram size={20} />
+              </SocialLink>
+            )}
+
+            {youtube && (
+              <SocialLink href={youtube} target="_blank" aria-label="youtube">
+                <Instagram size={20} />
+              </SocialLink>
+            )}
           </SocialLinks>
         </FooterSection>
       </FooterContent>
@@ -101,16 +106,30 @@ const Footer = ({ isLivousDenim, isLuminouseArch }) => {
 
       <FooterBottom>
         <LogoContainer>
-       
           <Logo src={getLogo} alt="Luminous Housing Ltd" width={100} />
         </LogoContainer>
 
         <CopyrightInfo>
-          <CopyrightText>© Luminous Housing Ltd</CopyrightText>
+          <CopyrightText>
+            © {new Date().getFullYear()} Luminous Housing Ltd.
+          </CopyrightText>
         </CopyrightInfo>
 
         <CreditsContainer>
-          <CreditsText>Design by <a target="_blank" href="https://trishansaha.com/">Trishan</a></CreditsText>
+          <CreditsText>
+            Developed by{" "}
+            <a
+              style={{
+                color: "#fff",
+                fontWeight: "bold",
+                letterSpacing: "1px",
+              }}
+              target="_blank"
+              href="https://trishansaha.com/"
+            >
+              Trishan Saha
+            </a>
+          </CreditsText>
         </CreditsContainer>
       </FooterBottom>
 

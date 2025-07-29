@@ -329,6 +329,12 @@ export default createGlobalStyle`
         }
     }
 
+    h2.split-title {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
     .css-2613qy-menu {
         border-radius: 0 !important;
         margin-top: 0 !important;

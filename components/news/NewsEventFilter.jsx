@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
@@ -14,10 +13,45 @@ const NewsFilter = ({ newsList }) => {
 
   const filterCategories = [
     { id: "all", label: "All" },
-    { id: "news", label: "News" },
-    { id: "events", label: "Events" },
-    { id: "blogs", label: "Blogs" },
+    { id: 7, label: "News" },
+    { id: 8, label: "Events" },
+    { id: 9, label: "Blog" },
   ];
+
+  // Function to get the date from item for sorting
+  const getItemDate = (item) => {
+    return new Date(
+      item?.data?.date ||
+        item?.date ||
+        item?.created_at ||
+        item?.published_at ||
+        0
+    );
+  };
+
+  // Filter and sort the news items
+  const getFilteredAndSortedItems = () => {
+    let filteredItems = [...(newsList?.data || [])];
+
+    // Apply category filter
+    if (activeFilter !== "all") {
+      filteredItems = filteredItems.filter((item) => {
+        const itemCategoryId = item?.category_id || item?.data?.category_id;
+        return itemCategoryId === activeFilter;
+      });
+    }
+
+    // Sort by date (latest first)
+    filteredItems.sort((a, b) => {
+      const dateA = getItemDate(a);
+      const dateB = getItemDate(b);
+      return dateB - dateA; // Latest first
+    });
+
+    return filteredItems;
+  };
+
+  const filteredAndSortedItems = getFilteredAndSortedItems();
 
   return (
     <NewsFilterStyled>
@@ -41,149 +75,94 @@ const NewsFilter = ({ newsList }) => {
         </Row>
 
         <Row className="news-grid">
-          {[...(newsList?.data || [])]
-            .filter((item) =>
-              activeFilter === "all"
-                ? true
-                : item.category?.toLowerCase() === activeFilter
-            )
-            .sort((a, b) => {
-              const dateA = new Date(a.date || a.created_at || a.published_at);
-              const dateB = new Date(b.date || b.created_at || b.published_at);
-              return dateB - dateA;
-            })
-            .map((item) => {
-              console.log(
-                "Date Used:",
-                item.date || item.created_at || item.published_at
-              );
-              return (
-                <Col lg={4} md={6} key={item.id} className="news-item-col">
-                  <NewsCard item={item} />
-                </Col>
-              );
-            })}
+          {filteredAndSortedItems.map((item, index) => {
+            return (
+              <Col
+                lg={4}
+                md={6}
+                key={item.id || index}
+                className="news-item-col"
+              >
+                <NewsCard item={item} />
+              </Col>
+            );
+          })}
         </Row>
+
+        {filteredAndSortedItems.length === 0 && (
+          <Row>
+            <Col>
+              <div className="no-items-message">
+                <p>No items found for the selected category.</p>
+              </div>
+            </Col>
+          </Row>
+        )}
       </Container>
     </NewsFilterStyled>
   );
 };
 
-const NewsFilterStyled = styled.section`
-  padding: 80px 0;
-  background-color: #f8f9fa;
-  overflow: hidden;
-
+const NewsFilterStyled = styled.div`
+  padding: 120px 0;
   .filter-buttons {
     display: flex;
-    margin-bottom: 50px;
+    gap: 1rem;
+    margin-bottom: 2rem;
     flex-wrap: wrap;
-    gap: 10px;
   }
 
   .filter-btn {
-    background-color: #f1f1f1;
-    border: none;
-    border-radius: 50px;
-    padding: 12px 30px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #333;
+    padding: 0.75rem 1.5rem;
+    border: 2px solid #e0e0e0;
+    background-color: white;
+    color: #666;
+    border-radius: 25px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    font-weight: 500;
+    font-size: 0.9rem;
 
     &:hover {
-      background-color: #e6e6e6;
+      border-color: #333;
+      color: #333;
     }
 
     &.active {
-      background-color: #0275d8;
+      background-color: #333;
       color: white;
+      border-color: #333;
     }
   }
 
   .news-grid {
-    margin-top: 20px;
+    margin-top: 2rem;
   }
 
   .news-item-col {
-    margin-bottom: 30px;
+    margin-bottom: 2rem;
   }
 
-  .news-item {
-    background-color: white;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  .no-items-message {
+    text-align: center;
+    padding: 3rem 0;
+    color: #666;
 
-    &:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    p {
+      font-size: 1.1rem;
+      margin: 0;
     }
   }
 
-  .news-image {
-    width: 100%;
-    height: 200px;
-    overflow: hidden;
-
-    img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transition: transform 0.5s ease;
-    }
-  }
-
-  .news-content {
-    padding: 20px;
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-
-    h3 {
-      font-size: 20px;
-      font-weight: 600;
-      margin-bottom: 15px;
-      line-height: 1.3;
-    }
-
-    .news-excerpt {
-      color: #666;
-      margin-bottom: 15px;
-      flex-grow: 1;
-    }
-
-    .news-date {
-      color: #999;
-      font-size: 14px;
-      margin-top: auto;
-    }
-  }
-
-  @media (max-width: 767px) {
-    padding: 50px 0;
-
+  @media (max-width: 768px) {
     .filter-buttons {
-      margin-bottom: 30px;
+      justify-content: center;
     }
 
     .filter-btn {
-      padding: 10px 20px;
-      font-size: 14px;
-    }
-
-    .news-image {
-      height: 180px;
-    }
-
-    .news-content h3 {
-      font-size: 18px;
+      flex: 1;
+      min-width: 120px;
+      text-align: center;
     }
   }
 `;

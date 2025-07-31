@@ -1,85 +1,174 @@
 "use client";
 import { useState } from "react";
 import { Col, Container, Form, Row } from "react-bootstrap";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from "../Button";
 
 export default function LandownerForm() {
-  const [category, setCategory] = useState("");
-  const [type, setType] = useState("");
+  const [formData, setFormData] = useState({
+    location: "",
+    address: "",
+    sol: "",
+    pf: "",
+    nol: "",
+    cp: "",
+    cn: "",
+    email: "",
+  });
+
+  const [validated, setValidated] = useState(false);
+  const [loading, setLoading] = useState(false);
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+
+    const form = e.currentTarget;
+    if (form.checkValidity() === false) {
+      e.stopPropagation();
+      setValidated(true);
+      return;
+    }
+
+    const payload = new FormData();
+    for (const key in formData) {
+      payload.append(key, formData[key]);
+    }
+    payload.append("form_id", "lp-form");
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/post-req-data/form-submit`,
+        {
+          method: "POST",
+          body: payload,
+        }
+      );
+
+      setLoading(false);
+
+      if (!res.ok) throw new Error("Form submission failed");
+
+      toast.success("Your message has been sent!");
+
+      setFormData({
+        location: "",
+        address: "",
+        sol: "",
+        pf: "",
+        nol: "",
+        cp: "",
+        cn: "",
+        email: "",
+      });
+      setValidated(false);
+    } catch (err) {
+      console.error(err);
+      toast.error("There was an error. Please try again.");
+    }
+  };
 
   return (
     <StyledLandownerForm>
       <Container>
-        <Form>
+        <Form noValidate validated={validated} onSubmit={handleSubmit}>
           <Row className="form-row">
             <Col lg={6} md={12} sm={12}>
               <StyledLandFormTitle>Land Information</StyledLandFormTitle>
 
-              <Form.Control type="text" placeholder="Location *" required />
-              <Form.Control type="text" placeholder="Address *" required />
+              <Form.Control
+                name="location"
+                type="text"
+                placeholder="Location *"
+                required
+                value={formData.location}
+                onChange={handleChange}
+              />
+              <Form.Control
+                name="address"
+                type="text"
+                placeholder="Address *"
+                required
+                value={formData.address}
+                onChange={handleChange}
+              />
               <Form.Control
                 type="text"
+                name="sol"
                 placeholder="Size of the Land *"
                 required
+                value={formData.sol}
+                onChange={handleChange}
               />
-              <Form.Control type="text" placeholder="Plot Facing *" required />
-
-              <Form.Select
-                aria-label="Select Category"
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-                className={category === "" ? "placeholder" : ""}
-              >
-                <option value="">Select Category</option>
-                <option value="ready">Ready</option>
-                <option value="ongoing">Ongoing</option>
-                <option value="upcoming">Upcoming</option>
-              </Form.Select>
-
-              <Form.Select
-                aria-label="Select Type"
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-                className={type === "" ? "placeholder" : ""}
-              >
-                <option value="">Select Type</option>
-                <option value="residential">Residential</option>
-                <option value="commercial">Commercial</option>
-                <option value="industrial">Industrial</option>
-              </Form.Select>
+              <Form.Control
+                name="pf"
+                type="text"
+                placeholder="Plot Facing *"
+                required
+                value={formData.pf}
+                onChange={handleChange}
+              />
             </Col>
             <Col lg={6} md={12} sm={12}>
-              <StyledLandFormTitle className="profile-title">Landowner Profile</StyledLandFormTitle>
+              <StyledLandFormTitle className="profile-title">
+                Landowner Profile
+              </StyledLandFormTitle>
 
               <Form.Control
+                name="nol"
                 type="text"
                 placeholder="Name of the Landowner *"
                 required
+                value={formData.nol}
+                onChange={handleChange}
               />
 
               <Form.Control
+                name="cp"
                 type="text"
                 placeholder="Contact Person *"
                 required
+                value={formData.cp}
+                onChange={handleChange}
               />
 
               <Form.Control
+                name="cn"
                 type="text"
                 placeholder="Contact Number *"
                 required
+                value={formData.cn}
+                onChange={handleChange}
               />
 
-              <Form.Control type="email" placeholder="Email *" required />
+              <Form.Control
+                name="email"
+                type="email"
+                placeholder="Email *"
+                required
+                value={formData.email}
+                onChange={handleChange}
+              />
 
               <StyledLandFormBtn className="landForm-btn">
                 <Button
+                  type="submit"
                   text="Submit Message"
                   background="#0288D1"
                   color="#fff"
                   iconColor="#fff"
                   hoverIconColor="#fff"
                   hoverBackground="#171717"
+                  loading={loading}
                 />
               </StyledLandFormBtn>
             </Col>

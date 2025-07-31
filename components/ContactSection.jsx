@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Container, Form, Row } from "react-bootstrap";
 import { FaMapMarkerAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 const ContactSection = () => {
@@ -15,6 +16,7 @@ const ContactSection = () => {
 
   const [validated, setValidated] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
+  const [loading, setLoading] = useState(false);
 
   // Handle window resize for responsive behavior
   useEffect(() => {
@@ -42,8 +44,9 @@ const ContactSection = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
 
     const form = e.currentTarget;
     if (form.checkValidity() === false) {
@@ -52,18 +55,37 @@ const ContactSection = () => {
       return;
     }
 
-    // Here you would typically send the form data to your backend
-    console.log("Form submitted:", formData);
-    alert("Message sent successfully!");
+    const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/post-req-data/form-submit`;
 
-    // Reset form
-    setFormData({
-      name: "",
-      email: "",
-      phone: "",
-      message: "",
-    });
-    setValidated(false);
+    const payload = new FormData();
+    payload.append("name", formData.name);
+    payload.append("email", formData.email);
+    payload.append("phone", formData.phone);
+    payload.append("message", formData.message);
+    payload.append("form_id", "contact-form");
+
+    try {
+      const res = await fetch(apiUrl, {
+        method: "POST",
+        body: payload,
+      });
+
+      if (!res.ok) throw new Error("Failed to submit");
+      setLoading(false);
+      toast.success("Message sent successfully!");
+
+      // Reset form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+      setValidated(false);
+    } catch (error) {
+      console.error("Form submission failed:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -132,7 +154,7 @@ const ContactSection = () => {
                 </Form.Group>
 
                 <Button type="submit" className="submit-btn">
-                  Submit Message
+                  {loading ? "Submitting" : " Submit Message"}
                 </Button>
               </Form>
             </div>

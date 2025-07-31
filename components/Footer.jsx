@@ -8,6 +8,7 @@ import styled from "styled-components";
 import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
 import luminouseArchLogo from "../public/images/static/logos/luminouse-arch.svg";
 import mainLogo from "../public/images/static/logos/main-logo.svg";
+import SocialIcons from "./SocialIcons";
 
 const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
   const location = settingsData?.data?.office_location;
@@ -117,7 +118,7 @@ const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
 
         <CreditsContainer>
           <CreditsText>
-            Developed by{" "}
+            Developed by
             <a
               style={{
                 color: "#fff",
@@ -137,27 +138,7 @@ const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
         <ArrowUp size={20} />
       </ScrollTopButton>
 
-      <MessengerButton
-        href="https://m.me/luminoushousing"
-        aria-label="Chat on Messenger"
-      >
-        <svg
-          viewBox="0 0 36 36"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          width="36"
-          height="36"
-        >
-          <path
-            d="M18 0C8.059 0 0 7.254 0 16.873C0 21.429 1.985 25.476 5.2 28.399V36L12.571 32.863C14.287 33.379 16.11 33.746 18 33.746C27.941 33.746 36 26.492 36 16.873C36 7.254 27.941 0 18 0Z"
-            fill="#0084FF"
-          />
-          <path
-            d="M19.991 22.7L14.822 17.158L5 22.7L15.755 11.2L21.168 16.743L30.747 11.2L19.991 22.7Z"
-            fill="white"
-          />
-        </svg>
-      </MessengerButton>
+      <SocialIcons />
     </FooterWrapper>
   );
 };
@@ -318,6 +299,10 @@ const CreditsText = styled.p`
   color: rgba(255, 255, 255, 0.7);
   font-size: 14px;
   margin: 0;
+
+  a {
+    margin-left: 5px;
+  }
 `;
 
 const ScrollTopButton = styled.button`
@@ -338,27 +323,6 @@ const ScrollTopButton = styled.button`
 
   &:hover {
     background-color: #0095ff;
-  }
-`;
-
-const MessengerButton = styled.a`
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  width: 60px;
-  height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  background-color: #ffffff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  z-index: 999;
-  transition: transform 0.3s ease;
-
-  &:hover {
-    transform: scale(1.05);
   }
 `;
 

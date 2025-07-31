@@ -18,7 +18,7 @@ import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
 import luminouseArchLogo from "../public/images/static/logos/luminouse-arch.svg";
 import mainLogo from "../public/images/static/logos/main-logo.svg";
 
-export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch }) {
+export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch, settingsData }) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -26,6 +26,7 @@ export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch }) {
   const [mobileActiveDropdown, setMobileActiveDropdown] = useState(null);
   const headerRef = useRef(null);
   const router = usePathname();
+  const whatApp = settingsData?.data?.office_phone;
 
   const getLogo = isLivousDenim
     ? livousDenimLogo
@@ -174,7 +175,7 @@ export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch }) {
               </NavMenu>
 
               <PhoneIcon>
-                <Link href="tel:+88000000000">
+                <Link href={`tel:${whatApp}`}>
                   <MdOutlineLocalPhone />
                 </Link>
               </PhoneIcon>

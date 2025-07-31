@@ -67,7 +67,6 @@ export default async function HomePage() {
     (f) => f?.section_data?.slug === "get-in-touch"
   );
 
-
   return (
     <>
       <Banner data={bannerData} />

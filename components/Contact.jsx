@@ -2,32 +2,69 @@
 
 import { useState } from "react";
 import { Col, Container } from "react-bootstrap";
-import { FiArrowRight, FiSend } from "react-icons/fi";
+import { FiSend } from "react-icons/fi";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 import Button from "./Button";
 import Title from "./Title";
 
 export default function CallbackRequestForm({ data }) {
-  const arrow = <FiArrowRight color="#fff" />;
   const [formData, setFormData] = useState({
     name: "",
     email: "",
     phone: "",
     message: "",
   });
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(name, value);
     setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Submit logic here
-    console.log("Form submitted:", formData);
+    setLoading(true);
+
+    const api_services = `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/post-req-data/form-submit`;
+
+    const payload = new FormData();
+    payload.append("name", formData.name);
+    payload.append("email", formData.email);
+    payload.append("phone", formData.phone);
+    payload.append("message", formData.message);
+    payload.append("form_id", "contact-form");
+
+    try {
+      const response = await fetch(api_services, {
+        method: "POST",
+        body: payload,
+      });
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const result = await response.json();
+      setLoading(false);
+
+      // Optional: Reset the form
+      setFormData({
+        name: "",
+        email: "",
+        phone: "",
+        message: "",
+      });
+
+      toast.success("Form submitted successfully!");
+    } catch (error) {
+      console.error("Error submitting form:", error);
+      toast.error("Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -100,13 +137,15 @@ export default function CallbackRequestForm({ data }) {
             </FormGroup>
             <div className="contact-btn">
               <Button
+                type="submit"
                 text="Send Message"
                 background="#0288D1"
-                hoverBackground="#0288D1"
+                hoverBackground="#015e8f"
                 border="1px solid #0288D1"
                 hoverBorderColor="#0288D1"
                 color="#fff"
                 hoverColor="#fff"
+                loading={loading}
                 icon={<FiSend size={16} />}
               />
             </div>

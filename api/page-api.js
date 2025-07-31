@@ -1,7 +1,7 @@
 // /api/home.js
 export async function getApi(param) {
   const response = await fetch(
-    `http://localhost/lum-dashboard/api/get-req-data/sections?type=slug&value=${param}&get_section=yes&image=yes&post=yes&file=no&gallery=no`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/get-req-data/sections?type=slug&value=${param}&get_section=yes&image=yes&post=yes&file=no&gallery=no`,
     {
       cache: "no-store",
     }
@@ -15,7 +15,7 @@ export async function getApi(param) {
 
 export async function getSettingApi() {
   const response = await fetch(
-    `http://localhost/lum-dashboard/api/get-req-data/settings-data`,
+    `${process.env.SERVER_BASE_URL}/api/get-req-data/settings-data`,
     {
       cache: "no-store",
     }

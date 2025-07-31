@@ -1,7 +1,7 @@
 // /api/home.js
 export async function getProjectListApi() {
   const response = await fetch(
-    `http://localhost/lum-dashboard/api/get-req-data/all-products?image=yes&post=no&file=&specification=&gallery=&variation=&limit=`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/get-req-data/all-products?image=yes&post=no&file=&specification=&gallery=&variation=&limit=`,
     {
       cache: "no-store",
     }
@@ -14,7 +14,7 @@ export async function getProjectListApi() {
 
 export async function getProjectDetailApi(param) {
   const response = await fetch(
-    `http://localhost/lum-dashboard/api/get-req-data/product-data?type=slug&value=${param}&image=yes&post=yes&file=yes`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/get-req-data/product-data?type=slug&value=${param}&image=yes&post=yes&file=yes`,
     {
       cache: "no-store",
     }

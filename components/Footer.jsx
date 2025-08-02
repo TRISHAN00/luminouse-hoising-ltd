@@ -13,7 +13,8 @@ import SocialIcons from "./SocialIcons";
 const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
   const location = settingsData?.data?.office_location;
   const email = settingsData?.data?.contact_email;
-  const phone = settingsData?.data?.phone_list;
+  const phone = settingsData?.data?.office_phone;
+  const sPhone = settingsData?.data?.office_fax;
   const facebook = settingsData?.data?.facebook;
   const twitter = settingsData?.data?.twitter;
   const instagram = settingsData?.data?.instagram;
@@ -42,6 +43,7 @@ const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
 
           {email && <FooterText>{email}</FooterText>}
           {phone && <FooterText>{HTMLReactParser(phone)}</FooterText>}
+          {sPhone && <FooterText>{HTMLReactParser(sPhone)}</FooterText>}
         </FooterSection>
 
         <FooterSection>
@@ -128,7 +130,7 @@ const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
               target="_blank"
               href="https://trishansaha.com/"
             >
-              Trishan Saha
+              Trishan
             </a>
           </CreditsText>
         </CreditsContainer>

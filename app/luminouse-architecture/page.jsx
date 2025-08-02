@@ -47,11 +47,11 @@ export default async function Page() {
   const medium = overview?.images?.list?.find((f) => f.medium === "on");
 
   const gallery = livousData?.data?.sections?.find(
-    (f) => f?.section_data?.slug === "gallery"
+    (f) => f?.section_data?.slug === "arch-gallery"
   );
 
   const team = livousData?.data?.sections?.find(
-    (f) => f?.section_data?.slug === "team"
+    (f) => f?.section_data?.slug === "arch-team"
   );
   return (
     <>

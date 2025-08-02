@@ -6,24 +6,24 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { Col, Container, Row } from "react-bootstrap";
-import {
-  MdClose,
-  MdExpandLess,
-  MdExpandMore,
-  MdMenu,
-  MdOutlineLocalPhone,
-} from "react-icons/md";
+import { MdExpandMore, MdOutlineLocalPhone } from "react-icons/md";
 import styled from "styled-components";
 import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
 import luminouseArchLogo from "../public/images/static/logos/luminouse-arch.svg";
 import mainLogo from "../public/images/static/logos/main-logo.svg";
 
-export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch, settingsData }) {
+export default function Menu({
+  isNewsDetail,
+  isLivousDenim,
+  isLuminouseArch,
+  settingsData,
+}) {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [lastScrollY, setLastScrollY] = useState(0);
   const [headerVisible, setHeaderVisible] = useState(true);
   const [mobileActiveDropdown, setMobileActiveDropdown] = useState(null);
+  const [isMenuAnimating, setIsMenuAnimating] = useState(false);
   const headerRef = useRef(null);
   const router = usePathname();
   const whatApp = settingsData?.data?.office_phone;
@@ -39,18 +39,16 @@ export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch, set
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
 
-      // Set scrolled state for style changes
       if (currentScrollY > 80) {
         setIsScrolled(true);
       } else {
         setIsScrolled(false);
       }
 
-      // Hide/show header based on scroll direction
       if (currentScrollY > lastScrollY && currentScrollY > 300) {
-        setHeaderVisible(false); // Scrolling down - hide header
+        setHeaderVisible(false);
       } else {
-        setHeaderVisible(true); // Scrolling up - show header
+        setHeaderVisible(true);
       }
 
       setLastScrollY(currentScrollY);
@@ -60,12 +58,35 @@ export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch, set
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  // Toggle mobile menu
+  // Prevent body scroll when mobile menu is open
+  useEffect(() => {
+    if (mobileMenuOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [mobileMenuOpen]);
+
+  // Enhanced mobile menu toggle with animation state
   const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
+    if (mobileMenuOpen) {
+      setIsMenuAnimating(true);
+      setTimeout(() => {
+        setMobileMenuOpen(false);
+        setMobileActiveDropdown(null);
+        setIsMenuAnimating(false);
+      }, 300);
+    } else {
+      setMobileMenuOpen(true);
+      setIsMenuAnimating(false);
+    }
   };
 
-  // Toggle mobile dropdown
+  // Smooth dropdown toggle
   const toggleMobileDropdown = (index) => {
     if (mobileActiveDropdown === index) {
       setMobileActiveDropdown(null);
@@ -74,12 +95,16 @@ export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch, set
     }
   };
 
-  // Check if menu item is active
+  // Close menu on link click
+  const handleLinkClick = () => {
+    setMobileActiveDropdown(null);
+    toggleMobileMenu();
+  };
+
   const isActive = (path) => {
     return router === path;
   };
 
-  // Updated menu items with submenu
   const menuItems = [
     { label: "Home", href: "/" },
     { label: "About Us", href: "/about-us" },
@@ -175,77 +200,102 @@ export default function Menu({ isNewsDetail, isLivousDenim, isLuminouseArch, set
               </NavMenu>
 
               <PhoneIcon>
-                <Link href={`tel:${whatApp}`}>
+                <a href={`tel:01700744342`}>
                   <MdOutlineLocalPhone />
-                </Link>
+                </a>
               </PhoneIcon>
 
-              {/* Mobile Menu Toggle */}
-              <MobileMenuToggle onClick={toggleMobileMenu}>
-                {mobileMenuOpen ? <MdClose /> : <MdMenu />}
+              {/* Enhanced Mobile Menu Toggle */}
+              <MobileMenuToggle
+                onClick={toggleMobileMenu}
+                isOpen={mobileMenuOpen}
+              >
+                <HamburgerIcon isOpen={mobileMenuOpen}>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </HamburgerIcon>
               </MobileMenuToggle>
             </HeaderRight>
           </Col>
         </Row>
       </Container>
 
-      {/* Mobile Menu Overlay */}
-      <MobileMenuOverlay isOpen={mobileMenuOpen}>
-        <MobileNavMenu>
-          <ul>
-            {menuItems.map((item, index) => (
-              <li key={index}>
-                {item.hasDropdown ? (
-                  <>
-                    <MobileDropdownToggle
-                      onClick={() => toggleMobileDropdown(index)}
-                      isActive={mobileActiveDropdown === index}
+      {/* Enhanced Mobile Menu Overlay */}
+      <MobileMenuOverlay
+        isOpen={mobileMenuOpen}
+        isAnimating={isMenuAnimating}
+        onClick={(e) => e.target === e.currentTarget && toggleMobileMenu()}
+      >
+        <MobileMenuContainer isOpen={mobileMenuOpen}>
+          <MobileMenuHeader>
+            <MobileMenuLogo>
+              <Image src={getLogo} alt="Mobile Logo" width={200} height={100} />
+            </MobileMenuLogo>
+          </MobileMenuHeader>
+
+          <MobileNavMenu>
+            <ul>
+              {menuItems.map((item, index) => (
+                <MobileMenuItem
+                  key={index}
+                  delay={index * 0.1}
+                  isOpen={mobileMenuOpen}
+                >
+                  {item.hasDropdown ? (
+                    <>
+                      <MobileDropdownToggle
+                        onClick={() => toggleMobileDropdown(index)}
+                        isActive={mobileActiveDropdown === index}
+                      >
+                        <span>{item.label}</span>
+                        <DropdownIcon isOpen={mobileActiveDropdown === index}>
+                          <MdExpandMore />
+                        </DropdownIcon>
+                      </MobileDropdownToggle>
+                      <MobileDropdownMenu
+                        isOpen={mobileActiveDropdown === index}
+                      >
+                        {item.dropdownItems.map((dropItem, dropIndex) => (
+                          <MobileDropdownItem
+                            key={dropIndex}
+                            delay={dropIndex * 0.05}
+                            isOpen={mobileActiveDropdown === index}
+                          >
+                            <Link
+                              href={dropItem.href}
+                              className={
+                                isActive(dropItem.href) ? "active" : ""
+                              }
+                              onClick={handleLinkClick}
+                            >
+                              {dropItem.label}
+                            </Link>
+                          </MobileDropdownItem>
+                        ))}
+                      </MobileDropdownMenu>
+                    </>
+                  ) : (
+                    <Link
+                      href={item.href}
+                      onClick={handleLinkClick}
+                      className={isActive(item.href) ? "active" : ""}
                     >
                       {item.label}
-                      {mobileActiveDropdown === index ? (
-                        <MdExpandLess />
-                      ) : (
-                        <MdExpandMore />
-                      )}
-                    </MobileDropdownToggle>
-                    <MobileDropdownMenu isOpen={mobileActiveDropdown === index}>
-                      {item.dropdownItems.map((dropItem, dropIndex) => (
-                        <li key={dropIndex}>
-                          <Link
-                            href={dropItem.href}
-                            className={isActive(dropItem.href) ? "active" : ""}
-                            onClick={() => {
-                              setMobileActiveDropdown(null);
-                              setMobileMenuOpen(false);
-                            }}
-                          >
-                            {dropItem.label}
-                          </Link>
-                        </li>
-                      ))}
-                    </MobileDropdownMenu>
-                  </>
-                ) : (
-                  <Link
-                    href={item.href}
-                    onClick={() => setMobileMenuOpen(false)}
-                    className={isActive(item.href) ? "active" : ""}
-                  >
-                    {item.label}
-                  </Link>
-                )}
-              </li>
-            ))}
-          </ul>
-          <MobilePhoneLink>
-            <Link
-              href="tel:+88000000000"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              <MdOutlineLocalPhone /> Call Us
-            </Link>
-          </MobilePhoneLink>
-        </MobileNavMenu>
+                    </Link>
+                  )}
+                </MobileMenuItem>
+              ))}
+            </ul>
+
+            <MobilePhoneLink isOpen={mobileMenuOpen}>
+              <Link href={`tel:01700744342`} onClick={handleLinkClick}>
+                <MdOutlineLocalPhone />
+                <span>Call Us Now</span>
+              </Link>
+            </MobilePhoneLink>
+          </MobileNavMenu>
+        </MobileMenuContainer>
       </MobileMenuOverlay>
     </StyledHeader>
   );
@@ -340,17 +390,14 @@ const NavMenu = styled.nav`
     list-style: none;
     align-items: center;
 
-    /* Normal desktop :992px. */
     @media (min-width: 992px) and (max-width: 1200px) {
       gap: 15px;
     }
 
-    /* Tablet desktop :768px. */
     @media (min-width: 768px) and (max-width: 991px) {
       gap: 15px;
     }
 
-    /* small mobile :320px. */
     @media (max-width: 767px) {
       gap: 15px;
     }
@@ -392,7 +439,6 @@ const MenuLink = styled(Link)`
   gap: 5px;
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
 
-  /* Normal desktop :992px. */
   @media (min-width: 992px) and (max-width: 1200px) {
     font-size: 12px;
   }
@@ -525,18 +571,56 @@ const MobileMenuToggle = styled.button`
   display: none;
   background: none;
   border: none;
-  color: ${white};
-  font-size: 28px;
   cursor: pointer;
-  padding: 5px;
+  padding: 8px;
+  z-index: 1001;
+  position: relative;
   transition: transform 0.3s ease;
 
   &:hover {
-    transform: scale(1.1);
+    transform: scale(1.05);
   }
 
   @media (max-width: 991px) {
     display: block;
+  }
+`;
+
+const HamburgerIcon = styled.div`
+  width: 24px;
+  height: 18px;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  span {
+    display: block;
+    height: 2px;
+    width: 100%;
+    background: ${white};
+    border-radius: 1px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    transform-origin: center;
+
+    &:nth-child(1) {
+      transform: ${(props) =>
+        props.isOpen
+          ? "rotate(45deg) translateY(8px)"
+          : "rotate(0) translateY(0)"};
+    }
+
+    &:nth-child(2) {
+      opacity: ${(props) => (props.isOpen ? "0" : "1")};
+      transform: ${(props) => (props.isOpen ? "scale(0)" : "scale(1)")};
+    }
+
+    &:nth-child(3) {
+      transform: ${(props) =>
+        props.isOpen
+          ? "rotate(-45deg) translateY(-8px)"
+          : "rotate(0) translateY(0)"};
+    }
   }
 `;
 
@@ -546,69 +630,109 @@ const MobileMenuOverlay = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background: rgba(0, 0, 0, 0.95);
-  backdrop-filter: blur(10px);
-  z-index: 1;
+  background: rgba(0, 0, 0, 0.97);
+  backdrop-filter: blur(20px);
+  z-index: 999;
   display: flex;
   justify-content: center;
-  align-items: center;
-  transition: opacity 0.4s ease, visibility 0.4s ease;
+  align-items: flex-start;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   opacity: ${(props) => (props.isOpen ? "1" : "0")};
   visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
   overflow-y: auto;
+  padding: 20px;
+`;
+
+const MobileMenuContainer = styled.div`
+  width: 100%;
+  max-width: 400px;
+  transform: ${(props) =>
+    props.isOpen ? "translateY(0) scale(1)" : "translateY(-50px) scale(0.9)"};
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: ${(props) => (props.isOpen ? "0.1s" : "0s")};
+  margin-top: 80px;
+`;
+
+const MobileMenuHeader = styled.div`
+  text-align: center;
+  padding: 20px 0 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: 30px;
+`;
+
+const MobileMenuLogo = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  img {
+    filter: brightness(1.2);
+  }
 `;
 
 const MobileNavMenu = styled.nav`
-  text-align: center;
-  padding: 20px;
-  width: 100%;
-  max-width: 90%;
-  max-height: 80vh;
-  overflow-y: auto;
-
   ul {
     list-style: none;
     padding: 0;
-    margin: 0 0 30px;
+    margin: 0;
+  }
+`;
 
-    li {
-      margin: 15px 0;
+const MobileMenuItem = styled.li`
+  margin: 0;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  transform: ${(props) =>
+    props.isOpen ? "translateX(0)" : "translateX(-30px)"};
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: ${(props) =>
+    props.isOpen ? `${props.delay + 0.2}s` : "0s"};
 
-      a {
-        color: ${white};
-        font-size: 24px;
-        font-weight: 500;
-        position: relative;
-        padding: 5px 10px;
-        transition: color 0.3s ease;
+  > a {
+    display: block;
+    color: ${white};
+    font-size: 22px;
+    font-weight: 600;
+    padding: 15px 20px;
+    margin: 8px 0;
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
+    overflow: hidden;
 
-        &:after {
-          content: "";
-          position: absolute;
-          width: 0;
-          height: 2px;
-          bottom: 0;
-          left: 50%;
-          background: #fff;
-          transition: all 0.3s ease;
-        }
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+      );
+      transition: left 0.5s ease;
+    }
 
-        &:hover,
-        &.active {
-          color: #fff;
-        }
+    &:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateX(10px);
+      border-color: rgba(255, 255, 255, 0.2);
 
-        &:hover:after {
-          width: 100%;
-          left: 0;
-        }
-
-        &.active:after {
-          width: 100%;
-          left: 0;
-          height: 3px;
-        }
+      &:before {
+        left: 100%;
       }
+    }
+
+    &.active {
+      background: rgba(2, 136, 209, 0.2);
+      border-color: #0288d1;
+      color: #64b5f6;
     }
   }
 `;
@@ -616,103 +740,181 @@ const MobileNavMenu = styled.nav`
 const MobileDropdownToggle = styled.button`
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 5px;
-  background: transparent;
-  border: none;
-  color: ${white};
-  font-size: 24px;
-  font-weight: 500;
-  margin: 0 auto;
-  padding: 5px 10px;
-  transition: color 0.3s ease;
+  justify-content: space-between;
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #fff;
+  font-size: 22px;
+  font-weight: 600;
+  padding: 15px 20px;
+  margin: 8px 0;
   cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
 
-  &:hover,
-  &[aria-expanded="true"] {
-    color: #fff;
-  }
-
-  &:after {
+  &:before {
     content: "";
     position: absolute;
-    width: ${(props) => (props.isActive ? "60px" : "0")};
-    height: 2px;
-    bottom: -5px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: #fff;
-    transition: width 0.3s ease;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.1),
+      transparent
+    );
+    transition: left 0.5s ease;
   }
 
-  &:hover:after {
-    width: 60px;
+  &:hover {
+    background: rgba(255, 255, 255, 0.1);
+    transform: translateX(10px);
+    border-color: rgba(255, 255, 255, 0.2);
+
+    &:before {
+      left: 100%;
+    }
   }
+
+  span {
+    flex-grow: 1;
+    text-align: left;
+  }
+`;
+
+const DropdownIcon = styled.div`
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform: ${(props) => (props.isOpen ? "rotate(180deg)" : "rotate(0deg)")};
 
   svg {
-    font-size: 26px;
-    transition: transform 0.3s ease;
+    font-size: 24px;
   }
 `;
 
 const MobileDropdownMenu = styled.ul`
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.3);
   border-radius: 8px;
-  max-height: ${(props) => (props.isOpen ? "500px" : "0")};
+  max-height: ${(props) => (props.isOpen ? "300px" : "0")};
   opacity: ${(props) => (props.isOpen ? 1 : 0)};
   visibility: ${(props) => (props.isOpen ? "visible" : "hidden")};
-  transition: max-height 0.5s ease, opacity 0.3s ease, visibility 0.3s ease,
-    padding 0.3s ease;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   overflow: hidden;
-  padding: ${(props) => (props.isOpen ? "10px" : "0")};
-  margin-top: 10px !important;
-  width: 100%;
+  margin: 8px 0 0 0 !important;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+`;
 
-  li {
-    margin: 8px 0 !important;
+const MobileDropdownItem = styled.li`
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  transform: ${(props) =>
+    props.isOpen ? "translateY(0)" : "translateY(-10px)"};
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: ${(props) =>
+    props.isOpen ? `${props.delay + 0.1}s` : "0s"};
 
-    a {
-      display: block;
-      font-size: 18px !important;
-      padding: 8px 15px !important;
-      border-radius: 5px;
-      transition: background-color 0.3s ease;
+  a {
+    display: block;
+    font-size: 18px !important;
+    font-weight: 500 !important;
+    padding: 12px 20px !important;
+    margin: 0 !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05) !important;
+    transition: all 0.3s ease !important;
 
-      &:hover {
-        background: rgba(255, 255, 255, 0.1);
-      }
+    &:hover {
+      background: rgba(255, 255, 255, 0.1) !important;
+      transform: translateX(10px) !important;
+      padding-left: 30px !important;
+    }
 
-      &.active {
-        background: rgba(255, 255, 255, 0.15);
-      }
+    &.active {
+      background: rgba(2, 136, 209, 0.2) !important;
+      color: #64b5f6 !important;
+    }
+
+    &:last-child {
+      border-bottom: none !important;
     }
   }
 `;
 
 const MobilePhoneLink = styled.div`
   margin-top: 40px;
+  text-align: center;
+  opacity: ${(props) => (props.isOpen ? "1" : "0")};
+  transform: ${(props) =>
+    props.isOpen ? "translateY(0)" : "translateY(20px)"};
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: ${(props) => (props.isOpen ? "0.6s" : "0s")};
+  color: "white";
 
   a {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    background: #0288d1;
+    gap: 12px;
+    background: linear-gradient(135deg, #0288d1, #0277bd);
     color: white;
-    padding: 12px 25px;
-    border-radius: 30px;
+    padding: 16px 32px;
+    border-radius: 50px;
     font-size: 18px;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-weight: 600;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 20px rgba(2, 136, 209, 0.3);
+    position: relative;
+    overflow: hidden;
+    color: "white";
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.2),
+        transparent
+      );
+      transition: left 0.6s ease;
+    }
 
     &:hover {
-      background: white;
-      color: #0288d1;
-      transform: translateY(-5px);
-      box-shadow: 0 10px 20px rgba(2, 136, 209, 0.3);
+      background: linear-gradient(135deg, #0277bd, #01579b);
+      transform: translateY(-3px) scale(1.05);
+      box-shadow: 0 8px 30px rgba(2, 136, 209, 0.5);
+
+      &:before {
+        left: 100%;
+      }
+    }
+
+    &:active {
+      transform: translateY(-1px) scale(1.02);
     }
 
     svg {
       font-size: 22px;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%,
+      100% {
+        transform: scale(1);
+      }
+      50% {
+        transform: scale(1.1);
+      }
     }
   }
 `;

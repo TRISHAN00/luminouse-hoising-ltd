@@ -5,6 +5,7 @@ import styled from "styled-components";
 import NewsCard from "./NewsCard";
 
 const NewsFilter = ({ newsList }) => {
+  console.log(newsList)
   const [activeFilter, setActiveFilter] = useState("all");
 
   const handleFilterClick = (filter) => {
@@ -13,9 +14,9 @@ const NewsFilter = ({ newsList }) => {
 
   const filterCategories = [
     { id: "all", label: "All" },
-    { id: 7, label: "News" },
-    { id: 8, label: "Events" },
-    { id: 9, label: "Blog" },
+    { id: 1, label: "News" },
+    { id: 2, label: "Events" },
+    { id: 3, label: "Blog" },
   ];
 
   // Function to get the date from item for sorting

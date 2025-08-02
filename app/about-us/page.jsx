@@ -10,22 +10,23 @@ import BOD from "../../components/about/BOD";
 
 export async function metadata() {
   const getData = await getApi("about-us");
+  const pageData = getData?.data?.page_data || {};
+
   const banner = getData?.data?.sections?.find(
-    (f) => f.section_data?.slug == "about-banner"
+    (f) => f.section_data?.slug === "about-banner"
   );
+  const bannerImage = banner?.images?.list?.[0]?.full_path;
 
   return {
-    title: {
-      default: `${getData?.data?.page_data?.meta_title}`,
-    },
-    description: `${getData?.data?.page_data?.meta_description}`,
+    title: pageData?.meta_title || "About Us",
+    description: pageData?.meta_description || "",
     openGraph: {
-      title: `${getData?.data?.page_data?.og_title}`,
-      description: `${getData?.data?.page_data?.og_description}`,
+      title: pageData?.og_title || pageData?.meta_title || "About Us",
+      description: pageData?.og_description || pageData?.meta_description || "",
       images: [
         {
-          url: `${banner?.images?.list?.[0]?.full_path}`,
-          alt: `${getData?.data?.page_data?.meta_title}`,
+          url: bannerImage || "/default-og-image.jpg",
+          alt: pageData?.meta_title || "About Us",
         },
       ],
     },
@@ -65,7 +66,7 @@ export default async function AboutPage() {
   );
 
   if (!aboutData) return <LoadingSpinner />;
-  return ( 
+  return (
     <>
       {bannerName && <InnerBanner img={bannerImage} title={bannerName} />}
       {overview && <Overview data={overview} />}

@@ -4,7 +4,9 @@ import Link from "next/link";
 import styled from "styled-components";
 
 export default function NewsCard({ item }) {
-  const thumb = item?.images?.list?.find((f) => f.thumb === "on");
+  const thumb = Array.isArray(item?.images?.list)
+    ? item.images.list.find((f) => f.thumb === "on")
+    : null;
   const title = item?.data?.title;
   const date = item?.data?.date;
 
@@ -40,7 +42,9 @@ export default function NewsCard({ item }) {
             <CardFooter>
               <DateNumber>{day}</DateNumber>
               <DateInfo>
-                <DateMonth>{month} {year}</DateMonth>
+                <DateMonth>
+                  {month} {year}
+                </DateMonth>
                 <CardCategory>{item?.category}</CardCategory>
               </DateInfo>
             </CardFooter>

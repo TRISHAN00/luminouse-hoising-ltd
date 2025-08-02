@@ -7,28 +7,29 @@ import Overview from "@/components/Overview";
 
 export async function metadata() {
   const getData = await getApi("luminouse-architecture");
+  const pageData = getData?.data?.page_data || {};
 
   const banner = getData?.data?.sections?.find(
-    (f) => f.section_data?.slug == "architecture-banner"
+    (f) => f.section_data?.slug === "architecture-banner"
   );
+  const bannerImage = banner?.images?.list?.[0]?.full_path;
 
   return {
-    title: {
-      default: `${getData?.data?.page_data?.meta_title}`,
-    },
-    description: `${getData?.data?.page_data?.meta_description}`,
+    title: pageData.meta_title || "Luminouse Architecture",
+    description: pageData.meta_description || "",
     openGraph: {
-      title: `${getData?.data?.page_data?.og_title}`,
-      description: `${getData?.data?.page_data?.og_description}`,
+      title: pageData.og_title || pageData.meta_title || "Luminouse Architecture",
+      description: pageData.og_description || pageData.meta_description || "",
       images: [
         {
-          url: `${banner?.images?.list?.[0]?.full_path}`,
-          alt: `${getData?.data?.page_data?.meta_title}`,
+          url: bannerImage || "/default-og.jpg",
+          alt: pageData.meta_title || "Luminouse Architecture",
         },
       ],
     },
   };
 }
+
 
 export default async function Page() {
   const apiValue = "luminouse-architecture";

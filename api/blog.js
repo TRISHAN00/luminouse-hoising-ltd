@@ -1,7 +1,7 @@
 // /api/home.js
 export async function getBlogListApi() {
   const response = await fetch(
-    `http://localhost/lum-dashboard/api/get-req-data/blog-list?image=yes&post=no&file=&specification=&gallery=&variation=&limit=`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/get-req-data/blog-list?image=yes&post=no&file=&specification=&gallery=&variation=&limit=`,
     {
       cache: "no-store",
     }
@@ -14,7 +14,7 @@ export async function getBlogListApi() {
 
 export async function getBlogDetailApi(param) {
   const response = await fetch(
-    `http://localhost/lum-dashboard/api/get-req-data/blog-data?type=slug&value=${param}`,
+    `${process.env.NEXT_PUBLIC_SERVER_BASE_URL}/api/get-req-data/blog-data?type=slug&value=${param}`,
     {
       cache: "no-store",
     }

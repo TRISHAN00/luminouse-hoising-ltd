@@ -5,6 +5,7 @@ import ImageCollageSection from "@/components/ImageCollageSection";
 import FeaturedAmenities from "@/components/project/FeaturedAmenities";
 import InnerBannerDetail from "@/components/project/InnerBannerDetail";
 import ProjectGalllery from "@/components/project/ProjectGalllery";
+import HTMLReactParser from "html-react-parser";
 import { notFound } from "next/navigation";
 
 // SEO
@@ -20,10 +21,14 @@ export async function generateMetadata({ params }) {
 
   return {
     title: {
-      default: `${banner?.product_data?.title} | Luminous Housing Ltd.`,
+      default: `${HTMLReactParser(
+        banner?.product_data?.title
+      )} | Luminous Housing Ltd.`,
     },
     openGraph: {
-      title: `${banner?.product_data?.title} | Luminous Housing Ltd.`,
+      title: `${HTMLReactParser(
+        banner?.product_data?.title
+      )} | Luminous Housing Ltd.`,
     },
   };
 }
@@ -48,7 +53,6 @@ export default async function ProjectDetailPage({ params }) {
   const gallery = projectData?.data?.posts?.list?.find(
     (f) => f?.data?.slug === "gallery"
   );
-
 
   return (
     <div className="project-detail">

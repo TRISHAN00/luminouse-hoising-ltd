@@ -60,41 +60,43 @@ export default function NewsBlogDetails({ projectData }) {
             <div className="content">{HTMLReactParser(description)}</div>
           </Col>
           <Col lg={4}>
-            <SocialShareStyled>
-              <h3>Share This Post</h3>
-              <div className="share-icons">
-                <a
-                  href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
-                    currentUrl
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="share-icon facebook"
-                >
-                  <Facebook />
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
-                    currentUrl
-                  )}&text=${encodeURIComponent(title)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="share-icon twitter"
-                >
-                  <Twitter />
-                </a>
-                <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
-                    currentUrl
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="share-icon linkedin"
-                >
-                  <Linkedin />
-                </a>
-              </div>
-            </SocialShareStyled>
+            <div style={{ position: "relative" }}>
+              <SocialShareStyled>
+                <h3>Share This Post</h3>
+                <div className="share-icons">
+                  <a
+                    href={`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+                      currentUrl
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="share-icon facebook"
+                  >
+                    <Facebook />
+                  </a>
+                  <a
+                    href={`https://twitter.com/intent/tweet?url=${encodeURIComponent(
+                      currentUrl
+                    )}&text=${encodeURIComponent(title)}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="share-icon twitter"
+                  >
+                    <Twitter />
+                  </a>
+                  <a
+                    href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+                      currentUrl
+                    )}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="share-icon linkedin"
+                  >
+                    <Linkedin />
+                  </a>
+                </div>
+              </SocialShareStyled>
+            </div>
           </Col>
         </Row>
       </Container>

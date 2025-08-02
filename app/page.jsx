@@ -13,28 +13,29 @@ import Overview from "@/components/Overview";
 
 export async function metadata() {
   const getData = await getApi("home");
+  const pageData = getData?.data?.page_data || {};
 
   const banner = getData?.data?.sections?.find(
-    (f) => f.section_data?.slug == "banner"
+    (f) => f.section_data?.slug === "banner"
   );
+  const bannerImage = banner?.images?.list?.[0]?.full_path;
 
   return {
-    title: {
-      default: `${getData?.data?.page_data?.meta_title}`,
-    },
-    description: `${getData?.data?.page_data?.meta_description}`,
+    title: pageData.meta_title || "Home",
+    description: pageData.meta_description || "",
     openGraph: {
-      title: `${getData?.data?.page_data?.og_title}`,
-      description: `${getData?.data?.page_data?.og_description}`,
+      title: pageData.og_title || pageData.meta_title || "Home",
+      description: pageData.og_description || pageData.meta_description || "",
       images: [
         {
-          url: `${banner?.images?.list?.[0]?.full_path}`,
-          alt: `${getData?.data?.page_data?.meta_title}`,
+          url: bannerImage || "/default-og.jpg",
+          alt: pageData.meta_title || "Home",
         },
       ],
     },
   };
 }
+
 
 export default async function HomePage() {
   const apiValue = "home";
@@ -69,13 +70,20 @@ export default async function HomePage() {
 
   return (
     <>
-      <Banner data={bannerData} />
-      <Overview data={overview} />
-      <ImageCollageSection data={overview} />
-      <FeatureSlider title={featureTitle} featuredProjects={featuredProjects} />
-      <Dream data={dream} />
-      <ClientSection data={landownerBuyer} />
-      <CallbackRequestForm data={contactUs} />
+      {bannerData && <Banner data={bannerData} />}
+      {overview && <Overview data={overview} />}
+      {overview && <ImageCollageSection data={overview} />}
+      {featureTitle && featuredProjects && (
+        <FeatureSlider
+          title={featureTitle}
+          featuredProjects={featuredProjects}
+        />
+      )}
+
+      {dream && <Dream data={dream} />}
+      {landownerBuyer && <ClientSection data={landownerBuyer} />}
+      {contactUs && <CallbackRequestForm data={contactUs} />}
+
       <NewsEventsSlider getAllNewsEvents={getAllNewsEvents} />
     </>
   );

@@ -23,7 +23,7 @@ export default function FeatureSlider({ title, featuredProjects }) {
       <Line background={"#1717171a"} />
       <Container>
         <Row>
-          <Col className="feature-title" lg={{ offset: 2, span: 8 }}>
+          <Col className="feature-title" >
             {title?.section_data?.subtitle && (
               <Title
                 center

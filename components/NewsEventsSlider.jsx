@@ -4,7 +4,6 @@ import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { Navigation } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-import newImage from "../public/images/dynamic/about/team-01.jpg";
 
 // Import Swiper styles
 import { Col, Container, Row } from "react-bootstrap";
@@ -16,46 +15,11 @@ import Title from "./Title";
 import NewsCard from "./news/NewsCard";
 
 export default function NewsEventsSlider({ data, getAllNewsEvents }) {
-  console.log(getAllNewsEvents);
   const [mounted, setMounted] = useState(false);
   const prevRef = useRef(null);
   const nextRef = useRef(null);
 
-  // News data
-  const newsItems = [
-    {
-      id: 1,
-      title: "Luxury Residential Project",
-      image: newImage,
-      date: "22 January 2025",
-      category: "News",
-      slug: "luxury-residential-project",
-    },
-    {
-      id: 2,
-      title: "Grand Handover Ceremony for Premium Apartment Complex",
-      image: newImage,
-      date: "31 January 2025",
-      category: "News",
-      slug: "premium-apartment-complex",
-    },
-    {
-      id: 3,
-      title: "Luminous Housings Expands into Commercial Real Estate",
-      image: newImage,
-      date: "05 March 2025",
-      category: "News",
-      slug: "commercial-real-estate",
-    },
-    {
-      id: 4,
-      title: "New Sustainable Building Practices Implemented",
-      image: newImage,
-      date: "12 April 2025",
-      category: "News",
-      slug: "sustainable-building-practices",
-    },
-  ];
+
 
   useEffect(() => {
     setMounted(true);
@@ -117,7 +81,6 @@ export default function NewsEventsSlider({ data, getAllNewsEvents }) {
               }}
             >
               {getAllNewsEvents?.data?.map((item) => {
-                console.log(item);
                 return (
                   <SwiperSlide key={item.id}>
                     <NewsCard item={item} />

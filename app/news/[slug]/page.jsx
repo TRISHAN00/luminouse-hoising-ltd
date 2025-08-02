@@ -4,17 +4,15 @@ import NewsBlogDetails from "@/components/news/NewsDetails";
 // SEO
 export async function generateMetadata({ params }) {
   const slug = params.slug;
-  const projectData = await getBlogDetailApi(slug);
+  const getData = await getBlogDetailApi(slug);
+  const pageData = getData?.data?.data;
 
   return {
-    title: {
-      default: `${projectData?.data?.data?.title} | Luminous Housing Ltd.`,
-    },
-    openGraph: {
-      title: `${projectData?.data?.data?.body} | Luminous Housing Ltd.`,
-    },
+    title: pageData?.meta_title || "News Details",
+    description: pageData?.meta_description || "",
   };
 }
+
 
 export default async function NewsDetails({ params }) {
   const slug = params.slug;

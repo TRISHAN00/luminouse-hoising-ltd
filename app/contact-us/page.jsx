@@ -5,22 +5,23 @@ import InnerBanner from "@/components/InnerBanner";
 
 export async function metadata() {
   const getData = await getApi("contact-us");
+  const pageData = getData?.data?.page_data || {};
+
   const banner = getData?.data?.sections?.find(
-    (f) => f.section_data?.slug == "contact-banner"
+    (f) => f.section_data?.slug === "contact-banner"
   );
+  const bannerImage = banner?.images?.list?.[0]?.full_path;
 
   return {
-    title: {
-      default: `${getData?.data?.page_data?.meta_title}`,
-    },
-    description: `${getData?.data?.page_data?.meta_description}`,
+    title: pageData.meta_title || "Contact Us",
+    description: pageData.meta_description || "",
     openGraph: {
-      title: `${getData?.data?.page_data?.og_title}`,
-      description: `${getData?.data?.page_data?.og_description}`,
+      title: pageData.og_title || pageData.meta_title || "Contact Us",
+      description: pageData.og_description || pageData.meta_description || "",
       images: [
         {
-          url: `${banner?.images?.list?.[0]?.full_path}`,
-          alt: `${getData?.data?.page_data?.meta_title}`,
+          url: bannerImage || "/default-og-image.jpg",
+          alt: pageData.meta_title || "Contact Us",
         },
       ],
     },

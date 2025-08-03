@@ -178,7 +178,7 @@ const BODStyled = styled.section`
 
     .bod-img {
       padding-top: calc(
-        300 / 400 * 100%
+        500 / 400 * 100%
       ); /* Adjusted aspect ratio for smaller screens */
     }
   }

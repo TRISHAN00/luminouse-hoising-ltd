@@ -3,7 +3,6 @@
 import Footer from "@/components/Footer";
 import LoadingSpinner from "@/components/LoadingSpinner";
 import Header from "@/components/Menu";
-import SmoothScroll from "@/components/SmoothScroll";
 import StyledComponentsRegistry from "@/lib/registry";
 import GlobalStyle from "@/styles/globalStyle";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -59,7 +58,6 @@ export default function RootLayout({ children }) {
       </head>
       <body>
         <StyledComponentsRegistry>
-          <SmoothScroll />
           <GlobalStyle />
           <ToastContainer />
           {loading && <LoadingSpinner />}

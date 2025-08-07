@@ -106,33 +106,43 @@ export default function Menu({
   };
 
   const menuItems = [
-    { label: "Home", href: "/" },
-    { label: "About Us", href: "/about-us" },
-    { label: "Projects", href: "/projects" },
-    {
-      label: "Our Concern",
-      href: "#",
-      hasDropdown: true,
-      dropdownItems: [
-        { label: "Livous Denim Ltd", href: "/livous-denim" },
-        {
-          label: "Luminous Design & Architecture Associates Ltd",
-          href: "/luminouse-architecture",
-        },
-      ],
-    },
-    {
-      label: "Our Clients",
-      href: "#",
-      hasDropdown: true,
-      dropdownItems: [
-        { label: "Landowner", href: "/landowner" },
-        { label: "Buyer", href: "/buyer" },
-      ],
-    },
-    { label: "News & Events", href: "/news" },
-    { label: "Contact Us", href: "/contact-us" },
-  ];
+  { label: "Home", href: "/" },
+  { label: "About Us", href: "/about-us" },
+  {
+    label: "Projects",
+    href: "/projects",
+    hasDropdown: true,
+    dropdownItems: [
+      { label: "All Projects", href: "/projects" },
+      { label: "Ongoing", href: "/projects?status=ongoing" },
+      { label: "Upcoming", href: "/projects?status=upcoming" },
+      { label: "Completed", href: "/projects?status=completed" },
+    ],
+  },
+  {
+    label: "Our Concern",
+    href: "#",
+    hasDropdown: true,
+    dropdownItems: [
+      { label: "Livous Denim Ltd", href: "/livous-denim" },
+      {
+        label: "Luminous Design & Architecture Associates Ltd",
+        href: "/luminouse-architecture",
+      },
+    ],
+  },
+  {
+    label: "Our Clients",
+    href: "#",
+    hasDropdown: true,
+    dropdownItems: [
+      { label: "Landowner", href: "/landowner" },
+      { label: "Buyer", href: "/buyer" },
+    ],
+  },
+  { label: "News & Events", href: "/news" },
+  { label: "Contact Us", href: "/contact-us" },
+];
 
   return (
     <StyledHeader
@@ -365,6 +375,7 @@ const LogoWrapper = styled.div`
 
   @media (max-width: 767px) {
     padding: 6px 10px;
+    width: 80px;
   }
 `;
 

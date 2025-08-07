@@ -2,13 +2,16 @@ import Image from "next/image";
 import Link from "next/link";
 import styled from "styled-components";
 
-export default function ProjectCard({project}) {
+export default function ProjectCard({ project }) {
   const thumb = project?.images?.list?.[0]?.full_path;
-  const title = project?.product_data?.title; 
-  const location = project?.product_data?.location; 
-  const slug = project?.product_data?.slug; 
+  const title = project?.product_data?.title;
+  const location = project?.product_data?.location;
+  const slug = project?.product_data?.slug;
   return (
-    <Link href={`/projects/${slug}`} aria-label={`View ${project.title} project details`}>
+    <Link
+      href={`/projects/${slug}`}
+      aria-label={`View ${project.title} project details`}
+    >
       <ProjectItem>
         <ImageContainer>
           <Image
@@ -17,7 +20,7 @@ export default function ProjectCard({project}) {
             fill
             style={{ objectFit: "cover" }}
             sizes="(max-width: 576px) 100vw, (max-width: 768px) 50vw, (max-width: 992px) 33vw, 25vw"
-            priority={project.id <= 2} // Prioritize loading the first two visible images
+            priority={project.id <= 2}
           />
           <Overlay />
           <CircleButton aria-label="View project details">
@@ -44,11 +47,11 @@ const ProjectItem = styled.div`
 
   &:hover {
     transform: translateY(-5px);
-    
+
     @media (min-width: 768px) {
       transform: translateY(-10px);
     }
-    
+
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
   }
 `;
@@ -59,11 +62,12 @@ const ImageContainer = styled.div`
   height: 0;
   padding-bottom: 100%; /* Square aspect ratio on mobile */
   overflow: hidden;
-  
-  @media (min-width: 576px) {
+  min-height: 550px;
+
+  @media (min-width: 767px) {
     padding-bottom: 120%; /* Taller aspect ratio on tablets */
   }
-  
+
   @media (min-width: 992px) {
     padding-bottom: 133.33%; /* Original aspect ratio on desktop */
   }
@@ -78,7 +82,7 @@ const Overlay = styled.div`
   background-color: rgba(0, 0, 0, 0);
   transition: background-color 0.3s ease;
   z-index: 1;
-  
+
   ${ProjectItem}:hover & {
     background-color: rgba(0, 0, 0, 0.2);
   }
@@ -113,7 +117,7 @@ const CircleButton = styled.div`
     color: #333;
     line-height: 1;
     transition: all 0.3s ease;
-    
+
     @media (min-width: 768px) {
       font-size: 24px;
     }
@@ -124,7 +128,7 @@ const CircleButton = styled.div`
     opacity: 1;
     pointer-events: auto;
   }
-  
+
   &:hover {
     transform: translate(-50%, -50%) scale(1.1);
     background-color: #262626;
@@ -133,7 +137,7 @@ const CircleButton = styled.div`
       color: white;
     }
   }
-  
+
   @media (max-width: 767px) {
     /* Always visible on touch devices */
     opacity: 1;
@@ -145,11 +149,11 @@ const ProjectInfo = styled.div`
   padding: 16px;
   background-color: white;
   border-top: none;
-  
+
   @media (min-width: 576px) {
     padding: 20px;
   }
-  
+
   @media (min-width: 992px) {
     padding: 24px;
   }
@@ -160,11 +164,11 @@ const ProjectInfo = styled.div`
     color: #222;
     margin: 0 0 4px 0;
     transition: color 0.3s ease;
-    
+
     @media (min-width: 576px) {
       font-size: 18px;
     }
-    
+
     @media (min-width: 992px) {
       font-size: 20px;
       margin: 0 0 5px 0;
@@ -175,11 +179,11 @@ const ProjectInfo = styled.div`
     font-size: 12px;
     color: #777;
     margin: 0;
-    
+
     @media (min-width: 576px) {
       font-size: 13px;
     }
-    
+
     @media (min-width: 992px) {
       font-size: 14px;
     }

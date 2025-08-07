@@ -23,7 +23,7 @@ export default function FeatureSlider({ title, featuredProjects }) {
       <Line background={"#1717171a"} />
       <Container>
         <Row>
-          <Col className="feature-title" >
+          <Col className="feature-title">
             {title?.section_data?.subtitle && (
               <Title
                 center
@@ -87,8 +87,17 @@ const SliderSection = styled.section`
   padding: 120px 0px;
   overflow: hidden;
 
+  /* small mobile :320px. */
+  @media (max-width: 767px) {
+    padding: 60px 0px;
+  }
+
   .feature-title {
     margin-bottom: 80px;
+
+    @media (max-width: 767px) {
+      margin-bottom: 40px;
+    }
   }
 
   .projects-swiper {

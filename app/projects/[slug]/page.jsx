@@ -54,13 +54,17 @@ export default async function ProjectDetailPage({ params }) {
     (f) => f?.data?.slug === "gallery"
   );
 
+  const bannerImg =
+    banner?.images?.list?.find((f) => f.background === "on") ||
+    banner?.images?.list?.[0]?.full_path;
+
   return (
     <div className="project-detail">
       {banner && (
         <InnerBannerDetail
           data={banner}
           title={banner?.product_data?.title}
-          img={banner?.images?.list?.[0]?.full_path}
+          img={bannerImg}
         />
       )}
       {atAGlance && <AtaGlance data={atAGlance} projectData={projectData} />}

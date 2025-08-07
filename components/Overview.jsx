@@ -2,21 +2,17 @@
 import { Col, Container, Row } from "react-bootstrap";
 import styled from "styled-components";
 import Line from "./Lines";
-import Title from "./Title";
 
-const Overview = ({data}) => {
+const Overview = ({ data }) => {
   return (
     <StyledComponent className="section-wrapper">
       <Line />
       <Container className="content">
         <Row>
-          <Col lg={8}>
-            <Title
-              fontSize={"60"}
-              text={data?.section_data?.subtitle}
-            />
+          <Col md={11}>
+            <h2>{data?.section_data?.subtitle}</h2>
           </Col>
-          <Col lg={{ offset: 4, span: 6 }}>
+          <Col lg={{ offset: 4, span: 7 }}>
             <p>{data?.section_data?.description}</p>
           </Col>
         </Row>
@@ -32,6 +28,39 @@ const StyledComponent = styled.section`
   height: 100vh;
   min-height: 900px;
   overflow: hidden;
+
+  @media (min-width: 768px) and (max-width: 991px) {
+    min-height: unset;
+  }
+
+  h2 {
+    font-size: 60px;
+    width: 80%;
+    text-transform: uppercase;
+
+    /* Normal desktop :1200px. */
+    @media (min-width: 1200px) and (max-width: 1500px) {
+      width: 100%;
+    }
+
+    /* Normal desktop :992px. */
+    @media (min-width: 992px) and (max-width: 1200px) {
+      width: 100%;
+    }
+
+    /* Tablet desktop :768px. */
+    @media (min-width: 768px) and (max-width: 991px) {
+      width: unset;
+      width: unset;
+      font-size: 45px;
+    }
+
+    /* small mobile :320px. */
+    @media (max-width: 767px) {
+      width: unset;
+      font-size: 32px;
+    }
+  }
 
   .section-wrapper {
     padding: 10rem 1rem;
@@ -63,6 +92,11 @@ const StyledComponent = styled.section`
     line-height: 1.7;
     max-width: 100%;
     margin-top: 2rem;
+    width: 90%;
+
+    @media (min-width: 1200px) and (max-width: 1500px) {
+      width: 100%;
+    }
   }
 
   @media (max-width: 992px) {
@@ -82,11 +116,15 @@ const StyledComponent = styled.section`
     }
   }
 
-  @media (max-width: 576px) {
+  /* Tablet desktop :768px. */
+  @media (min-width: 768px) and (max-width: 991px) {
+  }
+
+  @media (max-width: 767px) {
     height: fit-content;
     min-height: 0;
     overflow: hidden;
-    padding: 120px 0;
+    padding-bottom: 60px;
     .content {
       flex-direction: column;
       align-items: flex-start;

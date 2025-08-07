@@ -211,6 +211,11 @@ const Wrapper = styled.section`
   background-color: #f7f7f7;
   height: 800px;
 
+  /* Tablet desktop :768px. */
+  @media (min-width: 768px) and (max-width: 991px) {
+    display: none;
+  }
+
   &:before {
     position: absolute;
     content: "";
@@ -239,7 +244,7 @@ const Wrapper = styled.section`
 
   .image-1 {
     top: 5%;
-    left: 10%;
+    left: 15%;
     height: 600px;
     width: 500px;
     z-index: 1;
@@ -247,7 +252,7 @@ const Wrapper = styled.section`
 
   .image-2 {
     top: 50%;
-    left: 37%;
+    left: 35%;
     height: 300px;
     width: 350px;
     z-index: 3;
@@ -255,14 +260,14 @@ const Wrapper = styled.section`
 
   .image-3 {
     top: 15%;
-    right: 10%;
+    right: 30%;
     width: 450px;
     height: 400px;
     z-index: 2;
   }
 
   /* Large Desktops */
-  @media (min-width: 1400px) {
+  @media (min-width: 1200px) and (max-width: 1500px) {
     height: 800px;
 
     .image-1 {
@@ -278,18 +283,18 @@ const Wrapper = styled.section`
     .image-3 {
       width: 550px;
       height: 450px;
-      right: 25%;
+      right: 10%;
     }
   }
 
   /* Large tablets and small desktops */
-  @media (max-width: 1200px) {
+  @media (min-width: 992px) and (max-width: 1200px) {
     height: 800px;
     margin-top: -120px;
 
     .image-1 {
       top: 10%;
-      left: 5%;
+      left: 15%;
       height: 500px;
       width: 400px;
     }
@@ -303,7 +308,7 @@ const Wrapper = styled.section`
 
     .image-3 {
       top: 15%;
-      right: 5%;
+      right: 15%;
       width: 380px;
       height: 350px;
     }
@@ -364,6 +369,10 @@ const Wrapper = styled.section`
       height: 350px;
     }
   }
+
+   @media (max-width: 768px) {
+    margin-top: -140px;
+   }
 
   /* Small phones */
   @media (max-width: 576px) {

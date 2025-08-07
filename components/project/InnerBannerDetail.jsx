@@ -67,7 +67,7 @@ const InnerBannerDetail = ({ img, text, title, data }) => {
 
   return (
     <StyledInnerBanner className="InnerBanner">
-      <Img banner={true} src={img} />
+      <Img banner={true} src={img?.full_path} />
       <Overlay />
       <Container>
         <h2 className="split-title">

@@ -20,6 +20,7 @@ const BreakCrumbStyled = styled.div`
   justify-content: center;
   gap: 20px; /* default for small screens */
   overflow: hidden;
+  flex-wrap: wrap;
 
   @media (min-width: 767px) {
     gap: 40px;

@@ -6,7 +6,7 @@ import { FaMapMarkerAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
-const ContactSection = () => {
+const ContactSection = ({data}) => {
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -17,6 +17,10 @@ const ContactSection = () => {
   const [validated, setValidated] = useState(false);
   const [windowWidth, setWindowWidth] = useState(0);
   const [loading, setLoading] = useState(false);
+
+  const location = data?.location; // You can make this dynamic from props or state
+  const encodedLocation = encodeURIComponent(location);
+  const mapSrc = `https://maps.google.com/maps?q=${encodedLocation}&output=embed`;
 
   // Handle window resize for responsive behavior
   useEffect(() => {
@@ -163,13 +167,14 @@ const ContactSection = () => {
             <div className="map-wrapper">
               <div className="map-container">
                 <iframe
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14609.021280753168!2d90.40715374999999!3d23.750907300000003!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3755b85c366afdaf%3A0x65756e120471fdb8!2sShahidbag%2C%20Dhaka%2C%20Bangladesh!5e0!3m2!1sen!2sus!4v1713449280000!5m2!1sen!2sus"
+                  src={mapSrc}
                   style={{ border: 0 }}
                   allowFullScreen=""
                   loading="lazy"
                   referrerPolicy="no-referrer-when-downgrade"
                   title="Google Map"
                 ></iframe>
+
                 <div className="map-marker">
                   <FaMapMarkerAlt className="marker-icon" />
                 </div>
@@ -183,16 +188,33 @@ const ContactSection = () => {
 };
 
 const ContactSectionStyled = styled.section`
-  padding: 150px 0;
   width: 100%;
+  padding-bottom: 80px;
+
+  /* Tablet desktop :768px. */
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding: 0px 0px;
+  }
+
+  /* small mobile :320px. */
+  @media (max-width: 767px) {
+    padding: 0px 0px;
+  }
 
   .contact-row {
     display: flex;
-    flex-direction: column;
 
-    @media (min-width: 768px) {
+    /* Tablet desktop :768px. */
+    @media (min-width: 768px) and (max-width: 991px) {
       flex-direction: row;
       min-height: 600px;
+    }
+
+    /* small mobile :320px. */
+    @media (max-width: 767px) {
+      flex-direction: row;
+      min-height: 600px;
+      flex-direction: column-reverse;
     }
   }
 

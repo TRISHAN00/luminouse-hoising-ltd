@@ -1,7 +1,12 @@
 "use client";
 import { Col, Container, Row } from "react-bootstrap";
 import { BsCameraVideoFill, BsShieldCheck, BsWifi } from "react-icons/bs";
-import { FaCarSide, FaDoorClosed, FaSwimmer, FaSwimmingPool } from "react-icons/fa";
+import {
+  FaCarSide,
+  FaDoorClosed,
+  FaSwimmer,
+  FaSwimmingPool,
+} from "react-icons/fa";
 import {
   MdOutlineAir,
   MdOutlineDesignServices,
@@ -24,7 +29,7 @@ export default function FeaturedAmenities({ amenitiesData }) {
         <MdOutlineDesignServices color="#171717" fontSize={60} />
       ),
       "In House Wi-Fi": <BsWifi color="#171717" fontSize={60} />,
-      "Swimming": <FaSwimmer color="#171717" fontSize={60} />,
+      Swimming: <FaSwimmer color="#171717" fontSize={60} />,
       "Digital Security": <FaDoorClosed color="#171717" fontSize={60} />,
       "Space for Open Party": <MdOutlineAir color="#171717" fontSize={60} />,
       "Roof Top": <FaSwimmingPool color="#171717" fontSize={60} />,
@@ -102,6 +107,16 @@ const FeaturedAmenitiesStyled = styled.section`
   padding: 150px 0px;
   color: #5b5b5b;
   overflow: hidden;
+
+  /* Tablet desktop :768px. */
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding: 100px 0px;
+  }
+
+  /* small mobile :320px. */
+  @media (max-width: 767px) {
+    padding: 80px 0px;
+  }
 
   .amenities-container {
     margin-top: 50px;

@@ -1,7 +1,6 @@
 import { getProjectDetailApi } from "@/api/project";
 import AtaGlance from "@/components/AtaGlance";
 import ContactSection from "@/components/ContactSection";
-import ImageCollageSection from "@/components/ImageCollageSection";
 import FeaturedAmenities from "@/components/project/FeaturedAmenities";
 import InnerBannerDetail from "@/components/project/InnerBannerDetail";
 import ProjectGalllery from "@/components/project/ProjectGalllery";
@@ -54,6 +53,10 @@ export default async function ProjectDetailPage({ params }) {
     (f) => f?.data?.slug === "gallery"
   );
 
+  const atAGlanceImg = projectData?.data?.posts?.list?.find(
+    (f) => f?.data?.slug === "at-a-glance"
+  );
+
   const bannerImg =
     banner?.images?.list?.find((f) => f.background === "on") ||
     banner?.images?.list?.[0]?.full_path;
@@ -67,15 +70,21 @@ export default async function ProjectDetailPage({ params }) {
           img={bannerImg}
         />
       )}
-      {atAGlance && <AtaGlance data={atAGlance} projectData={projectData} />}
-      {overview?.images?.length > 0 && (
-        <ImageCollageSection projectData={overview} />
+      {atAGlance && (
+        <AtaGlance
+          atAGlanceImg={atAGlanceImg}
+          data={atAGlance}
+          projectData={projectData}
+        />
       )}
+      {/* {overview?.images?.length > 0 && (
+        <ImageCollageSection projectData={overview} />
+      )} */}
       {amenities?.images && (
         <FeaturedAmenities amenitiesData={amenities?.images} />
       )}
       {gallery && <ProjectGalllery data={gallery} />}
-      <ContactSection />
+      <ContactSection data={atAGlance} />
     </div>
   );
 }

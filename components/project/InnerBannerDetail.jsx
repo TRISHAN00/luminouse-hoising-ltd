@@ -138,6 +138,7 @@ const StyledInnerBanner = styled.section`
     text-transform: uppercase;
     z-index: 2;
     overflow: hidden;
+    flex-wrap: wrap;
   }
 
   @media (min-width: 767px) {

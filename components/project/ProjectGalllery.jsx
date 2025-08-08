@@ -15,12 +15,6 @@ import lgZoom from "lightgallery/plugins/zoom";
 import LightGallery from "lightgallery/react";
 
 export default function ProjectGallery({ data }) {
-  console.log(data);
-  
-  const onInit = () => {
-    console.log("lightGallery has been initialized");
-  };
-
   // For SSR compatibility
   const [mounted, setMounted] = useState(false);
 
@@ -30,30 +24,31 @@ export default function ProjectGallery({ data }) {
 
   // Function to determine aspect ratio based on image dimensions
   const getAspectRatio = (dimension) => {
-    if (!dimension || dimension === 'x') return '1/1';
-    
-    const [width, height] = dimension.split('x').map(Number);
-    if (!width || !height) return '1/1';
-    
+    if (!dimension || dimension === "x") return "1/1";
+
+    const [width, height] = dimension.split("x").map(Number);
+    if (!width || !height) return "1/1";
+
     const ratio = width / height;
-    
+
     // Define ratio categories
-    if (ratio > 1.7) return '16/9';  // Wide landscape
-    if (ratio > 1.4) return '3/2';   // Medium landscape
-    if (ratio > 1.1) return '4/3';   // Standard landscape
-    if (ratio > 0.9) return '1/1';   // Square-ish
-    if (ratio > 0.7) return '3/4';   // Portrait
-    return '3/4'; // Tall portrait
+    if (ratio > 1.7) return "16/9"; // Wide landscape
+    if (ratio > 1.4) return "3/2"; // Medium landscape
+    if (ratio > 1.1) return "4/3"; // Standard landscape
+    if (ratio > 0.9) return "1/1"; // Square-ish
+    if (ratio > 0.7) return "3/4"; // Portrait
+    return "3/4"; // Tall portrait
   };
 
   // Transform API data into gallery items
-  const galleryItems = data?.images?.map((image, index) => ({
-    id: image.id,
-    src: image.full_path,
-    alt: image.img_alt || `Gallery Image ${index + 1}`,
-    ratio: getAspectRatio(image.dimension),
-    dimension: image.dimension
-  })) || [];
+  const galleryItems =
+    data?.images?.map((image, index) => ({
+      id: image.id,
+      src: image.full_path,
+      alt: image.img_alt || `Gallery Image ${index + 1}`,
+      ratio: getAspectRatio(image.dimension),
+      dimension: image.dimension,
+    })) || [];
 
   // Helper function to handle image paths
   const getImagePath = (img) => {
@@ -79,7 +74,6 @@ export default function ProjectGallery({ data }) {
             {mounted && galleryItems.length > 0 && (
               <LightGallery
                 elementClassNames="masonry-gallery"
-                onInit={onInit}
                 speed={500}
                 plugins={[lgThumbnail, lgZoom]}
                 mode="lg-fade"
@@ -118,6 +112,16 @@ export default function ProjectGallery({ data }) {
 const ProjectGalleryStyled = styled.section`
   padding: 150px 0;
   overflow: hidden;
+
+  /* Tablet desktop :768px. */
+  @media (min-width: 768px) and (max-width: 991px) {
+    padding: 100px 0px;
+  }
+
+  /* small mobile :320px. */
+  @media (max-width: 767px) {
+    padding: 80px 0px;
+  }
 
   .gallery-title {
     margin-bottom: 40px;
@@ -176,7 +180,7 @@ const ProjectGalleryStyled = styled.section`
       &:hover {
         transform: translateY(-5px);
         box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        
+
         img {
           transform: scale(1.05);
         }

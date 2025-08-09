@@ -8,7 +8,6 @@ import Title from "./Title";
 
 const AtaGlance = ({ data, projectData, atAGlanceImg }) => {
   const brochure = projectData?.data?.files?.list?.[0]?.full_path;
-
   const thumbImg = atAGlanceImg?.images?.[0]?.full_path;
 
   return (

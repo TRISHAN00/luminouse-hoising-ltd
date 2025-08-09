@@ -109,19 +109,35 @@ export default function PropertyInfoTable({ data }) {
                 </>
               )}
 
-              {data.architecture && (
+              {data.apartment_size && (
                 <>
-                  <LabelCell>Architecture</LabelCell>
-                  <TableCell>{data.architecture}</TableCell>
+                  <LabelCell>Apartment Size</LabelCell>
+                  <TableCell>{decodeHtml(data.apartment_size)}</TableCell>
                 </>
               )}
             </TableRow>
 
             <TableRow>
-              {data.apartment_size && (
+              {data.facing && (
                 <>
-                  <LabelCell>Apartment Size</LabelCell>
-                  <TableCell>{decodeHtml(data.apartment_size)}</TableCell>
+                  <LabelCell>Plot Facing</LabelCell>
+                  <TableCell>{data.facing}</TableCell>
+                </>
+              )}
+
+              {data.fr && (
+                <>
+                  <LabelCell>Front Road</LabelCell>
+                  <TableCell>{data.fr}</TableCell>
+                </>
+              )}
+            </TableRow>
+
+            <TableRow>
+              {data.architecture && (
+                <>
+                  <LabelCell>Architecture</LabelCell>
+                  <TableCell>{data.architecture}</TableCell>
                 </>
               )}
 
@@ -213,6 +229,24 @@ export default function PropertyInfoTable({ data }) {
               <GridContainer $noMargin>
                 <Label>Engineer</Label>
                 <div>{data.engineer}</div>
+              </GridContainer>
+            </>
+          )}
+        </MobileRow>
+        <MobileRow>
+          {data.facing && (
+            <>
+              <GridContainer>
+                <Label>Plot Facing</Label>
+                <div>{data.facing}</div>
+              </GridContainer>
+            </>
+          )}
+          {data.fr && (
+            <>
+              <GridContainer>
+                <Label>Front Road</Label>
+                <div>{data.fr}</div>
               </GridContainer>
             </>
           )}

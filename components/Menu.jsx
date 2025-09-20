@@ -11,6 +11,7 @@ import styled from "styled-components";
 import livousDenimLogo from "../public/images/static/logos/Livous_denim.svg";
 import luminouseArchLogo from "../public/images/static/logos/luminouse-arch.svg";
 import mainLogo from "../public/images/static/logos/main-logo.svg";
+import AutoScrollText from "./AutoScrollText";
 
 export default function Menu({
   isNewsDetail,
@@ -106,43 +107,43 @@ export default function Menu({
   };
 
   const menuItems = [
-  { label: "Home", href: "/" },
-  { label: "About Us", href: "/about-us" },
-  {
-    label: "Projects",
-    href: "/projects",
-    hasDropdown: true,
-    dropdownItems: [
-      { label: "All Projects", href: "/projects" },
-      { label: "Ongoing", href: "/projects?status=ongoing" },
-      { label: "Upcoming", href: "/projects?status=upcoming" },
-      { label: "Completed", href: "/projects?status=completed" },
-    ],
-  },
-  {
-    label: "Our Concern",
-    href: "#",
-    hasDropdown: true,
-    dropdownItems: [
-      { label: "Livous Denim Ltd", href: "/livous-denim" },
-      {
-        label: "Luminous Design & Architecture Associates Ltd",
-        href: "/luminouse-architecture",
-      },
-    ],
-  },
-  {
-    label: "Our Clients",
-    href: "#",
-    hasDropdown: true,
-    dropdownItems: [
-      { label: "Landowner", href: "/landowner" },
-      { label: "Buyer", href: "/buyer" },
-    ],
-  },
-  { label: "News & Events", href: "/news" },
-  { label: "Contact Us", href: "/contact-us" },
-];
+    { label: "Home", href: "/" },
+    { label: "About Us", href: "/about-us" },
+    {
+      label: "Projects",
+      href: "/projects",
+      hasDropdown: true,
+      dropdownItems: [
+        { label: "All Projects", href: "/projects" },
+        { label: "Ongoing", href: "/projects?status=ongoing" },
+        { label: "Upcoming", href: "/projects?status=upcoming" },
+        { label: "Completed", href: "/projects?status=completed" },
+      ],
+    },
+    {
+      label: "Our Concern",
+      href: "#",
+      hasDropdown: true,
+      dropdownItems: [
+        { label: "Livous Denim Ltd", href: "/livous-denim" },
+        {
+          label: "Luminous Design & Architecture Associates Ltd",
+          href: "/luminouse-architecture",
+        },
+      ],
+    },
+    {
+      label: "Our Clients",
+      href: "#",
+      hasDropdown: true,
+      dropdownItems: [
+        { label: "Landowner", href: "/landowner" },
+        { label: "Buyer", href: "/buyer" },
+      ],
+    },
+    { label: "News & Events", href: "/news" },
+    { label: "Contact Us", href: "/contact-us" },
+  ];
 
   return (
     <StyledHeader
@@ -163,6 +164,9 @@ export default function Menu({
                   priority
                 />
               </LogoWrapper>
+              <AutoScrollTextWrap>
+              <AutoScrollText />
+              </AutoScrollTextWrap>
             </Link>
           </Col>
           <Col lg={9} xs={4}>
@@ -347,6 +351,7 @@ const StyledHeader = styled.header`
 const LogoWrapper = styled.div`
   width: fit-content;
   display: flex;
+  flex-direction: column;
   align-items: center;
   position: relative;
   z-index: 2;
@@ -378,6 +383,33 @@ const LogoWrapper = styled.div`
     width: 80px;
   }
 `;
+
+const AutoScrollTextWrap = styled.div`
+  width: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  z-index: 2;
+  padding: 2px 5px;
+  margin-top: 2px;
+  border-radius: 8px;
+  background-color: ${(props) =>
+    props.isScrolled ? "transparent" : "rgba(0, 0, 0, 0.6)"};
+  box-shadow: ${(props) =>
+    props.isScrolled ? "none" : "0 2px 10px rgba(0, 0, 0, 0.2)"};
+  transition: all 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) =>
+      props.isScrolled ? "transparent" : "rgba(0, 0, 0, 0.75)"};
+  }
+
+  @media (max-width: 767px) {
+    height: 30px;
+    width: fit-content;
+  }
+`
 
 const HeaderRight = styled.div`
   display: flex;

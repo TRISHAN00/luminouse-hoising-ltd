@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
   }, [pathname]);
 
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="icon" type="image/png" href="/images/static/fav.png" />
         <meta content="#000000" name="theme-color" />

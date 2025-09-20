@@ -65,14 +65,15 @@ const Footer = ({ isLivousDenim, isLuminouseArch, settingsData }) => {
         </FooterSection>
 
         <FooterSection>
+          <FooterHeading>Projects</FooterHeading>
           <FooterNavItem>
-            <Link href="/buyer">Buyer</Link>
+            <Link href="/projects?status=ongoing">Ongoing</Link>
           </FooterNavItem>
           <FooterNavItem>
-            <Link href="/career">Career</Link>
+            <Link href="/projects?status=upcoming">Upcoming</Link>
           </FooterNavItem>
           <FooterNavItem>
-            <Link href="/contact-us">Contact Us</Link>
+            <Link href="/projects?status=completed">Completed</Link>
           </FooterNavItem>
         </FooterSection>
 

@@ -164,9 +164,7 @@ export default function Menu({
                   priority
                 />
               </LogoWrapper>
-              <AutoScrollTextWrap>
               <AutoScrollText />
-              </AutoScrollTextWrap>
             </Link>
           </Col>
           <Col lg={9} xs={4}>

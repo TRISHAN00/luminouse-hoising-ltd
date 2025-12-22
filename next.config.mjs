@@ -5,8 +5,9 @@ const nextConfig = {
     },
     reactStrictMode: false,
     images: {
-        domains: ['bestinbd.com'],
+        domains: ['luminoushousingltd.com', 'localhost', 'zoraithost.com'],
     },
+    transpilePackages: ['swiper', 'lucide-react']
 };
 
 export default nextConfig;

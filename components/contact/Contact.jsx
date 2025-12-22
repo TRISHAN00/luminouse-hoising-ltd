@@ -1,9 +1,9 @@
 'use client'
+import { postContact } from "@/api/contact";
+import { text } from "@/styles/globalStyleVars";
+import { Col, Container, Form, Row } from "react-bootstrap";
+import { useForm } from "react-hook-form";
 import styled from "styled-components";
-import {Col, Container, Form, Row} from "react-bootstrap";
-import {useForm} from "react-hook-form";
-import {text} from "@/styles/globalStyleVars";
-import {postContact} from "@/api/contact";
 
 const MyComponent = ({contactText, globalContact}) => {
     const {register, control, handleSubmit, formState: {errors, isSubmitSuccessful, isSubmitting}, reset} = useForm({

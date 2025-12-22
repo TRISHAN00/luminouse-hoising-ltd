@@ -1,8 +1,7 @@
 'use client'
-import React from 'react';
-import {Col, Container, Row} from "react-bootstrap";
-import styled from "styled-components";
 import Link from "next/link";
+import { Col, Container, Row } from "react-bootstrap";
+import styled from "styled-components";
 
 const MyComponent = ({data}) => {
     return (
@@ -20,8 +19,6 @@ const MyComponent = ({data}) => {
 
                 </Row>
             </Container>
-
-
         </StyledComponent>
     );
 };
@@ -30,6 +27,7 @@ export default MyComponent;
 
 const StyledComponent = styled.section`
     margin-top: 100px;
+    overflow: hidden;
 
     .col-sm-4 {
         margin-bottom: 30px;

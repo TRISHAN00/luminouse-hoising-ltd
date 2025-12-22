@@ -5,7 +5,7 @@ import styled from "styled-components";
 
 const Line = ({background}) => {
     return (
-        <StyledComponent className={'vertical-lines'}>
+        <StyledComponent background={background}  className={'vertical-lines'}>
             <span/>
             <span/>
             <span/>
@@ -14,7 +14,7 @@ const Line = ({background}) => {
     );
 };
 
-const StyledComponent = styled.section`
+const StyledComponent = styled.div`
   span {
     width: 1px;
     background-color: ${p => p.background || '#e9e9e921'};

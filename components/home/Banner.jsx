@@ -1,47 +1,43 @@
 "use client";
 
 import gsap from "gsap";
+
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import "swiper/css";
+import { Autoplay } from "swiper/modules";
 import { Swiper, SwiperSlide } from "swiper/react";
-
-// You'll need to import your actual images here
-import { default as homeImage1, default as homeImage3 } from "../../public/images/dynamic/home/banner-01.jpg";
-import homeImage2 from "../../public/images/dynamic/home/banner-02.jpg";
-
-// Slide data
-const slides = [
-  {
-    id: 1,
-    image: homeImage1,
-    title: "CRAFTING HOMES,\nBUILDING DREAMS",
-  },
-  {
-    id: 2,
-    image: homeImage2,
-    title: "DESIGNING COMFORT,\nDELIVERING VALUE",
-  },
-  {
-    id: 3,
-    image: homeImage3,
-    title: "INNOVATION MEETS\nARCHITECTURE",
-  },
-];
 
 const BannerContainer = styled.div`
   position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;
+
+  /* Smooth easing */
+  .swiper-wrapper {
+    transition-timing-function: ease-in-out !important;
+  }
+
+  /* GPU acceleration */
+  .swiper-slide {
+    backface-visibility: hidden;
+    transform: translate3d(0, 0, 0);
+  }
 `;
 
 const SlideWrapper = styled.div`
+  will-change: transform;
+  backface-visibility: hidden;
+  perspective: 1000px;
   position: relative;
   width: 100%;
   height: 100vh;
   overflow: hidden;
+  opacity: 1;
+  transition: opacity 0.3s ease-out;
 `;
 
 const ImageWrapper = styled.div`
@@ -56,7 +52,7 @@ const Overlay = styled.div`
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.2);
+  background: rgba(0, 0, 0, 0.5);
   z-index: 1;
 `;
 
@@ -68,6 +64,8 @@ const TitleContainer = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  margin: 0 auto;
+  text-transform: uppercase;
 
   h1 {
     font-size: 72px;
@@ -75,10 +73,20 @@ const TitleContainer = styled.div`
     text-align: center;
     color: white;
     white-space: pre-line;
-    font-weight: 300;
-    max-width: 90%;
+    font-weight: 800;
+    max-width: 50%;
     font-family: "Playfair Display", serif;
     letter-spacing: 1px;
+
+    /* Tablet desktop :768px. */
+    @media (min-width: 768px) and (max-width: 991px) {
+      max-width: 90%;
+    }
+
+    /* small mobile :320px. */
+    @media (max-width: 767px) {
+      max-width: 90%;
+    }
   }
 
   .title-line {
@@ -107,19 +115,30 @@ const NavigationArrows = styled.div`
   justify-content: space-between;
   padding: 0 32px;
   z-index: 3;
+
+  /* Tablet desktop :768px. */
+  @media (min-width: 768px) and (max-width: 991px) {
+    display: none;
+  }
+
+  /* small mobile :320px. */
+  @media (max-width: 767px) {
+    display: none;
+  }
 `;
 
 const Arrow = styled.button`
-  background: transparent;
-  border: none;
-  cursor: ${props => props.disabled ? 'not-allowed' : 'pointer'};
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  cursor: ${(props) => (props.disabled ? "not-allowed" : "pointer")};
   width: 50px;
   height: 50px;
   display: flex;
   align-items: center;
   justify-content: center;
   transition: all 0.3s ease;
-  opacity: ${props => props.disabled ? '0.5' : '1'};
+  opacity: ${(props) => (props.disabled ? "0.5" : "1")};
 
   svg {
     width: 24px;
@@ -129,7 +148,8 @@ const Arrow = styled.button`
   }
 
   &:hover {
-    transform: ${props => props.disabled ? 'none' : 'scale(1.1)'};
+    background: rgba(0, 0, 0, 0.4);
+    transform: ${(props) => (props.disabled ? "none" : "scale(1.1)")};
   }
 `;
 
@@ -157,7 +177,7 @@ const Tab = styled.button`
   position: relative;
 
   &:after {
-    content: '';
+    content: "";
     position: absolute;
     bottom: 0;
     left: 0;
@@ -167,6 +187,11 @@ const Tab = styled.button`
     transform: scaleX(0);
     transition: transform 0.3s ease;
     transform-origin: center;
+  }
+
+  a {
+    color: aliceblue;
+    text-transform: uppercase;
   }
 
   &.active {
@@ -182,101 +207,148 @@ const Tab = styled.button`
   }
 `;
 
-export default function HomeBanner() {
-  const textRef = useRef(null);
-  const imageRef = useRef(null);
-  const overlayRef = useRef(null);
+export default function HomeBanner({ data = [] }) {
   const [activeSlide, setActiveSlide] = useState(0);
-  const [activeTab, setActiveTab] = useState("Ongoing");
+  const [activeTab, setActiveTab] = useState('');
   const [isTransitioning, setIsTransitioning] = useState(false);
   const swiperRef = useRef(null);
-  const animationTimeoutRef = useRef(null);
+  const titleRefs = useRef([]);
+  const imageRefs = useRef([]);
+  const overlayRefs = useRef([]);
 
-  // Split title text into lines and animate each line separately
-  const animateText = () => {
-    if (!textRef.current) return;
-
-    const title = textRef.current;
-    const titleText = slides[activeSlide].title;
-    const lines = titleText.split('\n');
-    
-    // Clear previous content
-    title.innerHTML = '';
-    
-    // Create lines
-    lines.forEach(line => {
-      const lineDiv = document.createElement('div');
-      lineDiv.className = 'title-line';
-      
-      const revealSpan = document.createElement('span');
-      revealSpan.className = 'reveal-line';
-      revealSpan.textContent = line;
-      
-      lineDiv.appendChild(revealSpan);
-      title.appendChild(lineDiv);
-    });
-    
-    // Animate each line
-    gsap.to('.reveal-line', {
-      y: 0,
-      duration: 1.2,
-      ease: "power4.out",
-      stagger: 0.15,
-      onComplete: () => {
-        // Enable navigation buttons after animation completes
-        setIsTransitioning(false);
-      }
-    });
-  };
-
-  // Animate image and overlay
-  const animateSlide = () => {
-    if (!imageRef.current || !overlayRef.current) return;
-    
-    // Reset animations
-    gsap.set(imageRef.current, { scale: 1.2, opacity: 0 });
-    gsap.set(overlayRef.current, { opacity: 0 });
-    
-    // Create timeline
-    const tl = gsap.timeline();
-    
-    // Animate image zoom and fade in
-    tl.to(imageRef.current, { 
-      scale: 1, 
-      opacity: 1, 
-      duration: 1.5, 
-      ease: "power3.out" 
-    }, 0);
-    
-    // Animate overlay fade in
-    tl.to(overlayRef.current, { 
-      opacity: 1, 
-      duration: 1, 
-      ease: "power2.out" 
-    }, 0.3);
-  };
-
+  // Set up refs for each slide
   useEffect(() => {
-    // Clear any existing animation timeout
-    if (animationTimeoutRef.current) {
-      clearTimeout(animationTimeoutRef.current);
+    if (data?.length) {
+      titleRefs.current = titleRefs.current.slice(0, data.length);
+      imageRefs.current = imageRefs.current.slice(0, data.length);
+      overlayRefs.current = overlayRefs.current.slice(0, data.length);
     }
-    
-    // Set transitioning state to disable buttons
-    setIsTransitioning(true);
-    
-    // Start animations with slight delay
-    animationTimeoutRef.current = setTimeout(() => {
-      animateText();
-      animateSlide();
-    }, 100);
-    
-    return () => {
-      if (animationTimeoutRef.current) {
-        clearTimeout(animationTimeoutRef.current);
+  }, [data?.length]);
+
+  // Helper function to safely get text content from HTML or plain text
+  const getTextContent = (content) => {
+    if (!content) return "";
+
+    // If it's already plain text, return it
+    if (typeof content === "string" && !content.includes("<")) {
+      return content;
+    }
+
+    // If it contains HTML, strip the tags to get plain text
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = content;
+    return tempDiv.textContent || tempDiv.innerText || "";
+  };
+
+  // Animate the active slide
+  const animateSlide = (index) => {
+    if (!data?.length || !titleRefs.current[index]) return;
+
+    // Create a timeline for coordinated animations
+    const tl = gsap.timeline({
+      onComplete: () => setIsTransitioning(false),
+    });
+
+    // First hide previous elements if needed
+    if (titleRefs.current[activeSlide] && index !== activeSlide) {
+      gsap.set(
+        titleRefs.current[activeSlide].querySelectorAll(".reveal-line"),
+        {
+          y: "100%",
+        }
+      );
+    }
+
+    // Setup the new slide elements initial state
+    if (
+      titleRefs.current[index] &&
+      (data[index]?.data?.title || data[index]?.data?.description)
+    ) {
+      // Clear previous content
+      titleRefs.current[index].innerHTML = "";
+
+      // Get the text content (use title first, then description as fallback)
+      const titleText = getTextContent(
+        data[index]?.data?.title || data[index]?.data?.description || ""
+      );
+
+      if (titleText) {
+        // Create lines
+        const lines = titleText
+          .split("\n")
+          .filter((line) => line.trim() !== "");
+
+        lines.forEach((line) => {
+          const lineDiv = document.createElement("div");
+          lineDiv.className = "title-line";
+
+          const revealSpan = document.createElement("span");
+          revealSpan.className = "reveal-line";
+          revealSpan.textContent = line.trim();
+
+          lineDiv.appendChild(revealSpan);
+          titleRefs.current[index].appendChild(lineDiv);
+        });
       }
-    };
-  }, [activeSlide]);
+
+      // Image animation
+      if (imageRefs.current[index]) {
+        tl.fromTo(
+          imageRefs.current[index],
+          { scale: 1.1, opacity: 0.8 },
+          { scale: 1, opacity: 1, duration: 1.2, ease: "power3.out" },
+          0
+        );
+      }
+
+      // Overlay animation
+      if (overlayRefs.current[index]) {
+        tl.fromTo(
+          overlayRefs.current[index],
+          { opacity: 0 },
+          { opacity: 1, duration: 0.8, ease: "power2.out" },
+          0.2
+        );
+      }
+
+      // Text animation
+      const revealLines =
+        titleRefs.current[index].querySelectorAll(".reveal-line");
+      if (revealLines.length > 0) {
+        tl.to(
+          revealLines,
+          {
+            y: 0,
+            duration: 1,
+            ease: "power4.out",
+            stagger: 0.15,
+          },
+          0.4
+        );
+      }
+    }
+  };
+
+  // Handle slide change
+  const handleSlideChange = (swiper) => {
+    const newIndex = swiper.realIndex;
+    setActiveSlide(newIndex);
+    setIsTransitioning(true);
+
+    // Small delay to ensure DOM updates before animation
+    setTimeout(() => {
+      animateSlide(newIndex);
+    }, 50);
+  };
+
+  // Pre-render all data to avoid blinking
+  useEffect(() => {
+    // Only animate on first load when data is available
+    if (data?.length && titleRefs.current[activeSlide]) {
+      setIsTransitioning(true);
+      animateSlide(activeSlide);
+    }
+  }, [data?.length]);
 
   const handlePrev = () => {
     if (swiperRef.current && swiperRef.current.swiper && !isTransitioning) {
@@ -292,74 +364,146 @@ export default function HomeBanner() {
     }
   };
 
+  // Early return if no data
+  if (!data?.length) {
+    return (
+      <BannerContainer>
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            height: "100vh",
+            color: "white",
+            fontSize: "24px",
+          }}
+        >
+          Loading...
+        </div>
+      </BannerContainer>
+    );
+  }
+
   return (
     <BannerContainer>
       <Swiper
         ref={swiperRef}
+        modules={[Autoplay]}
         spaceBetween={0}
         slidesPerView={1}
-        speed={1000}
-        loop={true}
+        speed={1500}
+        loop={data.length > 1}
+        autoplay={
+          data.length > 1
+            ? {
+                delay: 3000,
+                disableOnInteraction: false,
+                pauseOnMouseEnter: true,
+              }
+            : false
+        }
         allowTouchMove={!isTransitioning}
-        onSlideChange={(swiper) => setActiveSlide(swiper.activeIndex % slides.length)}
-        onTouchStart={() => {
-          if (isTransitioning) {
-            // Prevent touch navigation during transitions
-            return false;
-          }
+        onSlideChange={handleSlideChange}
+        onSwiper={(swiper) => {
+          setTimeout(() => {
+            animateSlide(swiper.realIndex);
+          }, 100);
         }}
+        className="banner-swiper"
       >
-        {slides.map((slide, index) => (
-          <SwiperSlide key={slide.id}>
-            <SlideWrapper>
-              <ImageWrapper ref={index % slides.length === activeSlide ? imageRef : null}>
-                <Image
-                  src={slide.image}
-                  alt={`Luxury home design ${index + 1}`}
-                  fill
-                  style={{ objectFit: "cover", zIndex: 0 }}
-                  priority
-                />
-              </ImageWrapper>
-              <TitleContainer>
-                <h1 ref={index % slides.length === activeSlide ? textRef : null}></h1>
-              </TitleContainer>
-              <Overlay ref={index % slides.length === activeSlide ? overlayRef : null} />
-            </SlideWrapper>
-          </SwiperSlide>
-        ))}
+        {data.map((item, index) => {
+          return (
+            <SwiperSlide key={item?.data?.id || index}>
+              <SlideWrapper>
+                <ImageWrapper ref={(el) => (imageRefs.current[index] = el)}>
+                  {item?.images?.[0]?.full_path && (
+                    <Image
+                      src={item.images[0].full_path}
+                      alt={
+                        item?.data?.title ||
+                        item?.data?.description ||
+                        "Banner image"
+                      }
+                      fill
+                      style={{ objectFit: "cover", zIndex: 0 }}
+                      priority={index === 0}
+                      loading={index === 0 ? "eager" : "lazy"}
+                    />
+                  )}
+                </ImageWrapper>
+                <TitleContainer>
+                  <h1 ref={(el) => (titleRefs.current[index] = el)}>
+                    {/* This will be populated by the animateSlide function */}
+                  </h1>
+                </TitleContainer>
+                <Overlay ref={(el) => (overlayRefs.current[index] = el)} />
+              </SlideWrapper>
+            </SwiperSlide>
+          );
+        })}
       </Swiper>
-      
-      <NavigationArrows>
-        <Arrow 
-          onClick={handlePrev} 
-          aria-label="Previous slide"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-            <path d="M19 12H5M5 12L12 19M5 12L12 5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Arrow>
-        <Arrow 
-          onClick={handleNext} 
-          aria-label="Next slide"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none">
-            <path d="M5 12H19M19 12L12 5M19 12L12 19" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </Arrow>
-      </NavigationArrows>
-      
+
+      {data.length > 1 && (
+        <NavigationArrows>
+          <Arrow
+            onClick={handlePrev}
+            disabled={isTransitioning}
+            aria-label="Previous slide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M19 12H5M5 12L12 19M5 12L12 5"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Arrow>
+          <Arrow
+            onClick={handleNext}
+            disabled={isTransitioning}
+            aria-label="Next slide"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 24 24"
+              fill="none"
+            >
+              <path
+                d="M5 12H19M19 12L12 5M19 12L12 19"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </Arrow>
+        </NavigationArrows>
+      )}
+
       <TabsContainer>
-        {["Ongoing", "Upcoming", "Completed"].map((tab) => (
-          <Tab 
-            key={tab} 
-            className={activeTab === tab ? 'active' : ''}
-            onClick={() => setActiveTab(tab)}
+        <Tab
+            key={0}
+            
             disabled={isTransitioning}
           >
-            {tab}
+            <Link href={`/projects?status=ongoing`} >Ongoing</Link>
           </Tab>
-        ))}
+          <Tab
+            key={1}
+            
+            disabled={isTransitioning}
+          >
+            <Link href={`/projects?status=upcoming`} >Upcoming</Link>
+          </Tab>
+          <Tab
+            key={2}
+            
+            disabled={isTransitioning}
+          >
+            <Link href={`/projects?status=completed`} >Completed</Link>
+          </Tab>
       </TabsContainer>
     </BannerContainer>
   );
